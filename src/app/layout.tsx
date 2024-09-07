@@ -1,0 +1,62 @@
+"use client";
+import "jsvectormap/dist/jsvectormap.css";
+import "flatpickr/dist/flatpickr.min.css";
+import "@/css/satoshi.css";
+import "@/css/style.css";
+
+// import "primereact/resources/primereact.min.css";
+// import "primeicons/primeicons.css";
+
+// import "primereact/resources/themes/bootstrap4-dark-blue/theme.css";
+
+import React, { useEffect, useState } from "react";
+import store from "@/store/store";
+import { Provider } from "react-redux";
+import Loader from "@/components/common/Loader";
+import NextTopLoader from "nextjs-toploader";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import CSS
+import { AuthProvider } from "@/context/AuthContext"; // Adjust the path as necessary
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  // const pathname = usePathname();
+
+  return (
+    <html lang="en">
+      <body suppressHydrationWarning={true}>
+        <div className="dark:bg-boxdark-2 dark:text-bodydark">
+          <Provider store={store}>
+            <AuthProvider>
+              <NextTopLoader
+                color="#0097B2"
+                initialPosition={0.08}
+                crawlSpeed={200}
+                height={5}
+                crawl={true}
+                showSpinner={true}
+                easing="ease"
+                speed={200}
+                shadow="0 0 10px #2299DD,0 0 5px #2299DD"
+              />
+              {children}
+              // In your index.tsx or App.tsx
+              <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                closeOnClick
+                pauseOnHover
+                draggable
+                pauseOnFocusLoss
+              />
+            </AuthProvider>
+          </Provider>
+        </div>
+      </body>
+    </html>
+  );
+}
