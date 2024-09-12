@@ -12,6 +12,7 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
+  loading: boolean;
   //   login: (token: string) => void;
   //   logout: () => void;
 }
@@ -28,6 +29,7 @@ interface SetSessionKeyParams {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     // const token = localStorage.getItem("token");
@@ -35,20 +37,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (token) {
       setUser({ token });
     }
+    setLoading(false);
   }, []);
-  //   const login = (token: SetSessionKeyParams) => {
-  //     // setUser({ token });
-  //     setSessionKey(token);
-  //     // localStorage.setItem("token", token);
-  //   };
-
-  //   const logout = () => {
-  //     setUser(null);
-  //     localStorage.removeItem("token");
-  //   };
 
   return (
-    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, loading }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 

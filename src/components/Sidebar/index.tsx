@@ -14,28 +14,19 @@ import { IoIosAdd } from "react-icons/io";
 import { GiPackedPlanks } from "react-icons/gi";
 import { IoIosAddCircle } from "react-icons/io";
 import { MdDashboard } from "react-icons/md";
-import { GiAirplaneArrival } from "react-icons/gi";
-import { FaPlaneArrival } from "react-icons/fa";
-import { TbHomeCheck } from "react-icons/tb";
-import { FaExchangeAlt } from "react-icons/fa";
-import { FaBarsProgress } from "react-icons/fa6";
-import { FaFileInvoiceDollar } from "react-icons/fa";
-import { BsFillFileEarmarkSpreadsheetFill } from "react-icons/bs";
-import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
-import { RiEdit2Fill } from "react-icons/ri";
-import { MdOutlinePostAdd } from "react-icons/md";
-import { FaMoneyCheckDollar } from "react-icons/fa6";
-import { FaCodeBranch } from "react-icons/fa6";
-import { FaLocationDot } from "react-icons/fa6";
-import { FaUser } from "react-icons/fa";
-import { FaPercent } from "react-icons/fa";
-import { MdOutlineRule } from "react-icons/md";
-import { RiExchangeDollarFill } from "react-icons/ri";
-import { TbReportAnalytics } from "react-icons/tb";
-import { BsFillCreditCardFill } from "react-icons/bs";
-import { RiGlobalLine } from "react-icons/ri";
-import { FaMagento } from "react-icons/fa";
-import { MdSummarize } from "react-icons/md";
+
+
+///icons 
+import { GrUserWorker } from "react-icons/gr";
+import { PiStudentBold } from "react-icons/pi";
+import { FcDepartment } from "react-icons/fc";
+import { IoPeopleSharp } from "react-icons/io5";
+import { MdOutlinePeople } from "react-icons/md";
+import { RiMessage2Line } from "react-icons/ri";
+import { MdPerson4 } from "react-icons/md";
+import { BiSolidInstitution } from "react-icons/bi";
+import { TbReport } from "react-icons/tb";
+import * as URL from "@/routes";
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -44,7 +35,7 @@ interface SidebarProps {
 
 const menuGroups = [
   {
-    name: "Shipments",
+    // name: "Shipments",
     menuItems: [
       {
         icon: <MdDashboard className="text-title-sm text-white" />,
@@ -54,135 +45,25 @@ const menuGroups = [
       },
 
       {
-        icon: <FaShippingFast className="text-title-sm text-white" />,
-        label: "Shipments",
+        icon: <GrUserWorker className="text-title-sm text-white" />,
+        label: "Employees",
         route: "#",
         children: [
           {
             icon: <IoIosAddCircle className="text-title-md text-white" />,
-            label: "Add Shipment",
-            route: "#",
-          },
-          {
-            icon: <GiPackedPlanks className="text-title-sm text-white" />,
-            label: "Ready to Pick",
-            route: "#",
-          },
-          {
-            icon: <FaPlaneArrival className="text-title-sm text-white" />,
-            label: "Arriving Shipment",
-            route: "#",
-          },
-
-          {
-            icon: (
-              <TbHomeCheck className="text-bold text-title-sm text-white" />
-            ),
-            label: "Arrived Shipment",
-            route: "#",
-          },
-          {
-            icon: <FaExchangeAlt className="text-title-sm text-white" />,
-            label: "Change Status",
-            route: "#",
-          },
-          {
-            icon: <FaBarsProgress className="text-title-sm text-white" />,
-            label: "Track Shipment",
-            route: "#",
-          },
-          {
-            icon: <FaFileInvoiceDollar className="text-title-sm text-white" />,
-            label: "Shipment Invoice",
-            route: "#",
-          },
-
-          {
-            icon: (
-              <IoCheckmarkDoneCircleSharp className="text-title-sm text-white" />
-            ),
-            label: "Delivered Shipments",
-            route: "#",
-          },
-          {
-            icon: (
-              <BsFillFileEarmarkSpreadsheetFill className="text-title-sm text-white" />
-            ),
-            label: "Delivery Run Sheet",
-            route: "#",
-          },
-          {
-            icon: <RiEdit2Fill className="text-title-sm text-white" />,
-            label: "Update Shipments",
-            route: "#",
-          },
-          {
-            icon: <MdOutlinePostAdd className="text-title-sm text-white" />,
-            label: "Add Extra Fee",
+            label: "Add Employee",
             route: "#",
           },
         ],
       },
       {
-        icon: <TbReportAnalytics className="text-title-sm text-white" />,
-        label: "Reports",
+        icon: <PiStudentBold className="text-title-sm text-white" />,
+        label: "Students ",
         route: "#",
         children: [
           {
-            icon: (
-              <>
-                <BsFillCreditCardFill className="text-title-sm text-white" />
-              </>
-            ),
-            label: "Credi Shipments",
-            route: "#",
-          },
-          {
-            icon: <FaCodeBranch className="text-title-sm text-white" />,
-            label: "Branch Report",
-            route: "#",
-          },
-          {
-            icon: <FaCodeBranch className="text-title-sm text-white" />,
-            label: "Admin Branch Report",
-            route: "#",
-          },
-          {
-            icon: (
-              <>
-                <MdSummarize className="text-title-sm text-white" />
-              </>
-            ),
-            label: "Net Branch Report ",
-            route: "#",
-          },
-
-          {
-            icon: (
-              <>
-                <MdSummarize className="text-title-sm text-white" />
-              </>
-            ),
-            label: "Net Admin Branch Report ",
-            route: "#",
-          },
-          {
-            icon: (
-              <>
-                <MdSummarize className="text-title-sm text-white" />
-              </>
-            ),
-            label: "Net All Branch Report ",
-            route: "#",
-          },
-          {
-            icon: <FaMoneyCheckDollar className="text-title-sm text-white" />,
-            label: "Admin Expense Report ",
-            route: "#",
-          },
-          {
-            icon: <FaMagento className="text-title-sm text-white" />,
-            label: "Agent Report ",
+            icon: <IoIosAddCircle className="text-title-md text-white" />,
+            label: "Add Students",
             route: "#",
           },
 
@@ -191,102 +72,92 @@ const menuGroups = [
       },
 
       {
-        icon: <FaMoneyCheckDollar className="text-title-sm text-white" />,
-        label: "Expenses",
+        icon: <FcDepartment className="text-title-sm text-white" />,
+        label: "Sections",
         route: "#",
         children: [
           {
             icon: <IoIosAddCircle className="text-title-md text-white" />,
-            label: "Add Expenses",
+            label: "Add sections",
             route: "#",
           },
         ],
       },
       {
-        icon: <FaCodeBranch className="text-title-sm text-white" />,
-        label: "Manage Branches",
+        icon: <IoPeopleSharp className="text-title-sm text-white" />,
+        label: "Classes",
         route: "#",
-        // children: [
-        //   {
-        //     icon: (
-        //       <FaCodeBranch className="text-title-sm text-white" />
-        //     ),
-        //     label: "Branches",
-        //     route: "#",
-        //   },
-        // ],
+        children: [
+          {
+            icon: <IoIosAddCircle className="text-title-md text-white" />,
+            label: "Add classes",
+            route: "#",
+          },
+        ],
+      },
+    ],
+  },
+
+  {
+    name: "Basics ",
+    menuItems: [
+      {
+        icon: <MdOutlinePeople className="text-title-sm text-white" />,
+        label: "View Years",
+        route: `${URL.LIST_YEARS}`,
+      },
+    ],
+  },
+  {
+    name: "Payments",
+    menuItems: [
+      {
+        icon: <MdOutlinePeople className="text-title-sm text-white" />,
+        label: "Fee particulars",
+        route: "#",
+        children: [
+          {
+            icon: <IoIosAddCircle className="text-title-md text-white" />,
+            label: "Add Employee",
+            route: "#",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: "Announcements",
+    menuItems: [
+      {
+        icon: <RiMessage2Line className="text-title-sm text-white" />,
+        label: "Sms service",
+        route: "#",
+      },
+    ],
+  },
+  {
+    name: "Settings",
+    menuItems: [
+      {
+        icon: <MdPerson4 className="text-title-sm text-white" />,
+        label: "Personal Profile",
+        route: "#",
       },
       {
-        icon: <FaLocationDot className="text-title-sm text-white" />,
-        label: "Manage Countries",
+        icon: <BiSolidInstitution className="text-title-sm text-white" />,
+        label: "Institutional  Profile",
         route: "#",
-        // children: [
-        //   {
-        //     icon: (
-        //       <FaCodeBranch className="text-title-sm text-white" />
-        //     ),
-        //     label: "Countries",
-        //     route: "#",
-        //   },
-        // ],
       },
+    ],
+  },
+  {
+    name: "Report and Analysis",
+    menuItems: [
       {
-        icon: <FaUser className="text-title-sm text-white" />,
-        label: "Manage Users",
+        icon: <TbReport className="text-title-sm text-white" />,
+        label: "Report",
         route: "#",
-        // children: [
-        //   {
-        //     icon: (
-        //       <FaUser className="text-title-sm text-white" />
-        //     ),
-        //     label: "Users",
-        //     route: "#",
-        //   },
-        // ],
       },
-      {
-        icon: <FaPercent className="text-title-sm text-white" />,
-        label: "Manage Rates",
-        route: "#",
-        // children: [
-        //   {
-        //     icon: (
-        //       <FaCodeBranch className="text-title-sm text-white" />
-        //     ),
-        //     label: "Branches",
-        //     route: "#",
-        //   },
-        // ],
-      },
-      {
-        icon: <MdOutlineRule className="text-title-sm text-white" />,
-        label: "Manage Permissions",
-        route: "#",
-        // children: [
-        //   {
-        //     icon: (
-        //       <FaCodeBranch className="text-title-sm text-white" />
-        //     ),
-        //     label: "Branches",
-        //     route: "#",
-        //   },
-        // ],
-      },
-      {
-        icon: <RiExchangeDollarFill className="text-title-sm text-white" />,
-        label: "Exchange Rates ",
-        route: "#",
-        // children: [
-        //   {
-        //     icon: (
-        //       <FaCodeBranch className="text-title-sm text-white" />
-        //     ),
-        //     label: "Branches",
-        //     route: "#",
-        //   },
-        // ],
-      },
-      ,
     ],
   },
 ];
@@ -304,20 +175,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       >
         {/* <!-- SIDEBAR HEADER --> */}
         <div className="flex items-center justify-between gap-1 px-6 py-5.5 lg:py-3">
-          <Link href="/" className="items-center text-center">
+          <Link href="/" className="flex items-center text-center">
             <Image
-              width={250}
-              height={200}
+              width={60}
+              height={60}
               src={"/images/logo.png"}
               alt="Logo"
               priority
               // style={{ backgroundColor: "red" }}
             />
-            {/* <h1 className="ml text-title-md font-bold text-primary">
+            <h1 className="ml text-title-md font-bold text-primary">
               {" "}
-              HudHud Express
-            </h1> */}
-            <hr className="border-gray-100 text- my-2 font-medium " />
+              Alphatech
+            </h1>
+            {/* <hr className="border-gray-100 text- my-2 font-medium " /> */}
           </Link>
 
           <button
@@ -347,7 +218,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           <nav className="mt-1 px-4 py-1 lg:mt-1 lg:px-6">
             {menuGroups.map((group, groupIndex) => (
               <div key={groupIndex}>
-                <h3 className="text-md  mb-3 ml-4 font-bold text-white">
+                <h3 className="text-md  mb-3 ml-4 text-greyishWhite ">
                   {group.name}
                 </h3>
 

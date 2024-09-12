@@ -84,7 +84,7 @@ const SetPassword: React.FC = () => {
 "
       >
         <div className=" flex h-full w-full justify-center ">
-          <div className="h-full w-full items-center justify-center  xl:w-1/2">
+          <div className=" hidden  h-full w-full items-center justify-center xl:block  xl:w-1/2">
             <div className=" float-right mr-10 mt-5">
               <DarkModeSwitcher />
             </div>

@@ -2,18 +2,16 @@ import React from "react";
 import { useState } from "react";
 
 import { useFormContext } from "react-hook-form";
-import { InputText } from "primereact/inputtext";
-import { Password } from "primereact/password";
-import { InputNumber } from "primereact/inputnumber";
 // import { Eye, EyeSlash } from "primeicons/primeicons";
 import { Input } from "@mui/base/Input";
-import { Button as BaseButton } from "@mui/base/Button";
+import { Button as BaseButton } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 
 interface InputProps {
   name: string;
   label: string;
   type: string;
+  placeholder: string;
 }
 
 interface ButtonProps {
@@ -31,7 +29,12 @@ interface InputPropsNumber {
   label: string;
 }
 
-export const InputString: React.FC<InputProps> = ({ name, label, type }) => {
+export const InputString: React.FC<InputProps> = ({
+  name,
+  label,
+  type,
+  placeholder,
+}) => {
   const {
     register,
     formState: { errors },
@@ -52,11 +55,11 @@ export const InputString: React.FC<InputProps> = ({ name, label, type }) => {
         slotProps={{
           input: {
             className:
-              " w-full text-sm font-sans font-normal leading-5 px-3 py-2 rounded-lg shadow-md shadow-slate-100 dark:shadow-slate-900 focus:shadow-outline-primary dark:focus:shadow-outline-primary focus:shadow-lg border border-solid border-slate-300 hover:border-purple-500 dark:hover:border-purple-500 focus:border-primary dark:focus:border-primary dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-300 focus-visible:outline-0",
+              " w-full text-sm font-sans font-normal leading-5 px-3 py-2 rounded-lg shadow-md shadow-slate-100 dark:shadow-slate-900 focus:shadow-outline-primary dark:focus:shadow-outline-primary focus:shadow-lg border border-solid border-slate-300   focus:border-primary dark:focus:border-primary dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-300 focus-visible:outline-0",
           },
         }}
         aria-label="Demo input"
-        placeholder="Type something…"
+        placeholder={placeholder ? placeholder : "Type something…"}
         {...register(name)}
         type={type ? type : "text"}
       />
@@ -75,13 +78,14 @@ export const Button: React.FC<ButtonProps> = ({ label, loading }) => {
     <div className="card justify-content-center flex flex-col ">
       <BaseButton
         type="submit"
-        className="font-sans w-full cursor-pointer rounded-lg border border-solid border-primary bg-primary px-4 py-2 text-sm font-semibold leading-normal text-white"
+        className="w-full cursor-pointer rounded-lg border border-solid border-primary bg-primary px-4 py-2 text-sm  leading-normal text-white"
         // onClick={handleClick}
         disabled={loading} // Disable button when loading
+        style={{ textTransform: "none" }}
       >
         {loading ? (
-          <div className="flex items-center justify-center">
-            <CircularProgress size={20} color="inherit" className="mr-2" />
+          <div className="flex items-center justify-center text-white ">
+            <CircularProgress size={20} className="mr-2 text-white" />
             Loading...
           </div>
         ) : (

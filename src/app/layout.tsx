@@ -14,7 +14,7 @@ import store from "@/store/store";
 import { Provider } from "react-redux";
 import Loader from "@/components/common/Loader";
 import NextTopLoader from "nextjs-toploader";
-import { ToastContainer } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import "react-toastify/dist/ReactToastify.css"; // Import CSS
 import { AuthProvider } from "@/context/AuthContext"; // Adjust the path as necessary
 
@@ -43,16 +43,7 @@ export default function RootLayout({
                 shadow="0 0 10px #2299DD,0 0 5px #2299DD"
               />
               {children}
-              // In your index.tsx or App.tsx
-              <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                closeOnClick
-                pauseOnHover
-                draggable
-                pauseOnFocusLoss
-              />
+              <Toaster position="top-center" reverseOrder={false} />;
             </AuthProvider>
           </Provider>
         </div>

@@ -6,7 +6,6 @@ const SidebarDropdown = ({ item }: any) => {
   const pathname = usePathname();
 
 
-  console.log("item", item);
   return (
     <>
       <ul className="mb-5.5 mt-2 flex list-disc flex-col gap-2.5 pl-6">

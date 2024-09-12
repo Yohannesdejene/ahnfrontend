@@ -20,6 +20,9 @@ const config: Config = {
       ...defaultTheme.screens,
     },
     extend: {
+      backgroundImage: {
+        "custom-gradient": "linear-gradient(to top, #0097B2, #ffffff)",
+      },
       colors: {
         current: "currentColor",
         transparent: "transparent",
@@ -36,7 +39,12 @@ const config: Config = {
         bodydark1: "#DEE4EE",
         bodydark2: "#8A99AF",
         // primary: "#0097B2",
-        primary: "#ff5a00",
+        // primary: "#ff5a00",
+        primary: "#0097B2",
+        whitishPrimary: "#e8f9fc",
+        greyishWhite: "#cecccc",
+        gradiant: "linear-gradient(to top, #0097B2, #ffffff)",
+        // "#f1fdff"
 
         primaryLightHighOpacity: "#33B2D4CC", // Lighter variant with high opacity
         primaryDarkHighOpacity: "#007B8ACC", // Darker variant with high opacity
@@ -69,6 +77,7 @@ const config: Config = {
         danger: "#fb0303",
         warning: "#FFA70B",
       },
+
       fontSize: {
         "title-xxl": ["44px", "55px"],
         "title-xxl2": ["42px", "58px"],
@@ -80,6 +89,11 @@ const config: Config = {
         "title-sm": ["20px", "26px"],
         "title-sm2": ["22px", "28px"],
         "title-xsm": ["18px", "24px"],
+        "title-xsm1": ["15px", "18px"],
+        "title-xsm2": ["14px", "20px"], // Smaller size
+        "title-xxsm": ["12px", "16px"], // Even smaller size
+        "title-xxsm2": ["10px", "14px"], // Smaller still
+        "title-xxxs": ["8px", "12px"], // Smallest size
       },
       spacing: {
         4.5: "1.125rem",

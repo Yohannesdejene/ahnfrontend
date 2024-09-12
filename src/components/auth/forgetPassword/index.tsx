@@ -17,20 +17,19 @@ import {
   getSessionKey,
   setSessionKey,
   setTemporaryToken,
-  setUserInfo,
-  setPermissionInfo,
 } from "@/utils/sessionManager";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 import { FaLock } from "react-icons/fa6";
+import { IoIosArrowBack } from "react-icons/io";
 
 // Define the form schema with Zod
 const formSchema = z.object({
-  username: z.string().min(1, "Username  is required"),
-  password: z.string().min(4, "Password must be at least 4 characters"),
+  email: z.string().email("Invalid email address").min(1, "Email is required"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 type FormData = z.infer<typeof formSchema>;
 
-const Login: React.FC = () => {
+const ForgetPassword: React.FC = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -43,29 +42,36 @@ const Login: React.FC = () => {
     try {
       // const { email, password } = values;
       const res = await apiSignIn(values);
-      const { user, permissions, token } = res;
-      dispatch(loginSuccess(token));
-      const res_0 = setSessionKey({
-        userToken: token,
-      });
-      const user_0 = setUserInfo({
-        user: user,
-      });
-      const perm_0 = setPermissionInfo({
-        permission: permissions,
-      });
-      if (res_0 && user_0 && perm_0) {
-        toast.success("Logged in successfully, redirecting.. ");
-        setTimeout(() => {
-          window.location.replace("/");
-        }, 500);
+
+      const { status, message, email, isPasswordChanged, token } = res?.data;
+      if (status == 200) {
+        if (isPasswordChanged === true) {
+          dispatch(loginSuccess(token));
+          const res_0 = setSessionKey({
+            userToken: token,
+          });
+          if (res_0) {
+            toast.success("Logged in successfully ");
+            setTimeout(() => {
+              window.location.replace("/");
+            }, 500);
+          } else {
+            throw new Error("Failed to login, please try again");
+          }
+        } else {
+          toast.success("Logged in successfully,change password");
+          // showToast("Logged in successfully,change password", "success");
+          setTemporaryToken({ userToken: token });
+          setTimeout(() => {
+            window.location.replace("/auth/change-password");
+          }, 300);
+        }
       } else {
-        throw new Error("Failed to login, please try again");
+        setErrorMessage("Email or password invalid try again ");
       }
     } catch (errors) {
-      console.log("sinin page error", errors.message);
-
-      setErrorMessage(errors?.message);
+      console.log("errors", errors);
+      setErrorMessage("Email or password invalid try again ");
     } finally {
       setLoading(false);
     }
@@ -83,16 +89,16 @@ const Login: React.FC = () => {
       >
         <div className="flex h-screen w-full ">
           <div
-            className="  hidden h-screen items-center justify-center  xl:block xl:w-1/2 "
-            style={{
-              background: "linear-gradient(to top, #0097B2, #ffffff)",
-            }}
+            className="hidden   h-screen items-center justify-center bg-whitishPrimary dark:bg-boxdark xl:block xl:w-1/2"
+            // style={{
+            //   background: "linear-gradient(to top, #0097B2, #ffffff)", // Replace with your colors
+            // }}
           >
             <div className="flex flex-col items-center justify-center px-26 py-0 text-center">
-              <Link className="mb-5.5 mt-10 inline-block" href="#">
+              <Link className="mb-5.5 mt-8 inline-block" href="#">
                 <Image
                   className="dark:block"
-                  src={"/images/auth-images/dashboard.png"}
+                  src={"/images/auth-images/forgot.png"}
                   alt="Logo"
                   width={350}
                   height={300}
@@ -117,19 +123,22 @@ const Login: React.FC = () => {
                   />
                   <h6 className="text-lg font-bold text-primary">Alphatech</h6>
                 </div>
-                <div className="mb-3  flex  items-center gap-2">
+                <div className="mb-2  flex  items-center gap-2">
                   <h2 className=" text-title-lg  font-bold text-black dark:text-white sm:text-title-sm">
-                    Sign in
+                    Forgot Password
                   </h2>
+
                   <FaLock className="text-goldon" />
                 </div>
+                <h2 className="mb-4 text-title-xsm1  text-black dark:text-white">
+                  Enter your email, and we will send you instractions to reset
+                  your password
+                </h2>
 
                 <FormProvider {...methods}>
                   {errorMessage ? (
                     <div className="mb-5 mt-2">
-                      <Alert severity="error" className="rounded-lg ">
-                        {errorMessage}
-                      </Alert>
+                      <Alert severity="error">{errorMessage}</Alert>
                     </div>
                   ) : (
                     ""
@@ -140,42 +149,24 @@ const Login: React.FC = () => {
                     className="p-fluid" // PrimeReact class for fluid layout
                   >
                     <div className="mb-3">
-                      <InputString
-                        type="text"
-                        name="username"
-                        label="User Name"
-                        placeholder=" ex johnabi"
-                      />
-                    </div>
-                    <div className="mt-3 h-6 w-full">
-                      <Link
-                        href="/auth/forget-password"
-                        className="float-right  text-primary"
-                      >
-                        Forgot password ?
-                      </Link>
-                    </div>
-                    <div className="mb-3 w-full">
-                      <InputString
-                        type="password"
-                        name="password"
-                        label="Password"
-                        placeholder=" ex #12372525"
-                      />
+                      <InputString type="email" name="email" label="Email" />
                     </div>
 
-                    <div className="mb-4 w-full">
+                    <div className="mb-4">
                       <Button loading={loading} label="Submit" />
                     </div>
                   </form>
                 </FormProvider>
-                <div className="mt-6 w-full text-center">
-                  <p>
-                    Don’t have any account?{" "}
-                    <Link href="/auth/signup" className=" text-primary">
-                      Sign Up
+                <div className="mt-6 w-full text-center ">
+                  <div className="item-center flex justify-center gap-2">
+                    <IoIosArrowBack className="mt-1 font-bold text-primary" />{" "}
+                    <Link
+                      href="/auth/login"
+                      className="font-bold  text-primary"
+                    >
+                      Back to login{" "}
                     </Link>
-                  </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -186,4 +177,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default ForgetPassword;
