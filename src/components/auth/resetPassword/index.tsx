@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useDispatch } from "react-redux";
 import Alert from "@mui/material/Alert";
-import { InputString, Button } from "@/common/formElements";
+import { InputString, CommonButton } from "@/common/formElements";
 import DarkModeSwitcher from "@/components/Header/DarkModeSwitcher";
 
 import { loginSuccess, logout } from "@/store/actions";
@@ -152,6 +152,7 @@ const ResetPassword: React.FC = () => {
                         type="password"
                         name="oldPassword"
                         label="Old Password"
+                        placeholder="ex 1234"
                       />
                     </div>
                     <div className="mb-3">
@@ -159,11 +160,12 @@ const ResetPassword: React.FC = () => {
                         type="password"
                         name="newPassword"
                         label="New Password"
+                        placeholder="ex 1234"
                       />
                     </div>
 
                     <div className="mb-4">
-                      <Button loading={loading} label="Submit" />
+                      <CommonButton loading={loading} label="Submit" />
                     </div>
                   </form>
                 </FormProvider>

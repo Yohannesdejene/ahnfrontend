@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useDispatch } from "react-redux";
 import Alert from "@mui/material/Alert";
-import { InputString, Button, OtpString } from "@/common/formElements";
+import { InputString, CommonButton } from "@/common/formElements";
 import DarkModeSwitcher from "@/components/Header/DarkModeSwitcher";
 
 import { loginSuccess, logout } from "@/store/actions";
@@ -135,10 +135,10 @@ const TwoStepVerification: React.FC = () => {
                     />
                   </div>
                   <div className="mb-4">
-                    <Button
+                    <CommonButton
                       loading={loading}
                       label="Submit"
-                      disabled={value.length < 6}
+                      // disabled={value.length < 6}
                     />
                   </div>
                 </form>

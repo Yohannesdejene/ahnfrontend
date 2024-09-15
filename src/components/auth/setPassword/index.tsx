@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { InputString, Button } from "@/common/formElements";
+import { InputString, CommonButton } from "@/common/formElements";
 import DarkModeSwitcher from "@/components/Header/DarkModeSwitcher";
 import { useDispatch } from "react-redux";
 import { loginSuccess, logout } from "@/store/actions";
@@ -57,7 +57,7 @@ const SetPassword: React.FC = () => {
         } else {
           toast.success("Logged in successfully,change password");
           // showToast("Logged in successfully,change password", "success");
-          setTemporaryToken({ userToken: token });
+          // setTemporaryToken({ userToken: token });
           setTimeout(() => {
             window.location.replace("/");
           }, 300);
@@ -110,6 +110,7 @@ const SetPassword: React.FC = () => {
                       type="oldPassword"
                       name="oldPassword"
                       label="oldPassword"
+                      placeholder="ex 1234"
                     />
                   </div>
                   <div className="mb-3">
@@ -117,10 +118,11 @@ const SetPassword: React.FC = () => {
                       type="newPassword"
                       name="newPassword"
                       label="newPassword"
+                      placeholder="ex 1233e"
                     />
                   </div>
                   <div className="mb-4">
-                    <Button loading={loading} label="Submit" />
+                    <CommonButton loading={loading} label="Submit" />
                   </div>
                 </form>
               </FormProvider>

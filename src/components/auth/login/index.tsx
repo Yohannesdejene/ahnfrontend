@@ -63,7 +63,6 @@ const Login: React.FC = () => {
         throw new Error("Failed to login, please try again");
       }
     } catch (errors) {
-      console.log("sinin page error", errors.message);
 
       setErrorMessage(errors?.message);
     } finally {

@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useDispatch } from "react-redux";
 import Alert from "@mui/material/Alert";
-import { InputString, CommonButton, StyledSelect } from "@/common/formElements";
+import { InputString, CommonButton, SelectInput } from "@/common/formElements";
 import DarkModeSwitcher from "@/components/Header/DarkModeSwitcher";
 
 import { loginSuccess, logout } from "@/store/actions";
@@ -132,17 +132,28 @@ const AdminFrom = () => {
           <div className="column lg:row gap-5 lg:flex ">
             <div className="w-full">
               <div className="mb-2 ">
-                <InputString type="text" name="firstName" label="First Name" />
+                <InputString
+                  type="text"
+                  name="firstName"
+                  label="First Name"
+                  placeholder="ex abebe"
+                />
               </div>
 
               <div className="mb-2 ">
-                <InputString type="text" name="lastName" label="Last Name" />
+                <InputString
+                  type="text"
+                  name="lastName"
+                  label="Last Name"
+                  placeholder="ex kebede"
+                />
               </div>
               <div className="mb-2 ">
                 <InputString
                   type="text"
                   name="nationality"
                   label="Nationality"
+                  placeholder="ex Ethiopian"
                 />
               </div>
             </div>
@@ -152,14 +163,17 @@ const AdminFrom = () => {
                   type="text"
                   name="middleName"
                   label="Middle Name"
+                  placeholder="ex chala"
                 />
               </div>
 
               <div className="mb-2 ">
-                <StyledSelect
+                <SelectInput
                   options={departmentOptions}
                   name="department"
                   label="Department"
+                  loading={false}
+                  placeholder="Select"
                 />
               </div>
 
@@ -168,6 +182,7 @@ const AdminFrom = () => {
                   type="text"
                   name="educationalLevel"
                   label="Educational Level"
+                  placeholder="Degree"
                 />
               </div>
             </div>
@@ -259,36 +274,57 @@ const SchoolFrom = () => {
           <div className="column lg:row gap-5 lg:flex ">
             <div className="w-full">
               <div className="mb-2 ">
-                <InputString type="text" name="name" label="Name" />
+                <InputString
+                  type="text"
+                  name="name"
+                  label="Name"
+                  placeholder="ex Sanete"
+                />
               </div>
 
               <div className="mb-2 ">
-                <StyledSelect
+                <SelectInput
                   options={regionOption}
                   name="region"
                   label="Region"
+                  loading={false}
+                  placeholder="select"
                 />
               </div>
               <div className="mb-2 ">
-                <InputString type="text" name="address" label="Address" />
+                <InputString
+                  type="text"
+                  name="address"
+                  label="Address"
+                  placeholder="ex addis ababa"
+                />
               </div>
               <div className="mb-2 ">
                 <InputString
                   type="date"
                   name="establishedDate"
                   label="Established Date"
+                  placeholder="ex 2024"
                 />
               </div>
             </div>
             <div className="w-full">
               <div className="mb-2 ">
-                <InputString type="text" name="city" label="City" />
+                <InputString
+                  type="text"
+                  name="city"
+                  label="City"
+                  placeholder="ex Addis ababa"
+                />
               </div>
+
               <div className="mb-2 ">
-                <InputString type="text" name="city" label="City" />
-              </div>
-              <div className="mb-2 ">
-                <InputString type="text" name="email" label="Email" />
+                <InputString
+                  type="text"
+                  name="email"
+                  label="Email"
+                  placeholder="ex test@gmail.com"
+                />
               </div>
             </div>
           </div>
