@@ -7,7 +7,7 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/context/ProtectedRoute";
 export const metadata: Metadata = {
   title: "List years",
-  description: "School Management  system ",
+  description: "School Management system ",
 };
 const List: React.FC = () => {
   return (
