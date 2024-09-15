@@ -3,3 +3,5 @@ export const ADD_RATE = "/rates/add";
 export const LIST_COUNTRIES = "/country/list";
 export const ADD_COUNTRY = "/country/add";
 export const LIST_YEARS = "/basic/years";
+export const LIST_SCHOOLS = "/basic/schools";
+export const LIST_COURSE = "/basic/course";

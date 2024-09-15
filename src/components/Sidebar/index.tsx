@@ -25,6 +25,9 @@ import { RiMessage2Line } from "react-icons/ri";
 import { MdPerson4 } from "react-icons/md";
 import { BiSolidInstitution } from "react-icons/bi";
 import { TbReport } from "react-icons/tb";
+import { FaSchool } from "react-icons/fa";
+import { LiaChalkboardTeacherSolid } from "react-icons/lia";
+
 import * as URL from "@/routes";
 
 interface SidebarProps {
@@ -105,8 +108,22 @@ const menuGroups = [
         label: "View Years",
         route: `${URL.LIST_YEARS}`,
       },
+      {
+        icon: <FaSchool className="text-title-sm text-white" />,
+        label: "View Schools",
+        route: `${URL.LIST_SCHOOLS}`,
+      },
+      {
+        icon: (
+          <LiaChalkboardTeacherSolid className="text-title-sm text-white" />
+        ),
+        label: "View Course",
+        route: `${URL.LIST_COURSE}`,
+      },
+      ,
     ],
   },
+
   {
     name: "Payments",
     menuItems: [

@@ -1,21 +1,31 @@
 import React from "react";
-import { Drawer, Box } from "@mui/material";
+import {
+  Drawer,
+  Box,
+  IconButton,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close"; // Import the close icon
 
 interface LeftDrawerProps {
   isOpen: boolean;
   toggleDrawer: (open: boolean) => void;
   content: React.ReactNode;
-  direction: string;
-  width: number;
+  direction: "left" | "right" | "top" | "bottom"; // specify valid directions
+  width: number; // width for larger screens
 }
 
-const Drawer: React.FC<LeftDrawerProps> = ({
+const CommonDrawer: React.FC<LeftDrawerProps> = ({
   isOpen,
   toggleDrawer,
   content,
   direction,
   width,
 }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // Check if screen is mobile
+
   return (
     <Drawer
       anchor={direction}
@@ -23,20 +33,23 @@ const Drawer: React.FC<LeftDrawerProps> = ({
       onClose={() => toggleDrawer(false)}
       PaperProps={{
         sx: {
-          width: width ? width : 250,
+          width: isMobile ? "100%" : width ? width : 250, // Full width for mobile, specified width for larger screens
         },
       }}
     >
-      <Box
-        role="presentation"
-        sx={{ width: 250, padding: 2 }}
-        onClick={() => toggleDrawer(false)}
-        onKeyDown={() => toggleDrawer(false)}
-      >
-        {content}
+      <Box role="presentation" className="w-full bg-white px-2 dark:bg-boxdark">
+        {/* Close Button */}
+        <Box className="flex justify-end p-2">
+          <IconButton onClick={() => toggleDrawer(false)} aria-label="close">
+            <CloseIcon />
+          </IconButton>
+        </Box>
+
+        {/* Drawer Content */}
+        <Box className="mt-0 w-full px-2">{content}</Box>
       </Box>
     </Drawer>
   );
 };
 
-export default Drawer;
+export default CommonDrawer;
