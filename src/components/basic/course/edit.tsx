@@ -132,7 +132,7 @@ const EditCourse: React.FC<AddYearProps> = ({
             <div className="w-full">
               <div className="p-0">
                 <h6 className="text-gray-700 w-full text-lg font-normal ">
-                  Edit School
+                  Edit Course
                 </h6>
 
                 <hr className="mb-4 mt-4 w-full text-lg font-normal text-normalGray " />

@@ -70,7 +70,7 @@ const EditSchool: React.FC<AddYearProps> = ({
     toast
       .promise(apiPutSchool(id, values), {
         loading: "Updeting school...",
-        success: <b>School updated successfully!</b>,
+        success: <b>School `updated successfully!</b>,
         error: (error) => (
           <b>
             {error.message || "An error occurred while updating  the school."}

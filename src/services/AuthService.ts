@@ -40,7 +40,6 @@ export async function apiSignIn(data: SIGN_IN_DATA): Promise<any> {
       // If the error has a single message string, use it
       errorMessage = error.message;
     }
-    console.log("errorMessage-errorMessage", typeof errorMessage);
     throw new Error(errorMessage);
 
     // Set the error message to be displayed in the UI
