@@ -8,7 +8,6 @@ const handleDelete = async (
 ) => {
   try {
     // Start loading
-    console.log("id in delete", id);
 
     // Call the API to delete the element
     await toast.promise(apiDeleteCourseById(id), {
