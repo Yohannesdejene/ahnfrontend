@@ -33,11 +33,16 @@ const CommonDrawer: React.FC<LeftDrawerProps> = ({
       onClose={() => toggleDrawer(false)}
       PaperProps={{
         sx: {
-          width: isMobile ? "100%" : width ? width : 250, // Full width for mobile, specified width for larger screens
+          width: isMobile ? "100%" : width ? width : 250,
+          mihHeight: "100vh", // Full width for mobile, specified width for larger screens
         },
       }}
     >
-      <Box role="presentation" className="w-full bg-white px-2 dark:bg-boxdark">
+      <Box
+        role="presentation"
+        className="w-full  bg-white px-2 dark:bg-boxdark"
+        sx={{ minHeight: "100vh" }}
+      >
         {/* Close Button */}
         <Box className="flex justify-end p-2">
           <IconButton
