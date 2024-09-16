@@ -363,7 +363,11 @@ export const CommonButton: React.FC<ButtonProps> = ({ label, loading }) => {
       >
         {loading ? (
           <div className="flex items-center justify-center text-white ">
-            <CircularProgress size={20} className="mr-2 text-white" />
+            <CircularProgress
+              size={20}
+              className="mr-2 text-white"
+              sx={{ color: "#ffffff" }}
+            />
             Loading...
           </div>
         ) : (
