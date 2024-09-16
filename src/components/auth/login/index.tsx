@@ -92,13 +92,10 @@ const Login: React.FC = () => {
 
   return (
     <>
-      <div
-        className=" flex  h-screen items-center justify-center  bg-white text-black   dark:bg-boxdark             dark:text-white 
-"
-      >
+      <div className="flex  h-screen items-center justify-center  bg-white text-black   dark:bg-boxdark   dark:text-white">
         <div className="flex h-screen w-full ">
           <div
-            className="  hidden h-screen items-center justify-center  xl:block xl:w-1/2 "
+            className=" hidden h-screen items-center justify-center  xl:block xl:w-1/2 "
             style={{
               background: "linear-gradient(to top, #0097B2, #ffffff)",
             }}
@@ -106,8 +103,9 @@ const Login: React.FC = () => {
             <div className="flex flex-col items-center justify-center px-26 py-0 text-center">
               <Link className="mb-5.5 mt-10 inline-block" href="#">
                 <Image
-                  className="dark:block"
-                  src={"/images/auth-images/dashboard.png"}
+                  // className="dark:block"
+                  src={"/images/auth-images/login.png"}
+                  // src={"/images/auth-images/show.png"}
                   alt="Logo"
                   width={350}
                   height={300}

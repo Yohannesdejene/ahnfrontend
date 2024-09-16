@@ -5,23 +5,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import toast from "react-hot-toast";
 import { InputString, CommonButton, NumberInput } from "@/common/formElements";
-import { apiCreateSchool } from "@/services/ApiBasic";
+import { apiCreateCourse } from "@/services/ApiBasic";
 import { useRouter } from "next/navigation";
 import { PageHeader } from "@/common/pageHeader";
 
 const formSchema = z.object({
-  name: z.string().min(1, { message: "Name is required" }),
-  city: z.string().min(1, { message: "City is required" }),
-  region: z.string().min(1, { message: "Region is required" }),
-  address: z.string().min(1, { message: "Address is required" }),
-  email: z.string().email({ message: "Invalid email address" }),
-  subcity: z.string().min(1, { message: "Subcity is required" }),
-  establish_date: z.string().refine(
-    (date) => {
-      return !isNaN(Date.parse(date));
-    },
-    { message: "Invalid establish date" },
-  ),
+  name: z.string().min(1, { message: "Name is required" }), // Ensures name is a non-empty string
+  code: z.string().min(1, { message: "Code is required" }), // Ensures code is a non-empty string
+  department: z.string().min(1, { message: "Department is required" }), // Ensures department is a non-empty string
 });
 interface AddYearProps {
   reloadCourse: () => void; // Add reloadCourse as a prop
@@ -44,16 +35,14 @@ const AddCourse: React.FC<AddYearProps> = ({ toggleDrawer, reloadCourse }) => {
 
     toast
       .promise(
-        apiCreateSchool({
+        apiCreateCourse({
           ...values,
         }),
         {
-          loading: "Creating school...",
-          success: <b>School created successfully!</b>,
+          loading: "Creating course...",
+          success: <b>Course created successfully!</b>,
           error: (error) => (
-            <b>
-              {error.message || "An error occurred while creating the school."}
-            </b>
+            <b>{error.message || "An error occurred while creating course."}</b>
           ),
         },
       )
@@ -63,7 +52,7 @@ const AddCourse: React.FC<AddYearProps> = ({ toggleDrawer, reloadCourse }) => {
       })
       .catch((error: any) => {
         const errorMessage =
-          error.message || "An error occurred while creating the school.";
+          error.message || "An error occurred while creating the course.";
         setErrorMessage(errorMessage);
         setLoading(false);
       })
@@ -100,59 +89,27 @@ const AddCourse: React.FC<AddYearProps> = ({ toggleDrawer, reloadCourse }) => {
                         type="text"
                         name="name"
                         label="Name"
-                        placeholder="ex Winget"
+                        placeholder="ex Physics"
                       />
                     </div>
                     <div className="mb-3 w-full">
                       <InputString
                         type="text"
-                        name="email"
-                        label="Email"
-                        placeholder="ex text@gmail.com"
-                      />
-                    </div>
-                    <div className="mb-3 w-full">
-                      <InputString
-                        type="text"
-                        name="region"
-                        label="Region"
-                        placeholder="ex Addis Ababa"
-                      />
-                    </div>
-                    <div className="mb-3 w-full">
-                      <InputString
-                        type="text"
-                        name="city"
-                        label="City"
-                        placeholder="ex Addis Ababa"
-                      />
-                    </div>
-                    <div className="mb-3 w-full">
-                      <InputString
-                        type="text"
-                        name="subcity"
-                        label="Subcity"
-                        placeholder="ex Yeka"
+                        name="code"
+                        label="code"
+                        placeholder="ex Math_001"
                       />
                     </div>
 
                     <div className="mb-3 w-full">
                       <InputString
                         type="text"
-                        name="address"
-                        label="Address"
-                        placeholder="ex 4 killo"
+                        name="department"
+                        label="Department"
+                        placeholder="ex Social Science"
                       />
                     </div>
 
-                    <div className="mb-3 w-full">
-                      <InputString
-                        type="date"
-                        name="establish_date"
-                        label="Establish Date"
-                        placeholder="ex 2024-08-04"
-                      />
-                    </div>
                     <div className="mb-4">
                       <CommonButton loading={loading} label="Submit" />
                     </div>

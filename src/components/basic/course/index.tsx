@@ -77,9 +77,18 @@ const ListCourse: React.FC = () => {
   const columns: GridColDef[] = [
     { field: "name", headerName: "Name", width: 120 },
     // { field: "sub_city", headerName: "Sub City", width: 120 },
-    { field: "code", headerName: "code", width: 120 },
-    { field: "department", headerName: "department", width: 160 },
-    { field: "created_date", headerName: "created_date", width: 180 },
+    { field: "code", headerName: "Code", width: 140 },
+    { field: "department", headerName: "Department", width: 170 },
+    {
+      field: "created_date",
+      headerName: "Created Date",
+      width: 200,
+
+      renderCell: (params) => {
+        const value = params.value;
+        return <h6>{convertISOToNormalDate(value)}</h6>;
+      },
+    },
 
     {
       field: "id",
@@ -92,18 +101,22 @@ const ListCourse: React.FC = () => {
         return (
           <div className="my-2 flex gap-2">
             <BaseButton
-              // onClick={() => toggleDrawer(true)}
               onClick={() => handleEditDrawer(value)}
-              className="w-full cursor-pointer rounded-lg border border-solid border-primary bg-primary py-2 text-sm  leading-normal text-white"
-              style={{ textTransform: "none" }}
+              style={{
+                textTransform: "none",
+                color: "#0097B2",
+              }}
             >
-              <FaEdit className="mr-3" />
+              <FaEdit className="mr-2" />
               Edit
             </BaseButton>
             <BaseButton
               type="submit"
-              className="w-full cursor-pointer rounded-lg border border-solid border-danger bg-danger py-2 text-sm  leading-normal text-white"
-              style={{ textTransform: "none" }}
+              style={{
+                textTransform: "none",
+                // backgroundColor: "#0097B2",
+                color: "red",
+              }}
               onClick={() => handleDeleteDialog(value)}
             >
               <MdDeleteForever className="mr-3" />
@@ -130,8 +143,12 @@ const ListCourse: React.FC = () => {
 
           <BaseButton
             onClick={handleAddDrawer}
-            className="float-right mb-2 cursor-pointer rounded-lg border border-solid border-primary bg-primary px-2  text-sm  leading-normal text-white"
-            style={{ textTransform: "none" }}
+            style={{
+              textTransform: "none",
+              backgroundColor: "#0097B2",
+              color: "white",
+              marginBottom: "10px",
+            }}
           >
             <IoAddCircleSharp className="mr-3" />
             Add Course
@@ -187,7 +204,7 @@ const ListCourse: React.FC = () => {
           isOpen={isDialogOpen}
           toggleDialog={handleDialog}
           onDelete={handleDelete}
-          elementName={`School with id =${id}`}
+          elementName={`Course with id =${id}`}
           elementId={id}
           onReload={reloadCourse} // Pass the optional reload function
         />

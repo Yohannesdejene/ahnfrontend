@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
 import StringToBoolean from "@/utils/stringToBoolean";
-import { apiDeleteById } from "@/services/ApiBasic";
+import { apiDeleteCourseById } from "@/services/ApiBasic";
 
 const handleDelete = async (
   id: number | string | null,
@@ -11,9 +11,9 @@ const handleDelete = async (
     console.log("id in delete", id);
 
     // Call the API to delete the element
-    await toast.promise(apiDeleteById(id), {
+    await toast.promise(apiDeleteCourseById(id), {
       loading: "Deleting item...",
-      success: <b>Item deleted successfully!</b>,
+      success: <b>Course Item deleted successfully!</b>,
       error: (error) => (
         <b>{error.message || "An error occurred while deleting the item."}</b>
       ),

@@ -7,7 +7,9 @@ import { IoAddCircleSharp } from "react-icons/io5";
 import { MdDeleteForever } from "react-icons/md";
 
 import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
-import { Button as BaseButton } from "@mui/material";
+import { Button as BaseButton, Alert } from "@mui/material";
+import Chip from "@mui/material/Chip";
+
 import CommonDrawer from "@/common/Drawer";
 import CommonDialog from "@/common/CommonDialogBox";
 import AddYear from "./add";
@@ -29,6 +31,13 @@ function convertISOToNormalDate(isoDate: string): string {
   return date.toLocaleDateString(undefined, options);
 }
 
+const statusShow = (status: boolean) => {
+  if (status) {
+    return <Chip color="success" label=" Active" sx={{ width: "100px" }} />;
+  } else {
+    return <Chip color="error" label="Not active" sx={{ width: "100px" }} />;
+  }
+};
 const ListYears: React.FC = () => {
   const [drawerDisplay, setDrawerDisplay] = useState("add");
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -71,12 +80,24 @@ const ListYears: React.FC = () => {
     toggleDrawer(true);
   };
   const columns: GridColDef[] = [
-    { field: "EUC_year", headerName: "European Calendar", width: 180 },
-    { field: "ETH_year", headerName: "Ethiopian Calendar", width: 180 },
+    {
+      field: "EUC_year",
+      headerName: "European Calendar",
+      width: 180,
+      align: "left",
+    },
+    {
+      field: "ETH_year",
+      headerName: "Ethiopian Calendar",
+      width: 180,
+      align: "left",
+    },
     {
       field: "start_date",
       headerName: "Start Date",
       width: 150,
+      align: "left",
+
       renderCell: (params) => {
         const value = params.value;
         return <h6>{convertISOToNormalDate(value)}</h6>;
@@ -86,28 +107,30 @@ const ListYears: React.FC = () => {
       field: "end_date",
       headerName: "End Date",
       width: 150,
+      align: "left",
 
       renderCell: (params) => {
         const value = params.value;
         return <h6>{convertISOToNormalDate(value)}</h6>;
       },
     },
-    // {
-    //   field: "created_date",
-    //   headerName: "Created At",
-    //   width: 170,
-    //   align: "right",
-    //   renderCell: (params) => {
-    //     const value = params.value;
-    //     return <h6>{convertISOToNormalDate(value)}</h6>;
-    //   },
-    // },
+    {
+      field: "is_active",
+      headerName: "Status",
+      width: 150,
+      align: "center",
+      renderCell: (params) => {
+        const value = params.value;
+
+        return <div className="my-2 flex gap-2">{statusShow(value)}</div>;
+      },
+    },
 
     {
       field: "id",
       headerName: "Action",
-      width: 220,
-      align: "right",
+      width: 100,
+      align: "center",
       renderCell: (params) => {
         const value = params.value;
 
@@ -116,21 +139,28 @@ const ListYears: React.FC = () => {
             <BaseButton
               // onClick={() => toggleDrawer(true)}
               onClick={() => handleEditDrawer(value)}
-              className="w-full cursor-pointer rounded-lg border border-solid border-primary bg-primary py-2 text-sm  leading-normal text-white"
-              style={{ textTransform: "none" }}
+              // className="w-full cursor-pointer rounded-lg border border-solid border-primary bg-primary py-2 text-sm  leading-normal text-white"
+              style={{
+                textTransform: "none",
+                // backgroundColor: "#0097B2",
+                color: "#0097B2",
+              }}
             >
-              <FaEdit className="mr-3" />
+              <FaEdit className="mr-2" />
               Edit
             </BaseButton>
-            <BaseButton
+            {/* <BaseButton
               type="submit"
-              className="w-full cursor-pointer rounded-lg border border-solid border-danger bg-danger py-2 text-sm  leading-normal text-white"
-              style={{ textTransform: "none" }}
+              style={{
+                textTransform: "none",
+                // backgroundColor: "#0097B2",
+                color: "red",
+              }}
               onClick={() => handleDeleteDialog(value)}
             >
-              <MdDeleteForever className="mr-3" />
+              <MdDeleteForever className="mr-2" />
               Delete
-            </BaseButton>
+            </BaseButton> */}
           </div>
         );
       },
@@ -152,8 +182,12 @@ const ListYears: React.FC = () => {
 
           <BaseButton
             onClick={handleAddDrawer}
-            className="float-right mb-2 cursor-pointer rounded-lg border border-solid border-primary bg-primary px-2  text-sm  leading-normal text-white"
-            style={{ textTransform: "none" }}
+            style={{
+              textTransform: "none",
+              backgroundColor: "#0097B2",
+              color: "white",
+              marginBottom: "10px",
+            }}
           >
             <IoAddCircleSharp className="mr-3" />
             Add Year

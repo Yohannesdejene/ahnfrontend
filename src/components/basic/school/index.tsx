@@ -141,8 +141,12 @@ const ListSchools: React.FC = () => {
 
           <BaseButton
             onClick={handleAddDrawer}
-            className="float-right mb-2 cursor-pointer rounded-lg border border-solid border-primary bg-primary px-2  text-sm  leading-normal text-white"
-            style={{ textTransform: "none" }}
+            style={{
+              textTransform: "none",
+              backgroundColor: "#0097B2",
+              color: "white",
+              marginBottom: "10px",
+            }}
           >
             <IoAddCircleSharp className="mr-3" />
             Add School

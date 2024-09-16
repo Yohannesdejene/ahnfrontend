@@ -351,10 +351,15 @@ export const CommonButton: React.FC<ButtonProps> = ({ label, loading }) => {
     <div className="card justify-content-center flex flex-col ">
       <BaseButton
         type="submit"
-        className="w-full cursor-pointer rounded-lg border border-solid border-primary bg-primary px-4 py-2 text-sm  leading-normal text-white"
+        // className="w-full cursor-pointer rounded-lg border border-solid border-primary bg-primary px-4 py-2 text-sm  leading-normal text-white"
         // onClick={handleClick}
+
         disabled={loading} // Disable button when loading
-        style={{ textTransform: "none" }}
+        style={{
+          textTransform: "none",
+          backgroundColor: "#0097B2",
+          color: "white",
+        }}
       >
         {loading ? (
           <div className="flex items-center justify-center text-white ">

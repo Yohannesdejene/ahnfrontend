@@ -11,8 +11,9 @@ import {
   SelectInput,
   ReactSelect,
 } from "@/common/formElements";
+import { LinearProgress } from "@mui/material";
 import StringToBoolean from "@/utils/stringToBoolean";
-import { apiPutSchool, apiGetSchoolById } from "@/services/ApiBasic";
+import { apiPutCourse, apiGetCourseById } from "@/services/ApiBasic";
 import { useRouter } from "next/navigation";
 const IsActiveOptions = [
   {
@@ -25,18 +26,9 @@ const IsActiveOptions = [
   },
 ];
 const formSchema = z.object({
-  name: z.string().min(1, { message: "Name is required" }),
-  city: z.string().min(1, { message: "City is required" }),
-  region: z.string().min(1, { message: "Region is required" }),
-  address: z.string().min(1, { message: "Address is required" }),
-  email: z.string().email({ message: "Invalid email address" }),
-  sub_city: z.string().min(1, { message: "Subcity is required" }),
-  establish_date: z.string().refine(
-    (date) => {
-      return !isNaN(Date.parse(date));
-    },
-    { message: "Invalid establish date" },
-  ),
+  name: z.string().min(1, { message: "Name is required" }), // Ensures name is a non-empty string
+  code: z.string().min(1, { message: "Code is required" }), // Ensures code is a non-empty string
+  department: z.string().min(1, { message: "Department is required" }), // Ensures department is a non-empty string
 });
 
 interface AddYearProps {
@@ -68,13 +60,11 @@ const EditCourse: React.FC<AddYearProps> = ({
     setLoading(true);
 
     toast
-      .promise(apiPutSchool(id, values), {
-        loading: "Updeting school...",
-        success: <b>School `updated successfully!</b>,
+      .promise(apiPutCourse(id, values), {
+        loading: "Updating course...",
+        success: <b>Course updated successfully!</b>,
         error: (error) => (
-          <b>
-            {error.message || "An error occurred while updating  the school."}
-          </b>
+          <b>{error.message || "An error occurred while updating  course."}</b>
         ),
       })
       .then(() => {
@@ -83,7 +73,7 @@ const EditCourse: React.FC<AddYearProps> = ({
       })
       .catch((error: any) => {
         const errorMessage =
-          error.message || "An error occurred while updating the school.";
+          error.message || "An error occurred while updating course.";
         setErrorMessage(errorMessage);
         setLoading(false);
       })
@@ -103,17 +93,12 @@ const EditCourse: React.FC<AddYearProps> = ({
     const fetchData = async () => {
       try {
         // Fetch data from the API
-        const data = await apiGetSchoolById(id);
-        console.log("data", data);
+        const data = await apiGetCourseById(id);
         // Reset the form with fetched data
         methods.reset({
           name: data.name.toString(),
-          region: data.region.toString(),
-          city: data.city,
-          sub_city: data.sub_city,
-          address: data.address,
-          email: data.email,
-          establish_date: data.establish_date.slice(0, 10),
+          code: data.code.toString(),
+          department: data.department.toString(),
         });
         setLoadingDefaults(false);
       } catch (error) {
@@ -129,6 +114,7 @@ const EditCourse: React.FC<AddYearProps> = ({
       <div className="flex  w-full bg-white text-black dark:bg-boxdark dark:text-white">
         <FormProvider {...methods}>
           <div className="container mx-auto mt-0">
+            {loadingDefault && <LinearProgress />}
             <div className="w-full">
               <div className="p-0">
                 <h6 className="text-gray-700 w-full text-lg font-normal ">
@@ -146,59 +132,27 @@ const EditCourse: React.FC<AddYearProps> = ({
                         type="text"
                         name="name"
                         label="Name"
-                        placeholder="ex Winget"
+                        placeholder="ex Physics"
                       />
                     </div>
                     <div className="mb-3 w-full">
                       <InputString
                         type="text"
-                        name="email"
-                        label="Email"
-                        placeholder="ex text@gmail.com"
-                      />
-                    </div>
-                    <div className="mb-3 w-full">
-                      <InputString
-                        type="text"
-                        name="region"
-                        label="Region"
-                        placeholder="ex Addis Ababa"
-                      />
-                    </div>
-                    <div className="mb-3 w-full">
-                      <InputString
-                        type="text"
-                        name="city"
-                        label="City"
-                        placeholder="ex Addis Ababa"
-                      />
-                    </div>
-                    <div className="mb-3 w-full">
-                      <InputString
-                        type="text"
-                        name="sub_city"
-                        label="Sub city"
-                        placeholder="ex Yeka"
+                        name="code"
+                        label="code"
+                        placeholder="ex Math_001"
                       />
                     </div>
 
                     <div className="mb-3 w-full">
                       <InputString
                         type="text"
-                        name="address"
-                        label="Address"
-                        placeholder="ex 4 killo"
+                        name="department"
+                        label="Department"
+                        placeholder="ex Social Science"
                       />
                     </div>
 
-                    <div className="mb-3 w-full">
-                      <InputString
-                        type="date"
-                        name="establish_date"
-                        label="Establish Date"
-                        placeholder="ex 2024-08-04"
-                      />
-                    </div>
                     <div className="mb-4">
                       <CommonButton loading={loading} label="Submit" />
                     </div>

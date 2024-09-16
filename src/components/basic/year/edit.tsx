@@ -11,6 +11,8 @@ import {
   SelectInput,
   ReactSelect,
 } from "@/common/formElements";
+import { LinearProgress } from "@mui/material";
+
 import StringToBoolean from "@/utils/stringToBoolean";
 import { apiPutYear, apiGetYearById } from "@/services/ApiBasic";
 import { useRouter } from "next/navigation";
@@ -148,6 +150,7 @@ const EditYear: React.FC<AddYearProps> = ({
       <div className="flex  w-full bg-white text-black dark:bg-boxdark dark:text-white">
         <FormProvider {...methods}>
           <div className="container mx-auto mt-0">
+            {loadingDefault && <LinearProgress />}
             <div className="w-full">
               <div className="p-0">
                 <h6 className="text-gray-700 w-full text-lg font-normal ">
