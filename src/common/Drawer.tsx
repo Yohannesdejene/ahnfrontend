@@ -40,8 +40,17 @@ const CommonDrawer: React.FC<LeftDrawerProps> = ({
       <Box role="presentation" className="w-full bg-white px-2 dark:bg-boxdark">
         {/* Close Button */}
         <Box className="flex justify-end p-2">
-          <IconButton onClick={() => toggleDrawer(false)} aria-label="close">
-            <CloseIcon />
+          <IconButton
+            onClick={() => toggleDrawer(false)}
+            aria-label="close"
+            style={{
+              backgroundColor: "#000000",
+              width: "30px",
+              height: "30px",
+              borderRadius: "50%",
+            }}
+          >
+            <CloseIcon sx={{ color: "white" }} />
           </IconButton>
         </Box>
 

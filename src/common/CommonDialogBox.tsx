@@ -43,7 +43,12 @@ const CommonDialog: React.FC<CommonDialogProps> = ({
           color="inherit"
           onClick={() => toggleDialog(false)}
           aria-label="close"
-          sx={{ position: "absolute", right: 8, top: 8, mr: "10px" }}
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+            mr: "10px",
+          }}
         >
           <CloseIcon />
         </IconButton>
