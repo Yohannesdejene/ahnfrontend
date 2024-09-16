@@ -205,10 +205,13 @@ export const ReactSelect: React.FC<ReactSelectInputProps> = ({
 //   );
 // };
 
+// interface opt {
+//   options: { value: string | number; label: string };
+// }
 interface SelectInputProps {
   name: string;
   label: string;
-  options: { value: string; label: string }[];
+  options: { value: string | number; label: string }[];
   placeholder?: string;
   loading?: boolean; // New loading prop
 }

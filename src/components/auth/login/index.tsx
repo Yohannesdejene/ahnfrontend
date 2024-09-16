@@ -62,9 +62,25 @@ const Login: React.FC = () => {
       } else {
         throw new Error("Failed to login, please try again");
       }
-    } catch (errors) {
+    } catch (errors:any) {
+      let errorMessage;
 
-      setErrorMessage(errors?.message);
+      // Check if the error response exists and has a message
+      if (errors.response) {
+        // If there's a specific message in the response (common with Axios)
+        errorMessage =
+          errors.response.data?.message ||
+          errors.response.statusText ||
+          "An error occurred in the response";
+      }
+      // Handle general errors, such as network issues or other exceptions
+      else if (errors.message) {
+        errorMessage = errors.message; // Standard error message
+      } else {
+        errorMessage = "An unexpected error occurred";
+      }
+
+      setErrorMessage(errorMessage);
     } finally {
       setLoading(false);
     }

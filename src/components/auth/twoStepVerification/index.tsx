@@ -49,10 +49,11 @@ const TwoStepVerification: React.FC = () => {
     }
   };
 
-  const handleComplete = (otpValue: string) => {
-    console.log("OTP Complete: ", otpValue);
-  };
 
+
+  const handleComplete = (finalValue: string) => {
+    fetch("...");
+  };
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
     if (value.length < 6) {
@@ -124,7 +125,7 @@ const TwoStepVerification: React.FC = () => {
 
                 <form onSubmit={handleSubmit}>
                   <div className="mb-5 mt-2">
-                    <MuiOtpInput
+                    {/* <MuiOtpInput
                       value={value}
                       onChange={handleChange}
                       onComplete={handleComplete}
@@ -132,6 +133,14 @@ const TwoStepVerification: React.FC = () => {
                       autoFocus
                       validateChar={(character, index) => true}
                       inputRef={(el) => (inputRefs.current[index] = el)} // Set ref for each input
+                    /> */}
+                    <MuiOtpInput
+                      value={value}
+                      onChange={handleChange}
+                      onComplete={handleComplete}
+                      length={6}
+                      autoFocus
+                      validateChar={(character: string, index: number) => true}
                     />
                   </div>
                   <div className="mb-4">

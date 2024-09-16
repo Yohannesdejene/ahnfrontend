@@ -102,7 +102,7 @@ export async function apiCreateYear(data: CREATE_YEAR_DATA_TYPE): Promise<any> {
     ) {
       // If the error contains an array, combine the messages with line breaks
       const errorMessagesArray = error?.response?.data?.error?.map(
-        (err) => `${err.path}: ${err.message}`, // Format each error message
+        (err: any) => `${err.path}: ${err.message}`, // Format each error message
       );
       errorMessage = errorMessagesArray.join("\n"); // Join all error messages into a single string with line breaks
     } else if (typeof error?.message === "string") {
@@ -140,7 +140,7 @@ export async function apiPutYear(
     ) {
       // If the error contains an array, combine the messages with line breaks
       const errorMessagesArray = error?.response?.data?.error?.map(
-        (err) => `${err.path}: ${err.message}`, // Format each error message
+        (err: any) => `${err.path}: ${err.message}`, // Format each error message
       );
       errorMessage = errorMessagesArray.join("\n"); // Join all error messages into a single string with line breaks
     } else if (typeof error?.message === "string") {
@@ -224,7 +224,7 @@ export async function apiCreateSchool(
     ) {
       // If the error contains an array, combine the messages with line breaks
       const errorMessagesArray = error?.response?.data?.error?.map(
-        (err) => `${err.path}: ${err.message}`, // Format each error message
+        (err: any) => `${err.path}: ${err.message}`, // Format each error message
       );
       errorMessage = errorMessagesArray.join("\n"); // Join all error messages into a single string with line breaks
     } else if (typeof error?.message === "string") {
@@ -287,7 +287,7 @@ export async function apiPutSchool(
     ) {
       // If the error contains an array, combine the messages with line breaks
       const errorMessagesArray = error?.response?.data?.error?.map(
-        (err) => `${err.path}: ${err.message}`, // Format each error message
+        (err: any) => `${err.path}: ${err.message}`, // Format each error message
       );
       errorMessage = errorMessagesArray.join("\n"); // Join all error messages into a single string with line breaks
     } else if (typeof error?.message === "string") {
