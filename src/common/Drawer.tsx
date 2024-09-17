@@ -6,7 +6,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close"; // Import the close icon
+import CloseIcon from "@mui/icons-material/Close"; 
 
 interface LeftDrawerProps {
   isOpen: boolean;
