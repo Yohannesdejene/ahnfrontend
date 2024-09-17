@@ -12,7 +12,7 @@ interface LeftDrawerProps {
   isOpen: boolean;
   toggleDrawer: (open: boolean) => void;
   content: React.ReactNode;
-  direction: "left" | "right" | "top" | "bottom"; // specify valid directions
+  direction: "left" | "right" | "top" | "bottom";
   width: number; // width for larger screens
 }
 
