@@ -1,0 +1,53 @@
+{
+  "greeting": "ሰላም",
+  "welcomeMessage": "እንኳን ወደ ድህረገፃችን በሰላም መጡ!",
+  "sideLayout": {
+    "dashboards": "መሳሪያዎች",
+    "employees": "ሰራተኞች",
+    "addEmployee": "ሰራተኛ አክል",
+    "students": "ተማሪዎች",
+    "addStudent": "ተማሪ አክል",
+    "sections": "ክፍሎች",
+    "addSections": "ክፍል አክል",
+    "classes": "ክፍሎች",
+    "addClasses": "ክፍል አክል",
+    "basic": "መሠረታዊዎች",
+    "viewYear": "አመት እይ",
+    "viewSchools": "ትምህርት ቤቶችን እይ",
+    "viewCourse": "ኮርስ እይ",
+    "payment": "ክፍያዎች",
+    "Free particulars": "ክፍያ ዝርዝሮች",
+    "announcements": "ማስታወቂያዎች",
+    "smsService": "ኤስ ኤም ኤስ አገልግሎት",
+    "settings": "ቅንብሮች",
+    "personalProfile": "የግል መግለጫ",
+    "institutionalProfile": "የተቋም መግለጫ",
+    "ReportAndAnalysis": "ሪፖርትና ትንበያ",
+    "report": "ሪፖርት"
+  },
+
+  "course": {
+    "courseList": "የኮርስ ዝርዝር",
+    "addCourse": "ኮርስ አክል",
+    "editCourse": "ኮርስ አርትዕ",
+    "name": "ስም",
+    "code": "ኮድ",
+    "department": "መምሪያ",
+    "createdDate": "ቀን ተፈጥሯል",
+    "submit": "አስገባ",
+    "updatingCourse": "ኮርሱን እየተሻሻለ ነው",
+    "courseUpdatedSuccessfully": "ኮርሱ በተሳካ ሁኔታ ተሻሽሏል",
+    "courseCreatedSuccessfully": "ኮርስ በተሳካ ሁኔታ ተፈጥሯል",
+    "creatingCourse": "ኮርስ እየተፈጠረ ነው",
+    "deletingItem": "እቃ እየተሰረዘ ነው",
+    "courseDeletedSuccessfully": "ኮርሱ በተሳካ ሁኔታ ተሰርዟል"
+  },
+  "common": {
+    "areYouSureYouWantToDelete": "እርግጠኛ ነህ እንደምትሰረዝ?",
+    "thisActionCannotBeUndone": "ይህ እርምጃ መመለስ አይቻልም",
+    "cancel": "ተመለስ",
+    "delete": "ሰርዝ",
+    "edit": "አስተካክል",
+    "action": "እርምጃ"
+  }
+}

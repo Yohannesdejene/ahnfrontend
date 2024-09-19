@@ -5,6 +5,7 @@ import { useGetAllYears } from "@/hooks/useGetAllYears";
 import { FaEdit } from "react-icons/fa";
 import { IoAddCircleSharp } from "react-icons/io5";
 import { MdDeleteForever } from "react-icons/md";
+import { t } from "@/utils/translation";
 
 import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
 import { Button as BaseButton, Alert } from "@mui/material";
@@ -17,6 +18,12 @@ import EditYear from "./edit";
 // import  DeleteConfirmationDialog from './delete';
 import DeleteConfirmationDialog from "@/common/DeleteConfirmationDialog";
 import handleDelete from "./delete";
+import {
+  fetchCourseList,
+  createCourse,
+} from "@/store/features/courses/courseSlice";
+import { RootState, AppDispatch } from "@/store/store";
+
 function convertISOToNormalDate(isoDate: string): string {
   const date = new Date(isoDate);
 
@@ -137,12 +144,9 @@ const ListYears: React.FC = () => {
         return (
           <div className="my-2 flex gap-2">
             <BaseButton
-              // onClick={() => toggleDrawer(true)}
               onClick={() => handleEditDrawer(value)}
-              // className="w-full cursor-pointer rounded-lg border border-solid border-primary bg-primary py-2 text-sm  leading-normal text-white"
               style={{
                 textTransform: "none",
-                // backgroundColor: "#0097B2",
                 color: "#0097B2",
               }}
             >
@@ -177,7 +181,7 @@ const ListYears: React.FC = () => {
         /> */}
         <div className="mx-1 flex justify-between">
           <label className="mb-2 block  text-title-md font-medium text-black dark:text-white">
-            Year List
+            {t("year.listYears")}
           </label>
 
           <BaseButton
@@ -190,7 +194,8 @@ const ListYears: React.FC = () => {
             }}
           >
             <IoAddCircleSharp className="mr-3" />
-            Add Year
+
+            {t("year.addYear")}
           </BaseButton>
         </div>
 
@@ -245,7 +250,6 @@ const ListYears: React.FC = () => {
           onDelete={handleDelete}
           elementName={`Year with id =${id}`}
           elementId={id}
-          onReload={reloadYears} // Pass the optional reload function
         />
       </div>
     </>

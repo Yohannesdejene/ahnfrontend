@@ -3,6 +3,7 @@ import { jwtDecode } from "jwt-decode";
 const session_key_name = "JVAy2";
 const session_user = "UKA5W3";
 const temp_key_name = "Tempt";
+const language_key = "lang";
 
 const permissions_key_name = "yfvhW";
 
@@ -10,19 +11,19 @@ interface SET_SESSION_TOKEN {
   userToken: string;
 }
 interface USER_TYPE {
-  user:{
-  id: string;
-  group_id: number;
-  username: string;
-  is_active: Boolean;
-  last_login: string | null;
-  is_super_user: Boolean;
-  date_joined: string;
-  login_from: string | null;
-  profile_picture: string;
-  created_date: string;
-  updated_date: string;
-  }
+  user: {
+    id: string;
+    group_id: number;
+    username: string;
+    is_active: Boolean;
+    last_login: string | null;
+    is_super_user: Boolean;
+    date_joined: string;
+    login_from: string | null;
+    profile_picture: string;
+    created_date: string;
+    updated_date: string;
+  };
 }
 interface PERMISSION_TYPE {
   permission: string[] | null;
@@ -179,3 +180,4 @@ export function getUserDetails(): string | null | undefined {
     return null;
   }
 }
+

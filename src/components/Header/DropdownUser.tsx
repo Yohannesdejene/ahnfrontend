@@ -10,7 +10,7 @@ const DropdownUser = () => {
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
       <Link
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="flex items-center gap-4"
+        className="flex items-center gap-2"
         href="#"
       >
         <span className="hidden text-right lg:block">
@@ -20,7 +20,7 @@ const DropdownUser = () => {
           <span className="block text-xs">School manager</span>
         </span>
 
-        <span className="h-12 w-12 rounded-full">
+        <span className="h-8 w-8 rounded-full sm:h-12 sm:w-12">
           <Image
             width={112}
             height={112}

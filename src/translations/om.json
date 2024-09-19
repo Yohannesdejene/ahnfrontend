@@ -1,0 +1,53 @@
+{
+  "greeting": "Akkam",
+  "welcomeMessage": "Marsariitii keenyaaf gammachuun simatamtan!",
+  "sideLayout": {
+    "dashboards": "Dashboardota",
+    "employees": "Hojjettoota",
+    "addEmployee": "Hojjettoota Dabaluu",
+    "students": "Barattoota",
+    "addStudent": "Barataa Dabaluu",
+    "sections": "Kutaa",
+    "addSections": "Kutaalee Dabaluu",
+    "classes": "Qooda",
+    "addClasses": "Qoodalee Dabaluu",
+    "basic": "Bu'uura",
+    "viewYear": "Waggaa Ilaali",
+    "viewSchools": "Mana Barnootaa Ilaali",
+    "viewCourse": "Koorsii Ilaali",
+    "payment": "Baajata",
+    "Free particulars": "Odeeffannoo Baajata",
+    "announcements": "Beeksisota",
+    "smsService": "Tajaajila SMS",
+    "settings": "Tartiiba",
+    "personalProfile": "Profaayilii Kanaa",
+    "institutionalProfile": "Profaayilii Dhaabbataa",
+    "ReportAndAnalysis": "Gabaasa fi Xinxala",
+    "report": "Gabaasa"
+  },
+
+  "course": {
+    "courseList": "Daataa Koorsee",
+    "addCourse": "Koorsee Addaan Fayyadamuu",
+    "editCourse": "Koorsee Gulaali",
+    "name": "Maqaa",
+    "code": "Koodii",
+    "department": "Qindeessaa",
+    "createdDate": "Guyyaa Uumame",
+    "submit": "Galchi",
+    "updatingCourse": "Koorsee Fooyyeessaa Jira",
+    "courseUpdatedSuccessfully": "Koorseen Milkaa'inaan Fooyya'ee Jira",
+    "courseCreatedSuccessfully": "Koorseen Milkaa'inaan Uumame",
+    "creatingCourse": "Koorsee Uumamaa Jira",
+    "deletingItem": "Walxaxaa Haquu",
+    "courseDeletedSuccessfully": "Koorseen Milkaa'inaan Haqame"
+  },
+  "common": {
+    "areYouSureYouWantToDelete": "Haquu barbaaddaa?",
+    "thisActionCannotBeUndone": "Tarkaanfichi gara boodaan hin deebisamu",
+    "cancel": "Dhaabi",
+    "delete": "Haqi",
+    "edit": "Gulaali",
+    "action": "Tarkaanfii"
+  }
+}

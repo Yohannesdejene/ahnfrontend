@@ -6,13 +6,20 @@ import { IoAddCircleSharp } from "react-icons/io5";
 import { MdDeleteForever } from "react-icons/md";
 import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
 import { Button as BaseButton } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 import CommonDrawer from "@/common/Drawer";
-import CommonDialog from "@/common/CommonDialogBox";
 import AddCourse from "./add";
 import EditCourse from "./edit";
 // import  DeleteConfirmationDialog from './delete';
 import DeleteConfirmationDialog from "@/common/DeleteConfirmationDialog";
-import handleDelete from "./delete";
+import {
+  fetchCourseList,
+  createCourse,
+  deleteCourse,
+} from "@/store/features/courses/courseSlice";
+import { RootState, AppDispatch } from "@/store/store"; // Import RootState and AppDispatch
+import { t } from "@/utils/translation";
+
 function convertISOToNormalDate(isoDate: string): string {
   const date = new Date(isoDate);
 
@@ -30,16 +37,24 @@ function convertISOToNormalDate(isoDate: string): string {
 const ListCourse: React.FC = () => {
   const [drawerDisplay, setDrawerDisplay] = useState("add");
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-
+  const [size, setSize] = useState<number>(10);
+  const [page, setPage] = useState<number>(0);
   const [id, setId] = useState<number | string | null>(null);
-  const {
-    loadingCourse,
-    errorCourse,
-    optionsCourse,
-    dataCourse,
-    reloadCourse,
-  } = useGetAllCourses();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const test = () => {};
+  const dispatch: AppDispatch = useDispatch(); // Use the AppDispatch type
+  const { courses: dataCourse, loading: loadingCourse } = useSelector(
+    (state: RootState) => state.courses,
+  );
+
+  useEffect(() => {
+    const data = { size: 10, currentPage: 1 };
+    try {
+      dispatch(fetchCourseList(data));
+    } catch (err) {
+      console.log("Err", err);
+    }
+  }, [dispatch]);
 
   // Function to toggle the drawer open/close
   const toggleDrawer = (open: boolean) => {
@@ -74,14 +89,28 @@ const ListCourse: React.FC = () => {
     toggleDrawer(true);
   };
 
+  const handleDelete = async (
+    id: number | string | null,
+    dispatch: AppDispatch,
+  ) => {
+    dispatch(deleteCourse(id));
+    handleDialog(false);
+  };
+  const onDelete = async (id: number | string | null) => {
+    await handleDelete(id, dispatch); // Pass dispatch to handleDelete
+  };
   const columns: GridColDef[] = [
-    { field: "name", headerName: "Name", width: 120 },
+    { field: "name", headerName: `${t("course.name")}`, width: 120 },
     // { field: "sub_city", headerName: "Sub City", width: 120 },
-    { field: "code", headerName: "Code", width: 140 },
-    { field: "department", headerName: "Department", width: 170 },
+    { field: "code", headerName: `${t("course.code")}`, width: 140 },
+    {
+      field: "department",
+      headerName: `${t("course.department")}`,
+      width: 170,
+    },
     {
       field: "created_date",
-      headerName: "Created Date",
+      headerName: `${t("course.createdDate")}`,
       width: 200,
 
       renderCell: (params) => {
@@ -92,7 +121,7 @@ const ListCourse: React.FC = () => {
 
     {
       field: "id",
-      headerName: "Action",
+      headerName: `${t("common.action")}`,
       width: 220,
       align: "right",
       renderCell: (params) => {
@@ -108,7 +137,7 @@ const ListCourse: React.FC = () => {
               }}
             >
               <FaEdit className="mr-2" />
-              Edit
+              {t("common.edit")}
             </BaseButton>
             <BaseButton
               type="submit"
@@ -120,25 +149,21 @@ const ListCourse: React.FC = () => {
               onClick={() => handleDeleteDialog(value)}
             >
               <MdDeleteForever className="mr-3" />
-              Delete
+
+              {t("common.delete")}
             </BaseButton>
           </div>
         );
       },
     },
   ];
+
   return (
     <>
       <div className="mx-auto max-w-242.5">
-        {/* <PageHeader
-          title="Country List"
-          url={URL.ADD_COUNTRY}
-          // btnLabel="Add Country"
-          // showButton={true}
-        /> */}
         <div className="mx-1 flex justify-between">
           <label className="mb-2 block  text-title-md font-medium text-black dark:text-white">
-            Course List
+            {t("course.courseList")}
           </label>
 
           <BaseButton
@@ -151,7 +176,8 @@ const ListCourse: React.FC = () => {
             }}
           >
             <IoAddCircleSharp className="mr-3" />
-            Add Course
+
+            {t("course.addCourse")}
           </BaseButton>
         </div>
 
@@ -181,18 +207,10 @@ const ListCourse: React.FC = () => {
           content={
             <div>
               {drawerDisplay == "add" && (
-                <AddCourse
-                  toggleDrawer={toggleDrawer}
-                  reloadCourse={reloadCourse}
-                />
+                <AddCourse toggleDrawer={toggleDrawer} />
               )}
               {id !== null && drawerDisplay == "edit" && (
-                <EditCourse
-                  toggleDrawer={toggleDrawer}
-                  reloadCourse={reloadCourse}
-                  id={id}
-                  setId={setId}
-                />
+                <EditCourse toggleDrawer={toggleDrawer} id={id} setId={setId} />
               )}
             </div>
           }
@@ -203,10 +221,11 @@ const ListCourse: React.FC = () => {
         <DeleteConfirmationDialog
           isOpen={isDialogOpen}
           toggleDialog={handleDialog}
-          onDelete={handleDelete}
+          // onDelete={HandleDelete}
+          onDelete={onDelete}
           elementName={`Course with id =${id}`}
           elementId={id}
-          onReload={reloadCourse} // Pass the optional reload function
+          // onReload={test} // Pass the optional reload function
         />
       </div>
     </>

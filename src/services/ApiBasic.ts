@@ -1,12 +1,16 @@
-import HttpService, { HttpResetPasswordService } from "./HttpService";
+import HttpService from "./HttpService";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
+interface PAGINATION {
+  page: number | null | undefined;
+  size: number | null | undefined;
+}
 interface CREATE_YEAR_DATA_TYPE {
   EUC_year: string;
   ETH_year: string;
   start_date: string;
   end_date: string | null;
 }
-
 interface CREATE_SCHOOL_DATA_TYPE {
   name: string;
   city: string;
@@ -46,7 +50,7 @@ interface UPDATE_COURSE_DATA_TYPE {
 }
 export async function apiGetYearList(): Promise<any> {
   const method = "GET"; // Use GET method
-  const url = `${BASE_URL}basic/year`; // Adjust the endpoint to match your API's URL
+  const url = `${BASE_URL}/basic/year`; // Adjust the endpoint to match your API's URL
 
   try {
     const response = await HttpService.request({
@@ -310,9 +314,13 @@ export async function apiPutSchool(
 }
 
 ///course
-export async function apiGetCourseList(): Promise<any> {
+export async function apiGetCourseList(
+  size: number,
+  currentPage: number,
+): Promise<any> {
   const method = "GET"; // Use GET method
-  const url = `${BASE_URL}basic/course`; // Adjust the endpoint to match your API's URL
+  let url = `${BASE_URL}basic/course`; // Adjust the endpoint to match your API's URL
+  if (size && currentPage) url += `?size${size}&page${currentPage}`;
 
   try {
     const response = await HttpService.request({

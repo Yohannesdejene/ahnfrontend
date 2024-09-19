@@ -11,6 +11,9 @@ import { GiTeacher } from "react-icons/gi";
 import { SiVirustotal } from "react-icons/si";
 import { GiDiceTarget } from "react-icons/gi";
 
+import { useSearchParams } from "next/navigation";
+import { t } from "@/utils/translation";
+
 const MapOne = dynamic(() => import("@/components/Maps/MapOne"), {
   ssr: false,
 });

@@ -18,7 +18,10 @@ type COURSE_RESPONSE = {
   reloadCourse: () => void; // Reload function type
 };
 
-export const useGetAllCourses = (): COURSE_RESPONSE => {
+export const useGetAllCourses = (
+  size: number,
+  currentPage: number,
+): COURSE_RESPONSE => {
   const [loadingCourse, setLoadingCourse] = useState<boolean>(true);
   const [errorCourse, setErrorCourse] = useState<string | null>(null);
   const [dataCourse, setDataCourse] = useState<COURSE_TYPE[] | null>(null);
@@ -32,7 +35,7 @@ export const useGetAllCourses = (): COURSE_RESPONSE => {
     setErrorCourse(null);
 
     try {
-      const response = await apiGetCourseList();
+      const response = await apiGetCourseList(size, currentPage);
       console.log("response", response);
 
       const transformedOptions = response?.map((item: any) => ({

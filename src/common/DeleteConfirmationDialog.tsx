@@ -1,14 +1,15 @@
 import React from "react";
 import { Button } from "@mui/material";
 import CommonDialog from "./CommonDialogBox";
+import { t } from "@/utils/translation";
 
 interface DeleteConfirmationDialogProps {
   isOpen: boolean;
   toggleDialog: (open: boolean) => void;
-  onDelete: (id: number | string | null, onReload?: () => void) => void; // onDelete accepts optional onReload function
+  onDelete: (id: number | string | null) => void; // onDelete accepts optional onReload function
   elementName: string; // Name of the element to be deleted
   elementId: number | string | null; // The ID of the element to be deleted
-  onReload?: () => void; // Optional reload function
+  // onReload?: () => void; // Optional reload function
 }
 
 const DeleteConfirmationDialog: React.FC<DeleteConfirmationDialogProps> = ({
@@ -17,7 +18,7 @@ const DeleteConfirmationDialog: React.FC<DeleteConfirmationDialogProps> = ({
   onDelete,
   elementName,
   elementId,
-  onReload,
+  // onReload,
 }) => {
   return (
     <CommonDialog
@@ -26,24 +27,26 @@ const DeleteConfirmationDialog: React.FC<DeleteConfirmationDialogProps> = ({
       title={`Delete ${elementName}?`}
       content={
         <div>
-          Are you sure you want to delete <strong>{elementName}</strong>? This
-          action cannot be undone.
+          {t("common.areYouSureYouWantToDelete")}
+          <span style={{ marginRight: "3px" }}></span>
+          <strong style={{ marginRight: "3px" }}>{elementName}</strong>?{" "}
+          {t("common.thisActionCannotBeUndone")}
         </div>
       }
       actions={
         <>
           <Button onClick={() => toggleDialog(false)} color="primary">
-            Cancel
+            {t("common.cancel")}
           </Button>
           <Button
             onClick={() => {
-              onDelete(elementId, onReload); // Pass the element's ID to the onDelete function
-              toggleDialog(false); // Close dialog after deletion
+              onDelete(elementId); // Pass the element's ID to the onDelete function
+              // toggleDialog(false); // Close dialog after deletion
             }}
             sx={{ color: "red" }}
             // variant="contained"
           >
-            Delete
+            {t("common.delete")}
           </Button>
         </>
       }

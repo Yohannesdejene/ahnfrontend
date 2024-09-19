@@ -3,18 +3,15 @@ import React, { useState, useEffect } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import toast from "react-hot-toast";
-import {
-  InputString,
-  CommonButton,
-  NumberInput,
-  SelectInput,
-  ReactSelect,
-} from "@/common/formElements";
+import { t } from "@/utils/translation";
 import { LinearProgress } from "@mui/material";
-import StringToBoolean from "@/utils/stringToBoolean";
-import { apiPutCourse, apiGetCourseById } from "@/services/ApiBasic";
-import { useRouter } from "next/navigation";
+import { InputString, CommonButton } from "@/common/formElements";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  updateCourse,
+  getCourseById,
+} from "@/store/features/courses/courseSlice";
+import { RootState, AppDispatch } from "@/store/store"; // Import RootState and AppDispatch
 const IsActiveOptions = [
   {
     label: "True",
@@ -32,93 +29,63 @@ const formSchema = z.object({
 });
 
 interface AddYearProps {
-  reloadCourse: () => void; // Add reloadCourse as a prop
+  // reloadCourse: () => void; // Add reloadCourse as a prop
   id: number | string | null;
   toggleDrawer: (open: boolean) => void; // Accepting toggleDrawer function as a prop
-  setId: (id: number | null | string) => void; // Setters don't return a value
+  setId: (id: number | string | null) => void; // Setters don't return a value
 }
 
 type FormData = z.infer<typeof formSchema>;
 
-const EditCourse: React.FC<AddYearProps> = ({
-  toggleDrawer,
-  setId,
-  reloadCourse,
-  id,
-}) => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [loadingDefault, setLoadingDefaults] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null | string>(
-    null,
-  );
+const EditCourse: React.FC<AddYearProps> = ({ toggleDrawer, setId, id }) => {
+  const dispatch: AppDispatch = useDispatch(); // Use the AppDispatch type
+  const {
+    updateError,
+    updateSuccess,
+    updateLoading,
+    selectedCourse,
+    getCourseByIdLoading,
+    getCourseByIdError,
+  } = useSelector((state: RootState) => state.courses);
+
   const methods = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
 
-  const editYear = async (values: any) => {
-    setErrorMessage(null);
-    setLoading(true);
-
-    toast
-      .promise(apiPutCourse(id, values), {
-        loading: "Updating course...",
-        success: <b>Course updated successfully!</b>,
-        error: (error) => (
-          <b>{error.message || "An error occurred while updating  course."}</b>
-        ),
-      })
-      .then(() => {
-        setLoading(false);
-        reloadCourse();
-      })
-      .catch((error: any) => {
-        const errorMessage =
-          error.message || "An error occurred while updating course.";
-        setErrorMessage(errorMessage);
-        setLoading(false);
-      })
-      .finally(() => {
-        setId(null);
-        // This will execute regardless of success or failure
-        setLoading(false);
-        toggleDrawer(false);
-      });
-  };
-
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    editYear(data);
+    dispatch(updateCourse({ id, courseData: data })).then((data) => {
+      toggleDrawer(false);
+    });
   };
-  useEffect(() => {
-    setLoadingDefaults(true);
-    const fetchData = async () => {
-      try {
-        // Fetch data from the API
-        const data = await apiGetCourseById(id);
-        // Reset the form with fetched data
-        methods.reset({
-          name: data.name.toString(),
-          code: data.code.toString(),
-          department: data.department.toString(),
-        });
-        setLoadingDefaults(false);
-      } catch (error) {
-        setLoadingDefaults(false);
-        console.error("Failed to fetch data", error);
-      }
-    };
 
-    fetchData();
+  useEffect(() => {
+    try {
+      dispatch(getCourseById({ id }))
+        .then((data: any) => {
+          methods.reset({
+            name: data?.payload?.name.toString(),
+            code: data?.payload.code.toString(),
+            department: data?.payload?.department.toString(),
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching course:", error);
+        });
+    } catch (err) {
+      console.log("err", err);
+    }
   }, [id, methods]);
+
   return (
     <>
       <div className="flex  w-full bg-white text-black dark:bg-boxdark dark:text-white">
         <FormProvider {...methods}>
           <div className="container mx-auto mt-0">
-            {loadingDefault && <LinearProgress />}
+            {getCourseByIdLoading && <LinearProgress />}
             <div className="w-full">
               <div className="p-0">
                 <h6 className="text-gray-700 w-full text-lg font-normal ">
-                  Edit Course
+                  {t("course.editCourse")}
                 </h6>
 
                 <hr className="mb-4 mt-4 w-full text-lg font-normal text-normalGray " />
@@ -131,7 +98,7 @@ const EditCourse: React.FC<AddYearProps> = ({
                       <InputString
                         type="text"
                         name="name"
-                        label="Name"
+                        label={t("course.name")}
                         placeholder="ex Physics"
                       />
                     </div>
@@ -139,7 +106,7 @@ const EditCourse: React.FC<AddYearProps> = ({
                       <InputString
                         type="text"
                         name="code"
-                        label="code"
+                        label={t("course.code")}
                         placeholder="ex Math_001"
                       />
                     </div>
@@ -148,13 +115,16 @@ const EditCourse: React.FC<AddYearProps> = ({
                       <InputString
                         type="text"
                         name="department"
-                        label="Department"
+                        label={t("course.department")}
                         placeholder="ex Social Science"
                       />
                     </div>
 
                     <div className="mb-4">
-                      <CommonButton loading={loading} label="Submit" />
+                      <CommonButton
+                        loading={updateLoading}
+                        label={t("course.submit")}
+                      />
                     </div>
                   </form>
                 </div>

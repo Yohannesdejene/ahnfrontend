@@ -1,0 +1,56 @@
+{
+  "greeting": "Hello",
+  "welcomeMessage": "Welcome to our website!",
+  "sideLayout": {
+    "dashboards": "Dashboards",
+    "employees": "Employees",
+    "addEmployee": "Add Employee",
+    "students": "Students",
+    "addStudent": "Add Students",
+    "sections": "Sections",
+    "addSections": "Add sections",
+    "classes": "Classes",
+    "addClasses": "Add classes",
+    "basic": "Basics ",
+    "viewYear": "View Years",
+    "viewSchools": "View Schools",
+    "viewCourse": "View Course",
+    "payment": "Payments",
+    "Free particulars": "Fee particulars",
+    "announcements": "Announcements",
+    "smsService": "Sms service",
+    "settings": "Settings",
+    "personalProfile": "Personal Profile",
+    "institutionalProfile": "Institutional  Profile",
+    "ReportAndAnalysis": "Report and Analysis",
+    "report": "Report"
+  },
+  "course": {
+    "courseList": "Course List",
+    "addCourse": "Add Course",
+    "editCourse": "Edit Course",
+    "name": "Name",
+    "code": "Code",
+    "department": "Department",
+    "createdDate": "Created Date",
+    "submit": "Submit",
+    "updatingCourse": "Updating course",
+    "courseUpdatedSuccessfully": "Course updated successfully",
+    "courseCreatedSuccessfully": "Course created successfully",
+    "creatingCourse": "Creating course",
+    "deletingItem": "Deleting item",
+    "courseDeletedSuccessfully": "Course deleted successfully"
+  },
+  "common": {
+    "areYouSureYouWantToDelete": " Are you sure you want to delete",
+    "thisActionCannotBeUndone": "This action can not be undone",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "action": "Action"
+  },
+  "year": {
+    "listYears": "List years",
+    "addYear": "Add year"
+  }
+}

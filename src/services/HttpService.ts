@@ -7,16 +7,9 @@ type HttpServiceType = AxiosInstance;
 const accessToken: string | null | undefined = getSessionKey();
 
 const HttpService: HttpServiceType = axios.create({
-  baseURL: process.env.BASE_URL,
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
 });
 
-export const HttpServiceWithOutSsl: HttpServiceType = axios.create({
-  baseURL: process.env.BASE_URL,
-});
-
-export const HttpResetPasswordService: HttpServiceType = axios.create({
-  baseURL: process.env.BASE_URL,
-});
 
 // Set the Authorization header if the access token is available
 if (accessToken) {
