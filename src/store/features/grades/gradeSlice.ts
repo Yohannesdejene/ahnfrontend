@@ -56,7 +56,7 @@ const gradeSlice = createSlice({
       )
       .addCase(fetchGradeList.rejected, (state, action) => {
         state.loadingGrades = false;
-        state.errorGrades = action.error.message || "Failed to fetch Semesters";
+        state.errorGrades = action.error.message || "Failed to fetch Grades";
       });
 
     // Create Year
@@ -65,13 +65,13 @@ const gradeSlice = createSlice({
         state.createGradeLoading = true;
         state.createGradeError = null;
         state.createGradeSuccess = false;
-        toastId = toast.loading(`${t("semester.creatingSemester")}...`);
+        toastId = toast.loading(`${t("grade.creatingGrade")}...`);
       })
       .addCase(createGrade.fulfilled, (state, action: PayloadAction<any>) => {
         state.createGradeLoading = false;
         state.createGradeSuccess = true;
         state.grades.push(action.payload);
-        toast.success(t("semester.semesterCreatedSuccessfully"), {
+        toast.success(t("grade.gradeCreatedSuccessfully"), {
           id: toastId,
         });
       })
@@ -79,8 +79,8 @@ const gradeSlice = createSlice({
         state.createGradeLoading = false;
         state.createGradeSuccess = false;
         state.createGradeError =
-          action.error.message || "Failed to create Semester";
-        toast.error(`${action?.payload || "Failed to create Semester"}`, {
+          action.error.message || "Failed to create Grade";
+        toast.error(`${action?.payload || "Failed to create Grade"}`, {
           id: toastId,
         });
       });
@@ -91,7 +91,7 @@ const gradeSlice = createSlice({
         state.updateGradeLoading = true;
         state.updateGradeError = null;
         state.updateGradeSuccess = false;
-        toastId = toast.loading(`${t("semester.updatingSemester")}...`);
+        toastId = toast.loading(`${t("grade.updatingGrade")}...`);
       })
       .addCase(updateGrade.fulfilled, (state, action: PayloadAction<any>) => {
         state.updateGradeLoading = false;

@@ -11,7 +11,7 @@ const GradeCard = ({ id, handleToggle, label }: GradeCardProps) => {
   return (
     <div className="overflow-hidden rounded-lg bg-white p-4  shadow-md transition-shadow duration-300 hover:shadow-lg dark:bg-black">
       <div className="flex items-center justify-between">
-        <div className="">
+        <div className="pt-0">
           <Image
             src="/images/grade.jpg"
             alt="grade image"
@@ -19,9 +19,9 @@ const GradeCard = ({ id, handleToggle, label }: GradeCardProps) => {
             height={20}
           />
         </div>
-        <h1 className="text-lg font-semibold">{label}</h1>
+        <h1 className="pt-0 text-lg font-semibold">{label}</h1>
         <button
-          className="mt-0 border-none bg-transparent p-0 focus:outline-none"
+          className=" border-none bg-transparent p-0 focus:outline-none"
           onClick={() => {
             handleToggle(id);
           }}

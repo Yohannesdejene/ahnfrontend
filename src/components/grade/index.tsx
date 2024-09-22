@@ -5,17 +5,18 @@ import { IoAddCircleSharp } from "react-icons/io5";
 import { MdDeleteForever } from "react-icons/md";
 import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
 import { IoAddSharp } from "react-icons/io5";
-
 import { Button as BaseButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import CommonDrawer from "@/common/Drawer";
 import DeleteConfirmationDialog from "@/common/DeleteConfirmationDialog";
 import CommonSearch from "@/common/commonSearch";
 import GradeCard from "./gradeCard";
+import AddGrade from "./add";
+import EditGrade from "./edit";
 import {
-  fetchSemesterList,
-  deleteSemester,
-} from "@/store/features/semesters/semesterSlice";
+  fetchGradeList,
+  deleteGrade,
+} from "@/store/features/grades/gradeSlice";
 
 import { RootState, AppDispatch } from "@/store/store"; // Import RootState and AppDispatch
 import { t } from "@/utils/translation";
@@ -28,13 +29,13 @@ const GradeList: React.FC = () => {
   const [id, setId] = useState<number | string | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const dispatch: AppDispatch = useDispatch(); // Use the AppDispatch type
-  const { semesters, loadingSemesters, errorSemesters } = useSelector(
-    (state: RootState) => state.semesters,
+  const { grades, loadingGrades, errorGrades } = useSelector(
+    (state: RootState) => state.grades,
   );
   useEffect(() => {
     const data = { size: 10, currentPage: 1 };
     try {
-      dispatch(fetchSemesterList(data));
+      dispatch(fetchGradeList(data));
     } catch (err) {
       console.log("Err", err);
     }
@@ -70,7 +71,6 @@ const GradeList: React.FC = () => {
     id: number | string | null,
     dispatch: AppDispatch,
   ) => {
-    dispatch(deleteSemester({ id }));
     handleDialog(false);
   };
   const onDelete = async (id: number | string | null) => {
@@ -124,6 +124,20 @@ const GradeList: React.FC = () => {
           </div>
         ))}
       </div>
+      <CommonDrawer
+        isOpen={isDrawerOpen}
+        toggleDrawer={toggleDrawer}
+        content={
+          <div>
+            {drawerDisplay == "add" && <AddGrade toggleDrawer={toggleDrawer} />}
+            {id !== null && drawerDisplay == "edit" && (
+              <EditGrade toggleDrawer={toggleDrawer} id={id} setId={setId} />
+            )}
+          </div>
+        }
+        direction="right"
+        width={400} // Set the drawer width
+      />
     </>
   );
 };

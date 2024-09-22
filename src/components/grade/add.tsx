@@ -3,45 +3,34 @@ import React, { useState } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import toast from "react-hot-toast";
 import { InputString, CommonButton, SelectInput } from "@/common/formElements";
 import { t } from "@/utils/translation";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  createSemester,
-  fetchSemesterList,
-} from "@/store/features/semesters/semesterSlice";
+  createGrade,
+  fetchGradeList,
+} from "@/store/features/grades/gradeSlice";
 import { RootState, AppDispatch } from "@/store/store";
 const formSchema = z.object({
-  year_id: z.string().min(1, { message: "Year ID is required" }),
   name: z.string().min(1, { message: "Name is required" }),
-  starting_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, {
-    message: "Invalid date format. Use YYYY-MM-DD",
-  }),
-  end_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, {
-    message: "Invalid date format. Use YYYY-MM-DD",
-  }),
-  status: z.enum(["Active", "NotActive"], {
-    message: "Status must be either 'Active' or 'NotActive'",
-  }),
 });
 
-interface AddSemesterProps {
+interface AddGradeProps {
   toggleDrawer: (open: boolean) => void; // Accepting toggleDrawer function as a prop
 }
 
 type FormData = z.infer<typeof formSchema>;
 
-const AddSemester: React.FC<AddSemesterProps> = ({ toggleDrawer }) => {
+const AddGrade: React.FC<AddGradeProps> = ({ toggleDrawer }) => {
   const dispatch: AppDispatch = useDispatch(); // Use the AppDispatch type
   const methods = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
-  const { createSemesterLoading, createSemesterError, createSemesterSuccess } =
-    useSelector((state: RootState) => state.semesters);
+  const { createGradeLoading, createGradeError, createGradeSuccess } =
+    useSelector((state: RootState) => state.grades);
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    dispatch(createSemester({ semesterData: data })).then((data) => {
+    dispatch(createGrade({ gradeData: data })).then((data) => {
       toggleDrawer(false);
     });
   };
@@ -54,7 +43,7 @@ const AddSemester: React.FC<AddSemesterProps> = ({ toggleDrawer }) => {
             <div className="w-full">
               <div className="p-0">
                 <h6 className="text-gray-700 w-full text-lg font-normal ">
-                  {t("course.addCourse")}
+                  {t("grade.addGrade")}
                 </h6>
 
                 <hr className="mb-4 mt-4 w-full text-lg font-normal text-normalGray " />
@@ -66,53 +55,15 @@ const AddSemester: React.FC<AddSemesterProps> = ({ toggleDrawer }) => {
                     <div className="mb-3 w-full">
                       <InputString
                         type="text"
-                        name="year_id"
-                        label={t("semester.yearId")}
-                        placeholder={t("semester.yearIdPlaceholder")}
-                      />
-                    </div>
-                    <div className="mb-3 w-full">
-                      <InputString
-                        type="text"
                         name="name"
-                        label={t("semester.name")}
-                        placeholder={t("semester.namePlaceholder")}
-                      />
-                    </div>
-                    <div className="mb-3 w-full">
-                      <InputString
-                        type="date"
-                        name="starting_date"
-                        label={t("semester.startingDate")}
-                        placeholder={t("semester.startingDatePlaceholder")}
-                      />
-                    </div>
-                    <div className="mb-3 w-full">
-                      <InputString
-                        type="date"
-                        name="end_date"
-                        label={t("semester.endDate")}
-                        placeholder={t("semester.endDatePlaceholder")}
-                      />
-                    </div>
-                    <div className="mb-3 w-full">
-                      <SelectInput
-                        name="status"
-                        label={t("semester.status")}
-                        placeholder={t("semester.statusPlaceholder")}
-                        options={[
-                          { value: "Active", label: t("semester.active") },
-                          {
-                            value: "NotActive",
-                            label: t("semester.notActive"),
-                          },
-                        ]}
+                        label={t("grade.name")}
+                        placeholder={t("grade.namePlaceholder")}
                       />
                     </div>
                     <div className="mb-4">
                       <CommonButton
-                        loading={createSemesterLoading}
-                        label={t("semester.submit")}
+                        loading={createGradeLoading}
+                        label={t("common.submit")}
                       />
                     </div>
                   </form>
@@ -126,4 +77,4 @@ const AddSemester: React.FC<AddSemesterProps> = ({ toggleDrawer }) => {
   );
 };
 
-export default AddSemester;
+export default AddGrade;
