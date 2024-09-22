@@ -1,23 +1,12 @@
 ///course
 import HttpService from "@/services/HttpService";
-
-interface CREATE_COURSE_DATA_TYPE {
-  name: string;
-  code: string;
-  department: string;
-}
-
-interface UPDATE_COURSE_DATA_TYPE {
-  code?: string;
-  name?: string;
-  department?: string;
-}
-export async function apiGetCourseList(
+import { SEMESTER_CREATE } from "./type";
+export async function apiGetSemesterList(
   size: number,
   currentPage: number,
 ): Promise<any> {
   const method = "GET"; // Use GET method
-  let url = `/basic/course`; // Adjust the endpoint to match your API's URL
+  let url = `/basic/semester`; // Adjust the endpoint to match your API's URL
   if (size && currentPage) url += `?size${size}&page${currentPage}`;
 
   try {
@@ -38,17 +27,19 @@ export async function apiGetCourseList(
     throw new Error(error?.response?.data?.message || "An error occurred");
   }
 }
-export async function apiCreateCourse(data: any): Promise<any> {
+
+export async function apiCreateSemesterList(
+  data: SEMESTER_CREATE,
+): Promise<any> {
   const method = "POST";
-  const url = `/basic/course`;
-  console.log("data", data);
+  const url = `/basic/semester`;
   try {
     const response = await HttpService.request({ method, data, url });
 
     if (response.status === 200) {
       return response.data; // Return the data if the response is successful
     } else {
-      throw new Error(response?.data?.message || "Error fetching courses ");
+      throw new Error(response?.data?.message || "Error fetching semester ");
       // throw new Error("Error fetching payment methods");
     }
   } catch (error: any) {
@@ -71,11 +62,11 @@ export async function apiCreateCourse(data: any): Promise<any> {
     throw new Error(errorMessage);
   }
 }
-export async function apiGetCourseById(
+export async function apiGetSemesterById(
   id: number | string | null,
 ): Promise<any> {
   const method = "GET"; // Use GET method
-  const url = `/basic/course/${id}`; // Adjust the endpoint to match your API's URL
+  const url = `/basic/semester/${id}`; // Adjust the endpoint to match your API's URL
 
   try {
     const response = await HttpService.request({
@@ -95,12 +86,12 @@ export async function apiGetCourseById(
     throw new Error(error?.response?.data?.message || "An error occurred");
   }
 }
-export async function apiUpdateCourse(
+export async function apiUpdateSemester(
   id: number | string | null,
-  data: any,
+  data: SEMESTER_CREATE,
 ): Promise<any> {
   const method = "PUT";
-  const url = `/basic/course/${id}`;
+  const url = `/basic/semester/${id}`;
 
   try {
     const response = await HttpService.request({ method, data, url });
@@ -133,12 +124,11 @@ export async function apiUpdateCourse(
     throw new Error(errorMessage);
   }
 }
-export async function apiDeleteCourse(
+export async function apiDeleteSemester(
   id: number | string | null,
 ): Promise<any> {
   const method = "DELETE"; // Use GET method
-  const url = `/basic/course/${id}`; // Adjust the endpoint to match your API's URL
-
+  const url = `/basic/semester/${id}`; // Adjust the endpoint to match your API's URL
   try {
     const response = await HttpService.request({
       method,
@@ -150,7 +140,7 @@ export async function apiDeleteCourse(
       return response.data; // Return the data if the response is successful
     } else {
       // throw new Error(response?.message || "Error fetching payment methods");
-      throw new Error(response?.data?.message || "Error fetching course ");
+      throw new Error(response?.data?.message || "Error fetching semester ");
     }
   } catch (error: any) {
     let errorMessage = "An error occurred.";

@@ -5,3 +5,7 @@ export const ADD_COUNTRY = "/country/add";
 export const LIST_YEARS = "/basic/years";
 export const LIST_SCHOOLS = "/basic/schools";
 export const LIST_COURSE = "/basic/course";
+export const LIST_SEMESTER = "/basic/semester";
+export const LIST_GRADE = "/grade/list";
+
+

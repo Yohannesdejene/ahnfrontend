@@ -3,11 +3,19 @@ import React, { useState } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { t } from "@/utils/translation";
+
 import toast from "react-hot-toast";
 import { InputString, CommonButton, NumberInput } from "@/common/formElements";
-import { apiCreateYear } from "@/services/ApiBasic";
 import { useRouter } from "next/navigation";
-import { PageHeader } from "@/common/pageHeader";
+import { RootState, AppDispatch } from "@/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchYearList,
+  createYear,
+  updateYear,
+  getYearById,
+} from "@/store/features/years/yearsSlice";
 
 const formSchema = z
   .object({
@@ -40,65 +48,31 @@ const formSchema = z
   );
 
 interface AddYearProps {
-  reloadYears: () => void; // Add reloadYears as a prop
-
   toggleDrawer: (open: boolean) => void; // Accepting toggleDrawer function as a prop
 }
 
 type FormData = z.infer<typeof formSchema>;
 
-const AddYear: React.FC<AddYearProps> = ({ toggleDrawer, reloadYears }) => {
+const AddYear: React.FC<AddYearProps> = ({ toggleDrawer }) => {
   const router = useRouter();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const dispatch: AppDispatch = useDispatch();
   const methods = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
 
-  const addCountry = async (values: any) => {
-    setErrorMessage(null);
-    setLoading(true);
-    const newValue = {
-      ...values,
-      EUC_year: parseInt(values.EUC_year),
-      ETH_year: parseInt(values.ETH_year),
-    };
-
-    toast
-      .promise(
-        apiCreateYear({
-          ...newValue,
-          addedBy: null,
-        }),
-        {
-          loading: "Creating Year...",
-          success: <b>Year created successfully!</b>,
-          error: (error) => (
-            <b>
-              {error.message || "An error occurred while creating the country."}
-            </b>
-          ),
-        },
-      )
-      .then(() => {
-        setLoading(false);
-        reloadYears();
-      })
-      .catch((error: any) => {
-        const errorMessage =
-          error.message || "An error occurred while creating the country.";
-        setErrorMessage(errorMessage);
-        setLoading(false);
-      })
-      .finally(() => {
-        // This will execute regardless of success or failure
-        setLoading(false);
-        toggleDrawer(false);
-      });
-  };
-
+  const { createYearLoading, createYearError } = useSelector(
+    (state: RootState) => state.years,
+  );
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    addCountry(data);
+    console.log("data", data);
+    const newValue = {
+      ...data,
+      EUC_year: parseInt(data.EUC_year),
+      ETH_year: parseInt(data.ETH_year),
+    };
+    dispatch(createYear({ yearData: newValue })).then((data) => {
+      toggleDrawer(false);
+    });
   };
 
   return (
@@ -109,21 +83,20 @@ const AddYear: React.FC<AddYearProps> = ({ toggleDrawer, reloadYears }) => {
             <div className="w-full">
               <div className="p-0">
                 <h6 className="text-gray-700 w-full text-lg font-normal ">
-                  Add Year
+                  {t("year.addYear")}
                 </h6>
 
                 <hr className="mb-4 mt-4 w-full text-lg font-normal text-normalGray " />
-                <div className="w-full ">
+                <div className="w-full">
                   <form
                     onSubmit={methods.handleSubmit(onSubmit)}
                     className="p-fluid"
                   >
                     <div className="mb-3 w-full">
                       <NumberInput
-                        // type="year"
                         name="EUC_year"
-                        label="Gregorian  Calender"
-                        placeholder="ex 2024"
+                        label={t("year.gregorianCalendar")}
+                        placeholder={t("year.ex2024")}
                         min={2000}
                         max={2030}
                       />
@@ -131,8 +104,8 @@ const AddYear: React.FC<AddYearProps> = ({ toggleDrawer, reloadYears }) => {
                     <div className="mb-3 w-full">
                       <NumberInput
                         name="ETH_year"
-                        label="Ethiopian Calender"
-                        placeholder="ex 2016"
+                        label={t("year.ethiopianCalendar")}
+                        placeholder={t("year.ex2016")}
                         min={2000}
                         max={2030}
                       />
@@ -141,21 +114,23 @@ const AddYear: React.FC<AddYearProps> = ({ toggleDrawer, reloadYears }) => {
                       <InputString
                         type="date"
                         name="start_date"
-                        label="Start Date"
-                        placeholder="ex 2024-01-04"
+                        label={t("year.startDate")}
+                        placeholder={t("year.ex20240104")}
                       />
                     </div>
                     <div className="mb-3 w-full">
                       <InputString
                         type="date"
                         name="end_date"
-                        label="End Date"
-                        placeholder="ex 2024-08-04"
+                        label={t("year.endDate")}
+                        placeholder={t("year.ex20240804")}
                       />
                     </div>
-
                     <div className="mb-4">
-                      <CommonButton loading={loading} label="Submit" />
+                      <CommonButton
+                        loading={createYearLoading}
+                        label={t("year.submit")}
+                      />
                     </div>
                   </form>
                 </div>

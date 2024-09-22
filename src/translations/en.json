@@ -23,7 +23,9 @@
     "personalProfile": "Personal Profile",
     "institutionalProfile": "Institutional  Profile",
     "ReportAndAnalysis": "Report and Analysis",
-    "report": "Report"
+    "report": "Report",
+    "viewSemester": "View Semester",
+    "grade": "Grade"
   },
   "course": {
     "courseList": "Course List",
@@ -47,10 +49,79 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "edit": "Edit",
-    "action": "Action"
+    "action": "Action",
+    "status": "Status",
+    "search": "Search"
   },
   "year": {
     "listYears": "List years",
-    "addYear": "Add year"
+    "addYear": "Add year",
+    "editYear": "EditYear",
+    "creatingYear": "Creating Year",
+    "yearCreatedSuccessfully": "Year Created Successfully",
+    "updatingYear": "Updating Year",
+    "gregorianCalendar": "Gregorian Calendar",
+    "ex2024": "ex 2024",
+    "ethiopianCalendar": "Ethiopian Calendar",
+    "ex2016": "ex 2016",
+    "startDate": "Start Date",
+    "ex20240104": "ex 2024-01-04",
+    "endDate": "End Date",
+    "ex20240804": "ex 2024-08-04",
+    "submit": "Submit",
+    "europeanCalendar": "European Calendar",
+    "yearIdPlaceHolder": "Select Year ID",
+    "yearCodePlaceHolder": "Enter Year Code",
+    "yearNamePlaceHolder": "Enter Year Name",
+    "yearStatusPlaceHolder": "Select Year Status",
+    "semesterStatusPlaceHolder": "Select Semester Status",
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "semester": {
+    "name": "Name",
+    "yearId": "Year ID",
+    "startingDate": "Starting Date",
+    "endDate": "End Date",
+    "status": "Status",
+    "semesterList": "Semester List",
+    "addSemester": "Add Semester",
+    "semesterDeletedSuccessfully": "Semester deleted successfully",
+    "deletingSemester": "Deleting semester",
+    "semesterUpdatedSuccessfully": "Semester updated successfully",
+    "creatingSemester": "Creating semester",
+    "semesterCreatedSuccessfully": "Semester created successfully",
+    "updatingSemester": "Updating semester",
+    "semester": "Semester",
+    "semesterId": "Semester ID",
+    "semesterCode": "Semester Code",
+    "semesterName": "Semester Name",
+    "semesterYear": "Semester Year",
+    "semesterStartingDate": "Semester Starting Date",
+    "semesterEndDate": "Semester End Date",
+    "semesterStatus": "Semester Status",
+    "viewSemester": "View Semester",
+    "semesterCodePlaceHolder": "Enter Semester Code",
+    "selectYear": "Select Year",
+    "namePlaceholder": "Enter Semester Name",
+    "yearIdPlaceholder": "Select Semester Year",
+    "semesterStartingDatePlaceHolder": "Select Semester Starting Date",
+    "semesterEndDatePlaceHolder": "Select Semester End Date",
+    "statusPlaceholder": "Select Semester Status",
+    "active": "Active",
+    "notActive": "Not active",
+    "submit": "Submit"
+  },
+  "grade": {
+    "gradeList": "Grade List",
+    "addGrade": "Add Grade",
+    "searchGrade": "Search Grade",
+    "sections": "Sections",
+    "subjects": "Subjects",
+    "students": "Students"
   }
 }
+    
+  
+
+

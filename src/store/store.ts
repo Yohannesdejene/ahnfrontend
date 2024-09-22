@@ -1,10 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import coursesReducer from "./features/courses/courseSlice"; // Import the courses slice reducer
-
+import yearsReducer from "./features/years/yearsSlice"; // Import the courses slice reducer
+import semestersReducer from "./features/semesters/semesterSlice"; // Import the courses slice reducer
 // Configure the Redux store and add the courses reducer
 export const store = configureStore({
   reducer: {
     courses: coursesReducer, // Attach courses reducer to the store
+    years: yearsReducer,
+    semesters: semestersReducer,
   },
 });
 

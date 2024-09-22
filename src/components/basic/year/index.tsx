@@ -6,22 +6,23 @@ import { FaEdit } from "react-icons/fa";
 import { IoAddCircleSharp } from "react-icons/io5";
 import { MdDeleteForever } from "react-icons/md";
 import { t } from "@/utils/translation";
-
+import { useDispatch, useSelector } from "react-redux";
 import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
 import { Button as BaseButton, Alert } from "@mui/material";
 import Chip from "@mui/material/Chip";
 
 import CommonDrawer from "@/common/Drawer";
-import CommonDialog from "@/common/CommonDialogBox";
 import AddYear from "./add";
 import EditYear from "./edit";
 // import  DeleteConfirmationDialog from './delete';
 import DeleteConfirmationDialog from "@/common/DeleteConfirmationDialog";
 import handleDelete from "./delete";
 import {
-  fetchCourseList,
-  createCourse,
-} from "@/store/features/courses/courseSlice";
+  fetchYearList,
+  createYear,
+  updateYear,
+  getYearById,
+} from "@/store/features/years/yearsSlice";
 import { RootState, AppDispatch } from "@/store/store";
 
 function convertISOToNormalDate(isoDate: string): string {
@@ -48,11 +49,14 @@ const statusShow = (status: boolean) => {
 const ListYears: React.FC = () => {
   const [drawerDisplay, setDrawerDisplay] = useState("add");
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-
   const [id, setId] = useState<number | string | null>(null);
-  const { loadingYears, errorYears, optionsYears, dataYears, reloadYears } =
-    useGetAllYears();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const dispatch: AppDispatch = useDispatch(); // Use the AppDispatch type
+  const {
+    years: dataYears,
+    loadingYears,
+    errorYears,
+  } = useSelector((state: RootState) => state.years);
 
   // Function to toggle the drawer open/close
   const toggleDrawer = (open: boolean) => {
@@ -62,6 +66,10 @@ const ListYears: React.FC = () => {
     setIsDialogOpen(open);
   };
 
+  useEffect(() => {
+    const data = { size: 10, currentPage: 1 };
+    dispatch(fetchYearList(data));
+  }, [dispatch]);
   // Conditionally create rows only when loading is false and dataYears is available
   const rows: GridRowsProp =
     !loadingYears && dataYears
@@ -86,25 +94,25 @@ const ListYears: React.FC = () => {
     setDrawerDisplay("add");
     toggleDrawer(true);
   };
+
   const columns: GridColDef[] = [
     {
       field: "EUC_year",
-      headerName: "European Calendar",
+      headerName: t("year.europeanCalendar"),
       width: 180,
       align: "left",
     },
     {
       field: "ETH_year",
-      headerName: "Ethiopian Calendar",
+      headerName: t("year.ethiopianCalendar"),
       width: 180,
       align: "left",
     },
     {
       field: "start_date",
-      headerName: "Start Date",
+      headerName: t("year.startDate"),
       width: 150,
       align: "left",
-
       renderCell: (params) => {
         const value = params.value;
         return <h6>{convertISOToNormalDate(value)}</h6>;
@@ -112,10 +120,9 @@ const ListYears: React.FC = () => {
     },
     {
       field: "end_date",
-      headerName: "End Date",
+      headerName: t("year.endDate"),
       width: 150,
       align: "left",
-
       renderCell: (params) => {
         const value = params.value;
         return <h6>{convertISOToNormalDate(value)}</h6>;
@@ -123,24 +130,21 @@ const ListYears: React.FC = () => {
     },
     {
       field: "is_active",
-      headerName: "Status",
+      headerName: t("common.status"),
       width: 150,
       align: "center",
       renderCell: (params) => {
         const value = params.value;
-
         return <div className="my-2 flex gap-2">{statusShow(value)}</div>;
       },
     },
-
     {
       field: "id",
-      headerName: "Action",
+      headerName: t("common.action"),
       width: 100,
       align: "center",
       renderCell: (params) => {
         const value = params.value;
-
         return (
           <div className="my-2 flex gap-2">
             <BaseButton
@@ -151,20 +155,8 @@ const ListYears: React.FC = () => {
               }}
             >
               <FaEdit className="mr-2" />
-              Edit
+              {t("common.edit")}
             </BaseButton>
-            {/* <BaseButton
-              type="submit"
-              style={{
-                textTransform: "none",
-                // backgroundColor: "#0097B2",
-                color: "red",
-              }}
-              onClick={() => handleDeleteDialog(value)}
-            >
-              <MdDeleteForever className="mr-2" />
-              Delete
-            </BaseButton> */}
           </div>
         );
       },
@@ -173,12 +165,6 @@ const ListYears: React.FC = () => {
   return (
     <>
       <div className="mx-auto max-w-242.5">
-        {/* <PageHeader
-          title="Country List"
-          url={URL.ADD_COUNTRY}
-          // btnLabel="Add Country"
-          // showButton={true}
-        /> */}
         <div className="mx-1 flex justify-between">
           <label className="mb-2 block  text-title-md font-medium text-black dark:text-white">
             {t("year.listYears")}
@@ -225,18 +211,10 @@ const ListYears: React.FC = () => {
           content={
             <div>
               {drawerDisplay == "add" && (
-                <AddYear
-                  toggleDrawer={toggleDrawer}
-                  reloadYears={reloadYears}
-                />
+                <AddYear toggleDrawer={toggleDrawer} />
               )}
               {id !== null && drawerDisplay == "edit" && (
-                <EditYear
-                  toggleDrawer={toggleDrawer}
-                  reloadYears={reloadYears}
-                  id={id}
-                  setId={setId}
-                />
+                <EditYear toggleDrawer={toggleDrawer} id={id} setId={setId} />
               )}
             </div>
           }

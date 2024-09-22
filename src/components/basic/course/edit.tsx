@@ -43,7 +43,6 @@ const EditCourse: React.FC<AddYearProps> = ({ toggleDrawer, setId, id }) => {
     updateError,
     updateSuccess,
     updateLoading,
-    selectedCourse,
     getCourseByIdLoading,
     getCourseByIdError,
   } = useSelector((state: RootState) => state.courses);
