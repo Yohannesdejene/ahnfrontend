@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { t } from "@/utils/translation";
 import toast from "react-hot-toast";
 import {
   InputString,
@@ -14,12 +13,12 @@ import {
 } from "@/common/formElements";
 import { LinearProgress } from "@mui/material";
 import { updateYear, getYearById } from "@/store/features/years/yearsSlice";
-import { RootState, AppDispatch } from "@/store/store"; // Import RootState and AppDispatch
-import { useDispatch, useSelector } from "react-redux";
 
 import StringToBoolean from "@/utils/stringToBoolean";
 import { apiPutYear, apiGetYearById } from "@/services/ApiBasic";
 import { useRouter } from "next/navigation";
+import { RootState, AppDispatch } from "@/store/store"; // Import RootState and AppDispatch
+
 const IsActiveOptions = [
   {
     label: "True",
@@ -69,6 +68,7 @@ interface AddYearProps {
 }
 
 type FormData = z.infer<typeof formSchema>;
+  const dispatch: AppDispatch = useDispatch(); // Use the AppDispatch type
 
 const EditYear: React.FC<AddYearProps> = ({ toggleDrawer, setId, id }) => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -77,39 +77,82 @@ const EditYear: React.FC<AddYearProps> = ({ toggleDrawer, setId, id }) => {
   const methods = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
-  const dispatch: AppDispatch = useDispatch(); // Use the AppDispatch type
 
-  const {
-    updateYearError,
-    updateYearLoading,
-    selectedYear,
-    getYearByIdLoading,
-    getYearByIdError,
-  } = useSelector((state: RootState) => state.years);
+  const editYear = async (values: any) => {
+    setErrorMessage(null);
+    setLoading(true);
+    const newValue = {
+      ...values,
+      is_active: StringToBoolean(values.is_active),
+      EUC_year: parseInt(values.EUC_year),
+      ETH_year: parseInt(values.ETH_year),
+    };
+
+    toast
+      .promise(apiPutYear(id, newValue), {
+        loading: "Updeting Year...",
+        success: <b>Year Updated Successfully!</b>,
+        error: (error) => (
+          <b>
+            {error.message || "An error occurred while updating  the year."}
+          </b>
+        ),
+      })
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((error: any) => {
+        const errorMessage =
+          error.message || "An error occurred while updating the year.";
+        setErrorMessage(errorMessage);
+        setLoading(false);
+      })
+      .finally(() => {
+        setId(null);
+        // This will execute regardless of success or failure
+        setLoading(false);
+        toggleDrawer(false);
+      });
+  };
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    const newValue = {
-      ...data,
-      is_active: StringToBoolean(data.is_active),
-      EUC_year: parseInt(data.EUC_year),
-      ETH_year: parseInt(data.ETH_year),
-    };
-    dispatch(updateYear({ id: id, yearData: newValue })).then((data) => {
-      toggleDrawer(false);
-    });
+    editYear(data);
   };
+  useEffect(() => {
+    setLoadingDefaults(true);
+    const fetchData = async () => {
+      try {
+        // Fetch data from the API
+        const data = await apiGetYearById(id);
+        console.log("data", data);
+        // Reset the form with fetched data
+        methods.reset({
+          EUC_year: data.EUC_year.toString(),
+          ETH_year: data.ETH_year.toString(),
+          start_date: data.start_date.slice(0, 10), // Format to YYYY-MM-DD
+          end_date: data.end_date.slice(0, 10), // Format to YYYY-MM-DD
+          is_active: data.is_active.toString(),
+        });
+        setLoadingDefaults(false);
+      } catch (error) {
+        setLoadingDefaults(false);
+        console.error("Failed to fetch data", error);
+      }
+    };
+
+    fetchData();
+  }, [id, methods]);
 
   useEffect(() => {
     try {
       dispatch(getYearById({ id }))
         .then((data: any) => {
-          console.log("data", data);
           methods.reset({
-            EUC_year: data?.payload?.EUC_year.toString(),
-            ETH_year: data?.payload?.ETH_year.toString(),
-            start_date: data.payload?.start_date.slice(0, 10), // Format to YYYY-MM-DD
-            end_date: data.payload?.end_date.slice(0, 10), // Format to YYYY-MM-DD
-            is_active: data.payload?.is_active.toString(),
+            EUC_year: data.EUC_year.toString(),
+            ETH_year: data.ETH_year.toString(),
+            start_date: data.start_date.slice(0, 10), // Format to YYYY-MM-DD
+            end_date: data.end_date.slice(0, 10), // Format to YYYY-MM-DD
+            is_active: data.is_active.toString(),
           });
         })
         .catch((error) => {
@@ -124,34 +167,45 @@ const EditYear: React.FC<AddYearProps> = ({ toggleDrawer, setId, id }) => {
       <div className="flex  w-full bg-white text-black dark:bg-boxdark dark:text-white">
         <FormProvider {...methods}>
           <div className="container mx-auto mt-0">
-            {getYearByIdLoading && <LinearProgress />}
+            {loadingDefault && <LinearProgress />}
             <div className="w-full">
               <div className="p-0">
                 <h6 className="text-gray-700 w-full text-lg font-normal ">
-                  {t("course.editYear")}
+                  Edit Year
                 </h6>
 
                 <hr className="mb-4 mt-4 w-full text-lg font-normal text-normalGray " />
-                <div className="w-full">
+                <div className="w-full ">
                   <form
                     onSubmit={methods.handleSubmit(onSubmit)}
                     className="p-fluid"
                   >
                     <div className="mb-3 w-full">
+                      <SelectInput
+                        // type="year"
+                        name="is_active"
+                        label="Is active"
+                        placeholder="Select "
+                        options={IsActiveOptions}
+                        loading={loadingDefault}
+                      />
+                    </div>
+                    <div className="mb-3 w-full">
                       <NumberInput
+                        // type="year"
                         name="EUC_year"
-                        label={t("year.gregorianCalendar")}
-                        placeholder={t("year.ex2024")}
-                        min={2000}
+                        label="Gregorian  Calender"
+                        placeholder="ex 2024"
+                        min={1900}
                         max={2030}
                       />
                     </div>
                     <div className="mb-3 w-full">
                       <NumberInput
                         name="ETH_year"
-                        label={t("year.ethiopianCalendar")}
-                        placeholder={t("year.ex2016")}
-                        min={2000}
+                        label="Ethiopian Calender"
+                        placeholder="ex 2016"
+                        min={1900}
                         max={2030}
                       />
                     </div>
@@ -159,23 +213,20 @@ const EditYear: React.FC<AddYearProps> = ({ toggleDrawer, setId, id }) => {
                       <InputString
                         type="date"
                         name="start_date"
-                        label={t("year.startDate")}
-                        placeholder={t("year.ex20240104")}
+                        label="Start Date"
+                        placeholder="ex 2024-01-04"
                       />
                     </div>
                     <div className="mb-3 w-full">
                       <InputString
                         type="date"
                         name="end_date"
-                        label={t("year.endDate")}
-                        placeholder={t("year.ex20240804")}
+                        label="End Date"
+                        placeholder="ex 2024-08-04"
                       />
                     </div>
                     <div className="mb-4">
-                      <CommonButton
-                        loading={updateYearLoading}
-                        label={t("year.submit")}
-                      />
+                      <CommonButton loading={loading} label="Submit" />
                     </div>
                   </form>
                 </div>

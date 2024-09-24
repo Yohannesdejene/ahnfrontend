@@ -43,7 +43,6 @@ const GradeDetail: React.FC<GradeDetailProps> = ({ id }) => {
         </button>
       </div>
 
-      {/* Add more sections as needed, such as lists of sections, subjects, or students */}
     </div>
   );
 };
