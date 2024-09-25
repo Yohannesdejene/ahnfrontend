@@ -2,11 +2,6 @@ import HttpService, { HttpResetPasswordService } from "./HttpService";
 import { SIGN_IN_DATA, SIGN_UP_DATA, CHANGE_PASSWORD_DATA } from "@/types/auth";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-// export async function apiSignIn(data: SIGN_IN_DATA): Promise<any> {
-//   const method = "POST";
-//   const url = `${BASE_URL}auth/login`;
-//   return HttpService.request({ method, data, url });
-// }
 export async function apiSignIn(data: SIGN_IN_DATA): Promise<any> {
   const method = "POST";
   const url = `${BASE_URL}auth/login`;
