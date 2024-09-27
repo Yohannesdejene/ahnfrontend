@@ -26,11 +26,9 @@ export async function apiGetYearList(
       url,
     });
 
-    // Assuming the response returns JSON data, you can handle it here
     if (response.status === 200) {
       return response.data; // Return the data if the response is successful
     } else {
-      // throw new Error(response?.message || "Error fetching payment methods");
       throw new Error(response?.data?.message || "Error fetching year ");
     }
   } catch (error: any) {
