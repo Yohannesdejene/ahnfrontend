@@ -16,8 +16,8 @@ export async function apiGetYearList(
   size: number,
   currentPage: number,
 ): Promise<any> {
-  const method = "GET"; // Use GET method
-  let url = `/basic/year`; // Adjust the endpoint to match your API's URL
+  const method = "GET";
+  let url = `/basic/year`;
   if (size && currentPage) url += `?size${size}&page${currentPage}`;
 
   try {
