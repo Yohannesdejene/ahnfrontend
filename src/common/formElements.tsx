@@ -259,9 +259,7 @@ export const SelectInput: React.FC<SelectInputProps> = ({
       </select>
 
       {errors[name] && (
-        <small className="text-red-500">
-          {errors[name]?.message as string}
-        </small>
+        <small className="text-danger">{errors[name]?.message as string}</small>
       )}
     </div>
   );

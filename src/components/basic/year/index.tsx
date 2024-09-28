@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-
 import { useGetAllYears } from "@/hooks/useGetAllYears";
 import { FaEdit } from "react-icons/fa";
 import { IoAddCircleSharp } from "react-icons/io5";
@@ -10,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
 import { Button as BaseButton, Alert } from "@mui/material";
 import Chip from "@mui/material/Chip";
-
 import CommonDrawer from "@/common/Drawer";
 import AddYear from "./add";
 import EditYear from "./edit";
@@ -72,8 +70,8 @@ const ListYears: React.FC = () => {
   }, [dispatch]);
   // Conditionally create rows only when loading is false and dataYears is available
   const rows: GridRowsProp =
-    !loadingYears && dataYears
-      ? dataYears.map((yearData: any, index: number) => ({
+    !loadingYears && dataYears && dataYears?.length > 0
+      ? dataYears?.map((yearData: any, index: number) => ({
           id: index, // Or use a unique property if available in your data
           ...yearData,
         }))

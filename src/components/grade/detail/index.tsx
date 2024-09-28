@@ -17,7 +17,7 @@ const GradeDetail: React.FC<GradeDetailProps> = ({ id }) => {
   );
 
   useEffect(() => {
-    dispatch(getGradeById(id));
+    dispatch(getGradeById({ id }));
   }, [dispatch, id]);
 
   if (createGradeLoading) {

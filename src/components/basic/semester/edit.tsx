@@ -5,16 +5,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { t } from "@/utils/translation";
 import { LinearProgress } from "@mui/material";
-import { InputString, CommonButton, SelectInput } from "@/common/formElements";
 import { useDispatch, useSelector } from "react-redux";
-
+import { RootState, AppDispatch } from "@/store/store"; // Import RootState and AppDispatch
 import {
-  createSemester,
-  fetchSemesterList,
   getSemesterById,
   updateSemester,
 } from "@/store/features/semesters/semesterSlice";
-import { RootState, AppDispatch } from "@/store/store"; // Import RootState and AppDispatch
+import { InputString, CommonButton, SelectInput } from "@/common/formElements";
+import { useGetAllYears } from "@/hooks/useGetAllYears";
 
 const formSchema = z.object({
   year_id: z.string().min(1, { message: "Year ID is required" }),
@@ -29,7 +27,16 @@ const formSchema = z.object({
     message: "Status must be either 'Active' or 'NotActive'",
   }),
 });
-
+const semesterNameOptions = [
+  {
+    label: "One",
+    value: "1",
+  },
+  {
+    label: "Two",
+    value: "2",
+  },
+];
 interface AddYearProps {
   // reloadCourse: () => void; // Add reloadCourse as a prop
   id: number | string | null;
@@ -41,6 +48,8 @@ type FormData = z.infer<typeof formSchema>;
 
 const EditSemester: React.FC<AddYearProps> = ({ toggleDrawer, setId, id }) => {
   const dispatch: AppDispatch = useDispatch(); // Use the AppDispatch type
+  const { loadingYears, errorYears, optionsYears, dataYears, reloadYears } =
+    useGetAllYears();
   const { getSemesterByIdLoading, updateSemesterLoading } = useSelector(
     (state: RootState) => state.semesters,
   );
@@ -61,9 +70,9 @@ const EditSemester: React.FC<AddYearProps> = ({ toggleDrawer, setId, id }) => {
         .then((data: any) => {
           methods.reset({
             year_id: data?.payload?.year_id.toString(),
-            name: data?.payload?.name,
-            starting_date: data?.payload?.starting_date,
-            end_date: data?.payload?.end_date,
+            name: data?.payload?.name.toString(),
+            starting_date: data?.payload?.starting_date.slice(0, 10),
+            end_date: data?.payload?.end_date.slice(0, 10),
             status: data?.payload?.status as "Active" | "NotActive",
           });
         })
@@ -84,7 +93,7 @@ const EditSemester: React.FC<AddYearProps> = ({ toggleDrawer, setId, id }) => {
             <div className="w-full">
               <div className="p-0">
                 <h6 className="text-gray-700 w-full text-lg font-normal ">
-                  {t("course.editCourse")}
+                  {t("semester.editSemester")}
                 </h6>
 
                 <hr className="mb-4 mt-4 w-full text-lg font-normal text-normalGray " />
@@ -94,19 +103,23 @@ const EditSemester: React.FC<AddYearProps> = ({ toggleDrawer, setId, id }) => {
                     className="p-fluid"
                   >
                     <div className="mb-3 w-full">
-                      <InputString
-                        type="text"
-                        name="year_id"
-                        label={t("semester.yearId")}
+                      <SelectInput
+                        // type="year"
+                        name="is_active"
+                        label={t("semester.selectYear")}
                         placeholder={t("semester.yearIdPlaceholder")}
+                        options={optionsYears}
+                        loading={loadingYears}
                       />
                     </div>
                     <div className="mb-3 w-full">
-                      <InputString
-                        type="text"
+                      <SelectInput
+                        // type="year"
                         name="name"
                         label={t("semester.name")}
                         placeholder={t("semester.namePlaceholder")}
+                        options={semesterNameOptions}
+                        loading={false}
                       />
                     </div>
                     <div className="mb-3 w-full">

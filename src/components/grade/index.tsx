@@ -13,10 +13,7 @@ import CommonSearch from "@/common/commonSearch";
 import GradeCard from "./gradeCard";
 import AddGrade from "./add";
 import EditGrade from "./edit";
-import {
-  fetchGradeList,
-  deleteGrade,
-} from "@/store/features/grades/gradeSlice";
+import { fetchGradeList } from "@/store/features/grades/gradeSlice";
 
 import { RootState, AppDispatch } from "@/store/store"; // Import RootState and AppDispatch
 import { t } from "@/utils/translation";

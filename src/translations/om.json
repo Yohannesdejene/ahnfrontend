@@ -23,7 +23,11 @@
     "personalProfile": "Profaayilii Kanaa",
     "institutionalProfile": "Profaayilii Dhaabbataa",
     "ReportAndAnalysis": "Gabaasa fi Xinxala",
-    "report": "Gabaasa"
+    "report": "Gabaasa",
+    "viewSemester": "Simisterii Ilaaluu",
+    "grade": "Qunnamtoota",
+
+    "analysis": "Xinxala"
   },
 
   "course": {

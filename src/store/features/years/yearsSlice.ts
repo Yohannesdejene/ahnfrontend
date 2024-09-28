@@ -7,25 +7,16 @@ import {
 } from "./yearsThunk"; // These need to be exported later
 import { toast } from "react-hot-toast";
 import { t } from "@/utils/translation";
+import { YEAR, YEAR_STATE } from "./type";
 
-// Initial state for the courses
-interface YearState {
-  years: any[];
-  loadingYears: boolean;
-  errorYears: string | null;
-  createYearSuccess: boolean;
-  createYearLoading: boolean;
-  createYearError: string | null;
-  updateYearLoading: boolean;
-  updateYearError: string | null;
-  updateYearSuccess: boolean;
-  selectedYear: any | null;
-  getYearByIdLoading: boolean;
-  getYearByIdError: string | null;
-}
-
-const initialState: YearState = {
+const initialState: YEAR_STATE = {
   years: [],
+  pagination: {
+    page: 1,
+    limit: 10,
+    numberOfResults: 0,
+    numberOfPages: 1,
+  },
   loadingYears: false,
   errorYears: null,
   createYearSuccess: false,
@@ -34,7 +25,6 @@ const initialState: YearState = {
   updateYearLoading: false,
   updateYearError: null,
   updateYearSuccess: false,
-
   selectedYear: null,
   getYearByIdLoading: false,
   getYearByIdError: null,
@@ -63,13 +53,11 @@ const yearsSlice = createSlice({
         state.loadingYears = true;
         state.errorYears = null;
       })
-      .addCase(
-        fetchYearList.fulfilled,
-        (state, action: PayloadAction<any[]>) => {
-          state.loadingYears = false;
-          state.years = action.payload;
-        },
-      )
+      .addCase(fetchYearList.fulfilled, (state, action: PayloadAction<any>) => {
+        state.loadingYears = false;
+        state.years = action.payload.data;
+        state.pagination = action.payload?.metadata?.pagination;
+      })
       .addCase(fetchYearList.rejected, (state, action) => {
         state.loadingYears = false;
         state.errorYears = action.error.message || "Failed to fetch Years";
@@ -139,10 +127,11 @@ const yearsSlice = createSlice({
         state.getYearByIdLoading = true;
         state.getYearByIdError = null;
       })
-      .addCase(getYearById.fulfilled, (state, action: PayloadAction<any>) => {
+      .addCase(getYearById.fulfilled, (state, action: PayloadAction<YEAR>) => {
         state.getYearByIdLoading = false;
         state.selectedYear = action.payload;
       })
+
       .addCase(getYearById.rejected, (state, action) => {
         state.getYearByIdLoading = false;
 

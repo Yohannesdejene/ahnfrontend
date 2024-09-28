@@ -4,16 +4,18 @@ import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import toast from "react-hot-toast";
-import { InputString, CommonButton, SelectInput } from "@/common/formElements";
 import { t } from "@/utils/translation";
 import { useDispatch, useSelector } from "react-redux";
+import { InputString, CommonButton, SelectInput } from "@/common/formElements";
 import {
   createSemester,
   fetchSemesterList,
 } from "@/store/features/semesters/semesterSlice";
+import { useGetAllYears } from "@/hooks/useGetAllYears";
 import { RootState, AppDispatch } from "@/store/store";
+
 const formSchema = z.object({
-  year_id: z.string().min(1, { message: "Year ID is required" }),
+  year_id: z.string().min(1, { message: "Year is required" }),
   name: z.string().min(1, { message: "Name is required" }),
   starting_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, {
     message: "Invalid date format. Use YYYY-MM-DD",
@@ -25,7 +27,16 @@ const formSchema = z.object({
     message: "Status must be either 'Active' or 'NotActive'",
   }),
 });
-
+const semesterNameOptions = [
+  {
+    label: "One",
+    value: "1",
+  },
+  {
+    label: "Two",
+    value: "2",
+  },
+];
 interface AddSemesterProps {
   toggleDrawer: (open: boolean) => void; // Accepting toggleDrawer function as a prop
 }
@@ -34,6 +45,8 @@ type FormData = z.infer<typeof formSchema>;
 
 const AddSemester: React.FC<AddSemesterProps> = ({ toggleDrawer }) => {
   const dispatch: AppDispatch = useDispatch(); // Use the AppDispatch type
+  const { loadingYears, errorYears, optionsYears, dataYears, reloadYears } =
+    useGetAllYears();
   const methods = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
@@ -41,6 +54,7 @@ const AddSemester: React.FC<AddSemesterProps> = ({ toggleDrawer }) => {
     useSelector((state: RootState) => state.semesters);
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
+    console.log("data", data);
     dispatch(createSemester({ semesterData: data })).then((data) => {
       toggleDrawer(false);
     });
@@ -64,21 +78,27 @@ const AddSemester: React.FC<AddSemesterProps> = ({ toggleDrawer }) => {
                     className="p-fluid"
                   >
                     <div className="mb-3 w-full">
-                      <InputString
-                        type="text"
+                      <SelectInput
+                        // type="year"
                         name="year_id"
                         label={t("semester.selectYear")}
                         placeholder={t("semester.yearIdPlaceholder")}
+                        options={optionsYears}
+                        loading={loadingYears}
                       />
                     </div>
                     <div className="mb-3 w-full">
-                      <InputString
-                        type="text"
+                      <SelectInput
+                        // type="year"
                         name="name"
                         label={t("semester.name")}
                         placeholder={t("semester.namePlaceholder")}
+                        options={semesterNameOptions}
+                        loading={false}
                       />
                     </div>
+
+                   
                     <div className="mb-3 w-full">
                       <InputString
                         type="date"

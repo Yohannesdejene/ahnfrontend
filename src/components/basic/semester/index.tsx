@@ -6,7 +6,7 @@ import { IoMdAdd } from "react-icons/io";
 import { IoAddSharp } from "react-icons/io5";
 import { MdDeleteForever } from "react-icons/md";
 import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
-import { Button as BaseButton } from "@mui/material";
+import { Button as BaseButton, Chip } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import CommonDrawer from "@/common/Drawer";
 import DeleteConfirmationDialog from "@/common/DeleteConfirmationDialog";
@@ -33,6 +33,14 @@ function convertISOToNormalDate(isoDate: string): string {
   // Format the date
   return date.toLocaleDateString(undefined, options);
 }
+const statusShow = (status: string) => {
+  console.log("status", status);
+  if (status == "Active") {
+    return <Chip color="success" label=" Active" sx={{ width: "100px" }} />;
+  } else {
+    return <Chip color="error" label="Not active" sx={{ width: "100px" }} />;
+  }
+};
 
 const ListCourse: React.FC = () => {
   const [drawerDisplay, setDrawerDisplay] = useState("add");
@@ -116,15 +124,10 @@ const ListCourse: React.FC = () => {
       field: "status",
       headerName: `${t("semester.status")}`,
       width: 120,
-      renderCell: (params) => (
-        <span
-          className={
-            params.value === "Active" ? "text-green-600" : "text-red-600"
-          }
-        >
-          {params.value}
-        </span>
-      ),
+      renderCell: (params) => {
+        const value = params.value;
+        return <div className="my-2 flex gap-2">{statusShow(value)}</div>;
+      },
     },
     {
       field: "id",

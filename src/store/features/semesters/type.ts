@@ -5,8 +5,26 @@ export interface SEMESTER_CREATE {
   end_date: string;
   status: "Active" | "NotActive";
 }
+export interface PAGINATION {
+  page: number;
+  limit: number;
+  numberOfResults: number;
+  numberOfPages: number;
+}
+export interface SEMESTER {
+  id: string;
+  year_id: string;
+  name: string;
+  starting_date: string;
+  end_date: string;
+  status: "Active" | "NotActive";
+  access_right: string;
+  created_date: string;
+  updated_date: string;
+}
 export interface SEMESTER_INITIAL_STATE {
-  semesters: any[];
+  semesters: SEMESTER[];
+  pagination: PAGINATION;
   loadingSemesters: boolean;
   errorSemesters: string | null;
   createSemesterSuccess: boolean;

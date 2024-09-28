@@ -8,10 +8,21 @@ import {
 } from "./semesterThunk"; // These need to be exported later
 import { toast } from "react-hot-toast";
 import { t } from "@/utils/translation";
-import { SEMESTER_CREATE, SEMESTER_INITIAL_STATE } from "./type";
+import {
+  SEMESTER_CREATE,
+  SEMESTER_INITIAL_STATE,
+  SEMESTER,
+  PAGINATION,
+} from "./type";
 
 const initialState: SEMESTER_INITIAL_STATE = {
   semesters: [],
+  pagination: {
+    page: 1,
+    limit: 10,
+    numberOfResults: 0,
+    numberOfPages: 1,
+  },
   loadingSemesters: false,
   errorSemesters: null,
   createSemesterSuccess: false,
@@ -53,9 +64,10 @@ const semestersSlice = createSlice({
       })
       .addCase(
         fetchSemesterList.fulfilled,
-        (state, action: PayloadAction<any[]>) => {
+        (state, action: PayloadAction<any>) => {
           state.loadingSemesters = false;
-          state.semesters = action.payload;
+          state.semesters = action.payload.data;
+          state.pagination = action.payload?.metadata?.pagination;
         },
       )
       .addCase(fetchSemesterList.rejected, (state, action) => {
@@ -106,7 +118,7 @@ const semestersSlice = createSlice({
         (state, action: PayloadAction<any>) => {
           state.updateSemesterLoading = false;
           state.updateSemesterSuccess = true;
-
+          console.log(" action.payload", action.payload);
           state.semesters = state.semesters.map((semester) =>
             semester.id === action.payload.id ? action.payload : semester,
           );

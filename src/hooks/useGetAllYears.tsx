@@ -1,32 +1,28 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
-import axios from "axios";
-import { apiGetYearList } from "@/services/ApiBasic"; // Adjust the import path
-
-type YEARS_TYPE = {
-  is_active: Boolean;
-  id: number;
-  EUC_year: string;
-  ETH_year: string;
-  created_by: string;
-  start_date: string;
-  end_date: string;
-  updated_date: string;
-  created_date: string;
-};
-
+import { apiGetYearList } from "@/services/ApiBasic";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "@/store/store";
+import { YEAR } from "@/store/features/years/type";
+import {
+  fetchYearList,
+  createYear,
+  updateYear,
+  getYearById,
+} from "@/store/features/years/yearsSlice";
 type YEARS_RESPONSE = {
   loadingYears: boolean;
   errorYears: string | null;
   optionsYears: { label: string; value: number }[];
-  dataYears: YEARS_TYPE[] | null;
+  dataYears: YEAR[] | null;
   reloadYears: () => void; // Reload function type
 };
 
 export const useGetAllYears = (): YEARS_RESPONSE => {
+  const dispatch: AppDispatch = useDispatch(); // Use the AppDispatch type
   const [loadingYears, setLoadingYears] = useState<boolean>(true);
   const [errorYears, setErrorYears] = useState<string | null>(null);
-  const [dataYears, setDataYears] = useState<YEARS_TYPE[] | null>(null);
+  const [dataYears, setDataYears] = useState<YEAR[] | null>(null);
   const [optionsYears, setOptionsYears] = useState<
     { label: string; value: number }[]
   >([]);
@@ -37,15 +33,19 @@ export const useGetAllYears = (): YEARS_RESPONSE => {
     setErrorYears(null);
 
     try {
-      const response = await apiGetYearList();
-      console.log("response", response);
-
-      const transformedOptions = response?.map((item: any) => ({
-        label: `${item?.ETH_year} + OR +${item?.EUC_year} `,
-        value: item?.id,
-      }));
-      setDataYears(response);
-      setOptionsYears(transformedOptions);
+      const data = { size: 10, currentPage: 1 };
+      dispatch(fetchYearList(data))
+        .then((data: any) => {
+          const transformedOptions = data?.payload?.data.map((item: any) => ({
+            label: `${item?.ETH_year} ETH  or  ${item?.EUC_year} EUC`,
+            value: item?.id,
+          }));
+          setDataYears(data?.payload?.data);
+          setOptionsYears(transformedOptions);
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
 
       // } catch (err: any) {
     } finally {

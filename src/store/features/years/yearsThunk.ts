@@ -5,11 +5,10 @@ import {
   apiUpdateYear,
   apiGetYearById,
 } from "./yearApi";
-import { GiConsoleController } from "react-icons/gi";
 
 // Fetch course list thunk
 export const fetchYearList = createAsyncThunk(
-  "year/fetchYearList",
+  "years/fetchYearList",
   async (
     { size, currentPage }: { size: number; currentPage: number },
     { rejectWithValue },
@@ -54,7 +53,7 @@ export const updateYear = createAsyncThunk(
 
 //get course by id
 export const getYearById = createAsyncThunk(
-  "year/getYearById",
+  "years/getYearById",
   async ({ id }: { id: number | string | null }, { rejectWithValue }) => {
     try {
       const response = await apiGetYearById(id);
@@ -64,3 +63,4 @@ export const getYearById = createAsyncThunk(
     }
   },
 );
+
