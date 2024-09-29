@@ -74,7 +74,7 @@ export async function apiCreateCourse(data: any): Promise<any> {
 export async function apiGetCourseById(
   id: number | string | null,
 ): Promise<any> {
-  const method = "GET"; // Use GET method
+  const method = "GET"; 
   const url = `/basic/course/${id}`; // Adjust the endpoint to match your API's URL
 
   try {
