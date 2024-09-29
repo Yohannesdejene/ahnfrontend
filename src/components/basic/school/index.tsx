@@ -204,7 +204,6 @@ const ListSchools: React.FC = () => {
           onDelete={handleDelete}
           elementName={`School with id =${id}`}
           elementId={id}
-          onReload={reloadSchools} // Pass the optional reload function
         />
       </div>
     </>

@@ -1,4 +1,4 @@
-import HttpService, { HttpResetPasswordService } from "./HttpService";
+import HttpService from "./HttpService";
 import { SIGN_IN_DATA, SIGN_UP_DATA, CHANGE_PASSWORD_DATA } from "@/types/auth";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
