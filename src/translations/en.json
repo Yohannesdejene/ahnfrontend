@@ -51,7 +51,8 @@
     "edit": "Edit",
     "action": "Action",
     "status": "Status",
-    "search": "Search"
+    "search": "Search",
+    "viewDetails": "View details"
   },
   "year": {
     "listYears": "List years",

@@ -56,14 +56,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         {
           icon: <PiStudentBold className="text-title-sm text-white" />,
           label: t("sideLayout.students"), // Translated label
-          route: "#",
-          children: [
-            {
-              icon: <IoIosAddCircle className="text-title-md text-white" />,
-              label: t("sideLayout.addStudent"), // Translated label
-              route: "#",
-            },
-          ],
+          route: `${URL.LIST_STUDENTS}`,
         },
         {
           icon: <FcDepartment className="text-title-sm text-white" />,

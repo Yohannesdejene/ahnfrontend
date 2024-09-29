@@ -33,7 +33,6 @@ export const useGetAllCourses = (
   const fetchData = useCallback(async () => {
     setLoadingCourse(true);
     setErrorCourse(null);
-
     try {
       const response = await apiGetCourseList(size, currentPage);
       console.log("response", response);

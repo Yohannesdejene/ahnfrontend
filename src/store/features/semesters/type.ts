@@ -12,7 +12,7 @@ export interface PAGINATION {
   numberOfPages: number;
 }
 export interface SEMESTER {
-  id: string;
+  id: number;
   year_id: string;
   name: string;
   starting_date: string;
