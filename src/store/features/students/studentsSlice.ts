@@ -12,6 +12,7 @@ import {
   STUDENT_INITIAL_STATE,
   STUDENT,
   PAGINATION,
+  GET_STUDENT_BY_ID,
 } from "./type";
 
 const initialState: STUDENT_INITIAL_STATE = {
@@ -124,12 +125,12 @@ const StudentsSlice = createSlice({
           );
 
           // Update sele   ctedYear if it's the same as the updated year
-          if (
-            state.selectedStudents &&
-            state.selectedStudents.id === action.payload.id
-          ) {
-            state.selectedStudents = action.payload;
-          }
+          // if (
+          //   state.selectedStudents &&
+          //   state.selectedStudents.id === action.payload.id
+          // ) {
+          //   state.selectedStudents = action.payload;
+          // }
           toast.success(t("Students.StudentsUpdatedSuccessfully"), {
             id: toastId,
           });

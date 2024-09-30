@@ -16,7 +16,7 @@ import { RootState, AppDispatch } from "@/store/store";
 import { IoMdEye } from "react-icons/io";
 import CommonSearch from "@/common/commonSearch";
 import { SelectInput } from "@/common/formElements";
-
+import AddStudent from "./add";
 function convertISOToNormalDate(isoDate: string): string {
   const date = new Date(isoDate);
 
@@ -44,6 +44,7 @@ const statusShow = (status: boolean) => {
     return <Chip color="error" label="Not active" sx={{ width: "100px" }} />;
   }
 };
+
 const StudentsList: React.FC = () => {
   const [drawerDisplay, setDrawerDisplay] = useState("add");
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -53,7 +54,6 @@ const StudentsList: React.FC = () => {
   const { students, loadingStudents } = useSelector(
     (state: RootState) => state.students,
   );
-  console.log("students", students);
   // Function to toggle the drawer open/close
   const toggleDrawer = (open: boolean) => {
     setIsDrawerOpen(open);
@@ -81,13 +81,8 @@ const StudentsList: React.FC = () => {
     setDrawerDisplay("edit");
     toggleDrawer(true);
   };
-  const handleDeleteDialog = (id: number) => {
-    console.log("id", id);
-    setId(id);
-    handleDialog(true);
-  };
+
   const handleAddDrawer = () => {
-    setDrawerDisplay("add");
     toggleDrawer(true);
   };
   const handleSearch = () => {};
@@ -177,15 +172,10 @@ const StudentsList: React.FC = () => {
   return (
     <>
       <div className="mx-auto max-w-242.5">
-        <label className="mb-2 block  text-title-md font-medium text-black dark:text-white">
+        <label className="mb-4 block  text-title-md font-medium text-black dark:text-white">
           {t("students.listStudents")}
         </label>
         <div className=" xs:d-flex xs:flex-column md:mx-0 md:flex md:justify-between ">
-          {/* <div className="card justify-content-center flex flex-col"> */}
-
-       
-          {/* </div> */}
-
           <BaseButton
             onClick={handleAddDrawer}
             variant="contained"
@@ -233,6 +223,17 @@ const StudentsList: React.FC = () => {
           </div>
         </div>
       </div>
+      <CommonDrawer
+        isOpen={isDrawerOpen}
+        toggleDrawer={toggleDrawer}
+        content={
+          <div>
+            <AddStudent toggleDrawer={toggleDrawer} />
+          </div>
+        }
+        direction="right"
+        width={400} // Set the drawer width
+      />
     </>
   );
 };

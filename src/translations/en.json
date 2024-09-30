@@ -52,7 +52,11 @@
     "action": "Action",
     "status": "Status",
     "search": "Search",
-    "viewDetails": "View details"
+    "viewDetails": "View details",
+    "male": "Male",
+    "female": "Female",
+    "active": "Active",
+    "inactive": "Inactive"
   },
   "year": {
     "listYears": "List years",
@@ -138,14 +142,31 @@
     "nationality": "Nationality",
     "religion": "Religion",
     "phoneNumber": "Phone Number",
+    "fatherName": "Father Name",
+    "fatherPhone": "Father Phone",
     "email": "Email",
     "address": "Address",
     "city": "City",
     "state": "State",
     "zipCode": "Zip Code",
     "sex": "Sex",
+    "sexPlaceholder": "Select Student Sex",
     "age": "Age",
-    "searchStudents": "Search Students"
+    "searchStudents": "Search Students",
+    "statusPlaceholder": "Select Student Status",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "kebele": "Kebele",
+    "houseNo": "House No",
+    "subcity": "Subcity",
+    "prevSchool": "Previous School",
+    "studentId": "Student ID",
+    "submit": "Submit",
+    "kebelePlaceholder": "Enter Kebele",
+    "houseNoPlaceholder": "Enter House No",
+    "subcityPlaceholder": "Enter Subcity",
+    "prevSchoolPlaceholder": "Enter Previous School"
   }
 }
     

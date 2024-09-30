@@ -375,5 +375,55 @@ export const CommonButton: React.FC<ButtonProps> = ({ label, loading }) => {
     </div>
   );
 };
+interface InputNumberProps {
+  name: string;
+  label: string;
+  placeholder?: string;
+  min?: number;
+  max?: number;
+  step?: number | "any";
+}
 
+export const InputNumber: React.FC<InputNumberProps> = ({
+  name,
+  label,
+  placeholder,
+  min = 0,
+  max,
+  step = "any",
+}) => {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
+
+  return (
+    <div className="card justify-content-center flex flex-col">
+      <label className="mb-2 block text-sm font-medium text-black dark:text-white">
+        {label}
+      </label>
+      <Input
+        slotProps={{
+          input: {
+            className:
+              "w-full text-sm font-sans font-normal leading-5 px-3 py-2 rounded-lg shadow-md shadow-slate-100 dark:shadow-slate-900 focus:shadow-outline-primary dark:focus:shadow-outline-primary focus:shadow-lg border border-solid border-slate-300 focus:border-primary dark:focus:border-primary dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-300 focus-visible:outline-0",
+            type: "number",
+            step: step,
+            min: min,
+            max: max,
+          },
+        }}
+        aria-label={label}
+        placeholder={placeholder || "Enter a number..."}
+        {...register(name, {
+          valueAsNumber: true,
+          setValueAs: (value) => (value === "" ? undefined : Number(value)),
+        })}
+      />
+      {errors[name] && (
+        <small className="text-danger">{errors[name]?.message as string}</small>
+      )}
+    </div>
+  );
+};
  

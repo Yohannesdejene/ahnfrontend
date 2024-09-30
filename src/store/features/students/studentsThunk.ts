@@ -5,7 +5,7 @@ import {
   apiUpdateStudents,
   apiGetStudentsById,
 } from "./studentsApi";
-import { STUDENT_CREATE } from "./type";
+import { STUDENT_CREATE, GET_STUDENT_BY_ID } from "./type";
 
 // Fetch course list thunk
 export const fetchStudentsList = createAsyncThunk(

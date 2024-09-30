@@ -1,3 +1,5 @@
+import { USER } from "../user/type";
+
 export interface STUDENT_CREATE {
   first_name: string;
   middle_name: string;
@@ -9,8 +11,8 @@ export interface STUDENT_CREATE {
   sex: string;
   nationality: string;
   status: string;
-  houseNo: number;
-  kebele: number;
+  houseNo: string;
+  kebele: string;
   subcity: string;
   prev_school: string;
   age: number;
@@ -40,6 +42,12 @@ export interface STUDENT {
   created_date: string;
   updated_date: string;
 }
+export interface GET_STUDENT_BY_ID {
+  student: STUDENT;
+  user?: USER;
+  documents?: any;
+}
+
 export interface STUDENT_INITIAL_STATE {
   students: STUDENT[];
   pagination: PAGINATION;
@@ -51,7 +59,7 @@ export interface STUDENT_INITIAL_STATE {
   updateStudentsLoading: boolean;
   updateStudentsError: string | null;
   updateStudentsSuccess: boolean;
-  selectedStudents: any | null;
+  selectedStudents: GET_STUDENT_BY_ID | null;
   getStudentsByIdLoading: boolean;
   getStudentsByIdError: string | null;
   deleteStudentsLoading: boolean;
