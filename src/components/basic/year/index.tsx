@@ -165,7 +165,7 @@ const ListYears: React.FC = () => {
       <div className="mx-auto max-w-242.5">
         <div className="mx-1 flex justify-between">
           <label className="mb-2 block  text-title-md font-medium text-black dark:text-white">
-            {t("year.listYears")}
+            {t("student.listYears")}
           </label>
 
           <BaseButton

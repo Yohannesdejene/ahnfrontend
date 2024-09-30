@@ -38,7 +38,7 @@ const initialState: STUDENT_INITIAL_STATE = {
   deleteStudentsSuccess: false,
 };
 
-const StudentssSlice = createSlice({
+const StudentsSlice = createSlice({
   name: "students",
   initialState,
   reducers: {
@@ -65,7 +65,8 @@ const StudentssSlice = createSlice({
         fetchStudentsList.fulfilled,
         (state, action: PayloadAction<any>) => {
           state.loadingStudents = false;
-          state.students = action.payload.data;
+          console.log("action.payload", action.payload);
+          state.students = action.payload;
           state.pagination = action.payload?.metadata?.pagination;
         },
       )
@@ -167,9 +168,9 @@ const StudentssSlice = createSlice({
 });
 
 // Export actions and reducer
-export const { resetCreateState, resetUpdateState } = StudentssSlice.actions;
+export const { resetCreateState, resetUpdateState } = StudentsSlice.actions;
 
-export default StudentssSlice.reducer;
+export default StudentsSlice.reducer;
 
 // Export thunks so you can use them in other files
 export { fetchStudentsList, createStudents, updateStudents, getStudentsById };

@@ -11,14 +11,11 @@ import { Button as BaseButton, Alert } from "@mui/material";
 import { IconButton, Tooltip } from "@mui/material";
 import Chip from "@mui/material/Chip";
 import CommonDrawer from "@/common/Drawer";
-import {
-  fetchYearList,
-  createYear,
-  updateYear,
-  getYearById,
-} from "@/store/features/years/yearsSlice";
+import { fetchStudentsList } from "@/store/features/students/studentsSlice";
 import { RootState, AppDispatch } from "@/store/store";
 import { IoMdEye } from "react-icons/io";
+import CommonSearch from "@/common/commonSearch";
+import { SelectInput } from "@/common/formElements";
 
 function convertISOToNormalDate(isoDate: string): string {
   const date = new Date(isoDate);
@@ -33,7 +30,13 @@ function convertISOToNormalDate(isoDate: string): string {
   // Format the date
   return date.toLocaleDateString(undefined, options);
 }
-
+const optionsPerPage = [
+  { label: "10", value: 10 },
+  { label: "20", value: 20 },
+  { label: "30", value: 30 },
+  { label: "40", value: 40 },
+  { label: "50", value: 50 },
+];
 const statusShow = (status: boolean) => {
   if (status) {
     return <Chip color="success" label=" Active" sx={{ width: "100px" }} />;
@@ -47,12 +50,10 @@ const StudentsList: React.FC = () => {
   const [id, setId] = useState<number | string | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const dispatch: AppDispatch = useDispatch(); // Use the AppDispatch type
-  const {
-    years: dataYears,
-    loadingYears,
-    errorYears,
-  } = useSelector((state: RootState) => state.years);
-
+  const { students, loadingStudents } = useSelector(
+    (state: RootState) => state.students,
+  );
+  console.log("students", students);
   // Function to toggle the drawer open/close
   const toggleDrawer = (open: boolean) => {
     setIsDrawerOpen(open);
@@ -63,12 +64,12 @@ const StudentsList: React.FC = () => {
 
   useEffect(() => {
     const data = { size: 10, currentPage: 1 };
-    dispatch(fetchYearList(data));
+    dispatch(fetchStudentsList(data));
   }, [dispatch]);
-  // Conditionally create rows only when loading is false and dataYears is available
+  // Conditionally create rows only when loading is false and students is available
   const rows: GridRowsProp =
-    !loadingYears && dataYears && dataYears?.length > 0
-      ? dataYears?.map((yearData: any, index: number) => ({
+    !loadingStudents && students && students?.length > 0
+      ? students?.map((yearData: any, index: number) => ({
           id: index, // Or use a unique property if available in your data
           ...yearData,
         }))
@@ -89,42 +90,55 @@ const StudentsList: React.FC = () => {
     setDrawerDisplay("add");
     toggleDrawer(true);
   };
+  const handleSearch = () => {};
 
   const columns: GridColDef[] = [
     {
-      field: "EUC_year",
-      headerName: t("year.europeanCalendar"),
-      width: 180,
+      field: "first_name",
+      headerName: t("students.firstName"),
+      width: 120,
       align: "left",
     },
     {
-      field: "ETH_year",
-      headerName: t("year.ethiopianCalendar"),
-      width: 180,
+      field: "middle_name",
+      headerName: t("students.middleName"),
+      width: 120,
       align: "left",
     },
     {
-      field: "start_date",
-      headerName: t("year.startDate"),
-      width: 150,
+      field: "last_name",
+      headerName: t("students.lastName"),
+      width: 120,
       align: "left",
-      renderCell: (params) => {
-        const value = params.value;
-        return <h6>{convertISOToNormalDate(value)}</h6>;
-      },
+    },
+
+    {
+      field: "department",
+      headerName: t("students.department"),
+      width: 120,
+      align: "left",
     },
     {
-      field: "end_date",
-      headerName: t("year.endDate"),
-      width: 150,
+      field: "sex",
+      headerName: t("students.sex"),
+      width: 80,
       align: "left",
-      renderCell: (params) => {
-        const value = params.value;
-        return <h6>{convertISOToNormalDate(value)}</h6>;
-      },
     },
     {
-      field: "is_active",
+      field: "age",
+      headerName: t("students.age"),
+      width: 80,
+      align: "left",
+    },
+    {
+      field: "nationality",
+      headerName: t("students.nationality"),
+      width: 80,
+      align: "left",
+    },
+
+    {
+      field: "status",
       headerName: t("common.status"),
       width: 150,
       align: "center",
@@ -163,24 +177,42 @@ const StudentsList: React.FC = () => {
   return (
     <>
       <div className="mx-auto max-w-242.5">
-        <div className="mx-0 flex justify-between">
-          <label className="mb-2 block  text-title-md font-medium text-black dark:text-white">
-            {t("year.listYears")}
-          </label>
+        <label className="mb-2 block  text-title-md font-medium text-black dark:text-white">
+          {t("students.listStudents")}
+        </label>
+        <div className=" xs:d-flex xs:flex-column md:mx-0 md:flex md:justify-between ">
+          {/* <div className="card justify-content-center flex flex-col"> */}
+
+       
+          {/* </div> */}
 
           <BaseButton
             onClick={handleAddDrawer}
-            style={{
+            variant="contained"
+            startIcon={<IoAddCircleSharp size={24} />}
+            sx={{
               textTransform: "none",
               backgroundColor: "#0097B2",
               color: "white",
               marginBottom: "10px",
+              "&:hover": {
+                backgroundColor: "#0097B2",
+              },
+              "& .MuiButton-startIcon": {
+                marginRight: 1,
+              },
             }}
+            style={{ backgroundColor: "#0097B2" }}
           >
-            <IoAddCircleSharp className="mr-3" />
-
-            {t("year.addYear")}
+            {t("students.addStudents")}
           </BaseButton>
+          <div className="w-full sm:w-1/2">
+            <CommonSearch
+              label="Search students"
+              placeholder={t("students.searchStudents")}
+              onSearch={handleSearch}
+            />
+          </div>
         </div>
 
         <div className="flex h-screen w-full bg-white text-black dark:bg-boxdark dark:text-white">
@@ -190,10 +222,10 @@ const StudentsList: React.FC = () => {
                 {/* Restrict the DataGrid's height and width, and allow horizontal scrolling */}
                 <div className="overflow-x-auto bg-white text-black dark:bg-normalGray">
                   <DataGrid
-                    loading={loadingYears}
+                    loading={loadingStudents}
                     rows={rows}
                     columns={columns}
-                    autoHeight // This allows the grid to dynamically adjust height based on content
+                    autoHeight
                   />
                 </div>
               </div>

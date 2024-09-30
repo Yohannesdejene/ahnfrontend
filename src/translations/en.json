@@ -122,6 +122,30 @@
     "sections": "Sections",
     "subjects": "Subjects",
     "students": "Students"
+  },
+  "students": {
+    "listStudents": "List Students",
+    "addStudents": "Add Student",
+    "editStudents": "Edit Student",
+    "deleteStudents": "Delete Student",
+    "firstName": "First Name",
+    "middleName": "Middle Name",
+    "lastName": "Last Name",
+    "gender": "Gender",
+    "department": "Department",
+    "dateOfBirth": "Date of Birth",
+    "placeOfBirth": "Place of Birth",
+    "nationality": "Nationality",
+    "religion": "Religion",
+    "phoneNumber": "Phone Number",
+    "email": "Email",
+    "address": "Address",
+    "city": "City",
+    "state": "State",
+    "zipCode": "Zip Code",
+    "sex": "Sex",
+    "age": "Age",
+    "searchStudents": "Search Students"
   }
 }
     

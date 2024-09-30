@@ -2,10 +2,10 @@ export interface STUDENT_CREATE {
   first_name: string;
   middle_name: string;
   last_name: string;
-  phone_number: number;
+  phone_number: string;
   department: string;
   father_name: string;
-  father_phone: number;
+  father_phone: string;
   sex: string;
   nationality: string;
   status: string;
@@ -27,7 +27,7 @@ export interface STUDENT {
   first_name: string;
   middle_name: string;
   last_name: string;
-  phone_number: number;
+  phone_number: string;
   age: number;
   sex: string;
   nationality: string;
@@ -41,7 +41,7 @@ export interface STUDENT {
   updated_date: string;
 }
 export interface STUDENT_INITIAL_STATE {
-  semesters: STUDENT[];
+  students: STUDENT[];
   pagination: PAGINATION;
   loadingStudents: boolean;
   errorStudents: string | null;
