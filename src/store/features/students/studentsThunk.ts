@@ -11,11 +11,15 @@ import { STUDENT_CREATE, GET_STUDENT_BY_ID } from "./type";
 export const fetchStudentsList = createAsyncThunk(
   "students/fetchStudentsList",
   async (
-    { size, currentPage }: { size: number; currentPage: number },
+    {
+      size,
+      currentPage,
+      search,
+    }: { size: number; currentPage: number; search?: string },
     { rejectWithValue },
   ) => {
     try {
-      const response = await apiGetStudentsList(size, currentPage);
+      const response = await apiGetStudentsList(size, currentPage, search);
       return response;
     } catch (error: any) {
       return rejectWithValue(error.message.toString());

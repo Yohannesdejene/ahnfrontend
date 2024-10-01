@@ -56,7 +56,8 @@
     "male": "Male",
     "female": "Female",
     "active": "Active",
-    "inactive": "Inactive"
+    "inactive": "Inactive",
+    "reset": "Reset"
   },
   "year": {
     "listYears": "List years",

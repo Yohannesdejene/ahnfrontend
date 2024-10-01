@@ -1,9 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import { useGetAllYears } from "@/hooks/useGetAllYears";
-import { FaEdit } from "react-icons/fa";
 import { IoAddCircleSharp } from "react-icons/io5";
-import { MdDeleteForever } from "react-icons/md";
 import { t } from "@/utils/translation";
 import { useDispatch, useSelector } from "react-redux";
 import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
@@ -15,8 +12,9 @@ import { fetchStudentsList } from "@/store/features/students/studentsSlice";
 import { RootState, AppDispatch } from "@/store/store";
 import { IoMdEye } from "react-icons/io";
 import CommonSearch from "@/common/commonSearch";
-import { SelectInput } from "@/common/formElements";
 import AddStudent from "./add";
+import { useRouter } from "next/navigation";
+import { LIST_DETAIL_STUDENTS } from "@/routes";
 function convertISOToNormalDate(isoDate: string): string {
   const date = new Date(isoDate);
 
@@ -46,6 +44,7 @@ const statusShow = (status: boolean) => {
 };
 
 const StudentsList: React.FC = () => {
+  const router = useRouter();
   const [drawerDisplay, setDrawerDisplay] = useState("add");
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [id, setId] = useState<number | string | null>(null);
@@ -54,6 +53,14 @@ const StudentsList: React.FC = () => {
   const { students, loadingStudents } = useSelector(
     (state: RootState) => state.students,
   );
+  const handleSearch = (searchTerm: string) => {
+    const data = { size: 10, currentPage: 1, search: searchTerm };
+    dispatch(fetchStudentsList(data));
+  };
+  const handleReset = () => {
+    const data = { size: 10, currentPage: 1 };
+    dispatch(fetchStudentsList(data));
+  };
   // Function to toggle the drawer open/close
   const toggleDrawer = (open: boolean) => {
     setIsDrawerOpen(open);
@@ -85,7 +92,6 @@ const StudentsList: React.FC = () => {
   const handleAddDrawer = () => {
     toggleDrawer(true);
   };
-  const handleSearch = () => {};
 
   const columns: GridColDef[] = [
     {
@@ -153,7 +159,8 @@ const StudentsList: React.FC = () => {
           <div className="my-2 flex gap-2">
             <Tooltip title={t("common.viewDetails")} arrow>
               <IconButton
-                onClick={() => handleEditDrawer(value)}
+                // onClick={() => handleEditDrawer(value)}
+                onClick={() => router.push(`${LIST_DETAIL_STUDENTS}/${value}`)}
                 sx={{
                   color: "#0097B2",
                   "&:hover": {
@@ -175,7 +182,7 @@ const StudentsList: React.FC = () => {
         <label className="mb-4 block  text-title-md font-medium text-black dark:text-white">
           {t("students.listStudents")}
         </label>
-        <div className=" xs:d-flex xs:flex-column md:mx-0 md:flex md:justify-between ">
+        <div className=" xs:d-flex xs:flex-column  md:flex md:justify-between ">
           <BaseButton
             onClick={handleAddDrawer}
             variant="contained"
@@ -196,12 +203,32 @@ const StudentsList: React.FC = () => {
           >
             {t("students.addStudents")}
           </BaseButton>
-          <div className="w-full sm:w-1/2">
-            <CommonSearch
-              label="Search students"
-              placeholder={t("students.searchStudents")}
-              onSearch={handleSearch}
-            />
+          <div className="flex w-full gap-2 sm:w-1/2">
+            <div className="w-full ">
+              <CommonSearch
+                label="Search students"
+                placeholder={t("students.searchStudents")}
+                onSearch={handleSearch}
+              />
+            </div>
+
+            <BaseButton
+              onClick={handleReset}
+              variant="contained"
+              sx={{
+                textTransform: "none",
+                backgroundColor: "#0097B2",
+                color: "white",
+                mt: "3px",
+                marginBottom: "10px",
+                "&:hover": {
+                  backgroundColor: "#0097B2",
+                },
+              }}
+              style={{ backgroundColor: "#0097B2", height: "31px" }}
+            >
+              {t("common.reset")}
+            </BaseButton>
           </div>
         </div>
 

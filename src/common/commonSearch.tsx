@@ -49,5 +49,5 @@ const CommonSearch: React.FC<SearchElementProps> = ({
     </form>
   );
 };
-
 export default CommonSearch;
+

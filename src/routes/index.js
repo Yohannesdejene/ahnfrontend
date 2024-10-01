@@ -9,4 +9,4 @@ export const LIST_SEMESTER = "/basic/semester";
 export const LIST_GRADE = "/grade/list";
 
 export const LIST_STUDENTS = "/students/list";
-export const LIST_DETAIL_STUDENTS = "/students/detail";
+export const LIST_DETAIL_STUDENTS = "/students/details";

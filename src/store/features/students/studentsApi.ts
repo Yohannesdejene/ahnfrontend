@@ -1,13 +1,15 @@
 ///course
 import HttpService from "@/services/HttpService";
-import { STUDENT_CREATE } from "./type";
+import { STUDENT_CREATE, GET_STUDENT_BY_ID } from "./type";
 export async function apiGetStudentsList(
   size: number,
   currentPage: number,
+  search?: string,
 ): Promise<any> {
   const method = "GET"; // Use GET method
-  let url = `/who/student/all`; // Adjust the endpoint to match your API's URL
-  if (size && currentPage) url += `?size${size}&page${currentPage}`;
+  let url = `/who/student/`; // Adjust the endpoint to match your API's URL
+  if (size && currentPage) url += `?limit${size}&page${currentPage}`;
+  if (search) url += `&search=${search}`;
 
   try {
     const response = await HttpService.request({

@@ -55,7 +55,8 @@ const config: Config = {
         gray: "#EFF4FB",
         graydark: "#333A48",
         "gray-2": "#F7F9FC",
-        "gray-3": "#FAFAFA",
+        "gray-3": "#f2f2f2",
+        gray3: "#f2f2f2",
 
         whiten: "#F1F5F9",
         whiter: "#F5F7FD",

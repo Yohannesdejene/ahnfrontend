@@ -67,7 +67,7 @@ const StudentsSlice = createSlice({
         (state, action: PayloadAction<any>) => {
           state.loadingStudents = false;
           console.log("action.payload", action.payload);
-          state.students = action.payload;
+          state.students = action.payload?.data;
           state.pagination = action.payload?.metadata?.pagination;
         },
       )
