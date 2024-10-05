@@ -15,11 +15,7 @@ import {
 import { useRouter } from "next/navigation";
 import { RootState, AppDispatch } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  updateStudents,
-  getStudentsById,
-  createStudents,
-} from "@/store/features/students/studentsSlice";
+import { createStudents } from "@/store/features/students/studentsSlice";
 import { STUDENT_CREATE } from "@/store/features/students/type";
 const formSchema = z.object({
   first_name: z.string().min(1, "First name is required"),
