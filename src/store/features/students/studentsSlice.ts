@@ -14,6 +14,7 @@ import {
   PAGINATION,
   GET_STUDENT_BY_ID,
 } from "./type";
+import { AnyARecord } from "node:dns";
 
 const initialState: STUDENT_INITIAL_STATE = {
   students: [],
@@ -66,7 +67,6 @@ const StudentsSlice = createSlice({
         fetchStudentsList.fulfilled,
         (state, action: PayloadAction<any>) => {
           state.loadingStudents = false;
-          console.log("action.payload", action.payload);
           state.students = action.payload?.data;
           state.pagination = action.payload?.metadata?.pagination;
         },
@@ -112,14 +112,13 @@ const StudentsSlice = createSlice({
         state.updateStudentsLoading = true;
         state.updateStudentsError = null;
         state.updateStudentsSuccess = false;
-        toastId = toast.loading(`${t("Students.updatingStudents")}...`);
+        toastId = toast.loading(`${t("students.updatingStudents")}...`);
       })
       .addCase(
         updateStudents.fulfilled,
         (state, action: PayloadAction<any>) => {
           state.updateStudentsLoading = false;
           state.updateStudentsSuccess = true;
-          console.log(" action.payload", action.payload);
           state.students = state.students.map((students) =>
             students.id === action.payload.id ? action.payload : students,
           );
@@ -131,7 +130,7 @@ const StudentsSlice = createSlice({
           // ) {
           //   state.selectedStudents = action.payload;
           // }
-          toast.success(t("Students.StudentsUpdatedSuccessfully"), {
+          toast.success(t("students.StudentsUpdatedSuccessfully"), {
             id: toastId,
           });
         },
@@ -152,13 +151,10 @@ const StudentsSlice = createSlice({
         state.getStudentsByIdLoading = true;
         state.getStudentsByIdError = null;
       })
-      .addCase(
-        getStudentsById.fulfilled,
-        (state, action: PayloadAction<any>) => {
-          state.getStudentsByIdLoading = false;
-          state.selectedStudents = action.payload;
-        },
-      )
+      .addCase(getStudentsById.fulfilled, (state, action: any) => {
+        state.getStudentsByIdLoading = false;
+        state.selectedStudents = action.payload;
+      })
       .addCase(getStudentsById.rejected, (state, action) => {
         state.getStudentsByIdLoading = false;
 

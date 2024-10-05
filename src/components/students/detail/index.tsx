@@ -5,13 +5,13 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
-
+import { CircularProgress } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { getStudentsById } from "@/store/features/students/studentsSlice";
-import OverView from "@/components/students/detail/personalInfo/overView";
 import PersonalInfo from "@/components/students/detail/personalInfo/index";
-
+import ParentInfo from "@/components/students/detail/parentInfo/index";
+import OverView from "@/components/students/detail/personalInfo/overView";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const theme = createTheme({
@@ -59,23 +59,29 @@ interface GradeDetailProps {
 
 const StudentDetail: React.FC<GradeDetailProps> = ({ id }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { selectedStudents, createStudentsLoading, createStudentsError } =
+  const { selectedStudents, getStudentsByIdLoading, getStudentsByIdError } =
     useSelector((state: RootState) => state.students);
-  const [value, setValue] = React.useState("personalInfo");
 
+  console.log("selectedStudents", selectedStudents);
+  const [value, setValue] = React.useState("personalInfo");
   const handleChange = (event: any, newValue: any) => {
     setValue(newValue);
   };
   useEffect(() => {
     dispatch(getStudentsById({ id }));
   }, [dispatch, id]);
-
   return (
     <div className="container mx-auto p-4">
       {/* Main grid */}
+      {/* {getStudentsByIdLoading && (
+        <div className="flex h-screen items-center justify-center">
+          <CircularProgress />
+        </div>
+      )} */}
+      {/* {!getStudentsByIdLoading && ( */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div className="bg-white  md:col-span-1">
-          <PersonalInfo />
+          <OverView />
         </div>
         <div className="space-y-0 md:col-span-2">
           <div>
@@ -145,23 +151,16 @@ const StudentDetail: React.FC<GradeDetailProps> = ({ id }) => {
                       color: "#000000",
                     }}
                   >
-                    <OverView />
+                    <PersonalInfo id={id} />
                   </TabPanel>
                   <TabPanel value="parentInfo">
-                    {" "}
-                    <OverView />
+                    <ParentInfo id={id} />
                   </TabPanel>
-                  <TabPanel value="documents">
-                    {" "}
-                    <OverView />
-                  </TabPanel>
-                  <TabPanel value="loginInfo">
-                    {" "}
-                    <OverView />
-                  </TabPanel>
+                  <TabPanel value="documents"> {/* <OverView /> */}</TabPanel>
+                  <TabPanel value="loginInfo"> {/* <OverView /> */}</TabPanel>
                   <TabPanel value="classTestReport">
                     {" "}
-                    <OverView />
+                    {/* <OverView /> */}
                   </TabPanel>
                 </TabContext>
               </ThemeProvider>
@@ -169,6 +168,7 @@ const StudentDetail: React.FC<GradeDetailProps> = ({ id }) => {
           </div>
         </div>
       </div>
+      {/* )} */}
     </div>
   );
 };

@@ -167,7 +167,21 @@
     "kebelePlaceholder": "Enter Kebele",
     "houseNoPlaceholder": "Enter House No",
     "subcityPlaceholder": "Enter Subcity",
-    "prevSchoolPlaceholder": "Enter Previous School"
+    "prevSchoolPlaceholder": "Enter Previous School",
+    "updatingStudents": "Updating Students",
+    "studentsUpdatedSuccessfully": "Students updated successfully",
+    "creatingStudents": "Creating Students",
+    "studentsCreatedSuccessfully": "Students created successfully",
+    "deletingStudents": "Deleting Students",
+    "studentsDeletedSuccessfully": "Students deleted successfully",
+    "getStudentsById": "Getting Students by ID",
+    "studentsRetrievedSuccessfully": "Students retrieved successfully",
+    "getStudentsByIdError": "Error getting students by ID",
+    "getStudentsByIdLoading": "Getting students by ID",
+    "personalInformation": "Personal Information",
+    "contact": "Contact",
+    "schoolInfo": "School Info",
+    "fatherInfo": "Father Info"
   }
 }
     
