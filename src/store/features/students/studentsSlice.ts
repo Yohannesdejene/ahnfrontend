@@ -130,7 +130,7 @@ const StudentsSlice = createSlice({
           // ) {
           //   state.selectedStudents = action.payload;
           // }
-          toast.success(t("students.StudentsUpdatedSuccessfully"), {
+          toast.success(t("students.studentsUpdatedSuccessfully"), {
             id: toastId,
           });
         },

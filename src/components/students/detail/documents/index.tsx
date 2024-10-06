@@ -10,6 +10,7 @@ import {
   CommonButton,
   SelectInput,
   InputNumber,
+  FileDropzone,
 } from "@/common/formElements";
 import { useRouter } from "next/navigation";
 import { RootState, AppDispatch } from "@/store/store";
@@ -21,10 +22,10 @@ const formSchema = z.object({
   father_phone: z.string().regex(/^\d{10}$/, "Phone number must be 10 digits"),
 });
 
-interface ParentInfoProps {
+interface DocumentsProps {
   id: string | number | null;
 }
-const ParentInfo: React.FC<ParentInfoProps> = ({ id }) => {
+const Documents: React.FC<DocumentsProps> = ({ id }) => {
   const router = useRouter();
 
   const dispatch: AppDispatch = useDispatch();
@@ -68,23 +69,23 @@ const ParentInfo: React.FC<ParentInfoProps> = ({ id }) => {
                   >
                     <div className="w-full  bg-white p-5 text-black dark:bg-boxdark dark:text-white">
                       <h6 className="text-gray-700 mb-5 w-full text-lg font-normal ">
-                        {t("students.fatherInfo")}
+                        {t("students.studentDocument")}
                       </h6>
                       <div className="xs:flex xs:flex-column gap-5 sm:flex sm:flex-row">
                         <div className="mb-3 w-full">
-                          <InputString
-                            type="text"
-                            name="father_name"
-                            label={t("students.fatherName")}
-                            placeholder={t("ex Getachew")}
+                          <FileDropzone
+                            name="studentDocument"
+                            label={t("students.studentDocument")}
+                            accept="image/*"
+                            multiple={false}
                           />
                         </div>
                         <div className="mb-3 w-full">
-                          <InputString
-                            type="text"
-                            name="father_phone"
-                            label={t("students.fatherPhone")}
-                            placeholder={t("ex 0912345678")}
+                          <FileDropzone
+                            name="studentDocument"
+                            label={t("students.studentDocument")}
+                            accept="image/*"
+                            multiple={false}
                           />
                         </div>
                       </div>
@@ -107,4 +108,4 @@ const ParentInfo: React.FC<ParentInfoProps> = ({ id }) => {
   );
 };
 
-export default ParentInfo;
+export default Documents;

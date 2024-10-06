@@ -27,8 +27,8 @@ const formSchema = z.object({
   last_name: z.string().min(1, "Last name is required"),
   phone_number: z.string().min(1, "Phone number is required"),
   department: z.string().min(1, "Department is required"),
-  father_name: z.string().min(1, "Father's name is required"),
-  father_phone: z.string().regex(/^\d{10}$/, "Phone number must be 10 digits"),
+  // father_name: z.string().min(1, "Father's name is required"),
+  // father_phone: z.string().regex(/^\d{10}$/, "Phone number must be 10 digits"),
   sex: z.enum(["Male", "Female", "Other"]),
   nationality: z.string().min(1, "Nationality is required"),
   status: z.enum(["Active", "Inactive"]),
@@ -52,7 +52,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ id }) => {
   const methods = useForm<STUDENT_CREATE>({
     resolver: zodResolver(formSchema),
   });
-  const { createStudentsLoading, createStudentsError } = useSelector(
+  const { updateStudentsLoading, updateStudentsError } = useSelector(
     (state: RootState) => state.students,
   );
   const { selectedStudents, getStudentsByIdLoading, getStudentsByIdError } =
@@ -65,7 +65,9 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ id }) => {
       kebele: data.kebele.toString(),
     };
 
-    dispatch(createStudents({ studentsData: newData })).then((data) => {});
+    dispatch(updateStudents({ id: id, studentsData: newData })).then(
+      (data) => {},
+    );
   };
   useEffect(() => {
     try {
@@ -276,7 +278,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ id }) => {
                     </div>
                     <div className="mb-4">
                       <CommonButton
-                        loading={createStudentsLoading}
+                        loading={updateStudentsLoading}
                         label={t("year.submit")}
                       />
                     </div>

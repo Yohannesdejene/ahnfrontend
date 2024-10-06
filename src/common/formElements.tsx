@@ -7,6 +7,7 @@ import { Input } from "@mui/base/Input";
 import { Button as BaseButton } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import Select from "react-select";
+import { useDropzone } from "react-dropzone";
 
 // import { useNumberInput } from "@mui/base/unstable_useNumberInput";
 
@@ -427,3 +428,62 @@ export const InputNumber: React.FC<InputNumberProps> = ({
   );
 };
  
+
+interface FileDropzoneProps {
+  name: string;
+  label: string;
+  multiple?: boolean;
+  accept?: string;
+}
+
+export const FileDropzone: React.FC<FileDropzoneProps> = ({
+  name,
+  label,
+  multiple = true,
+  accept = "image/*",
+}) => {
+  const {
+    register,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useFormContext();
+
+  const files = watch(name) || [];
+
+  const onDrop = (acceptedFiles: File[]) => {
+    setValue(name, acceptedFiles);
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: { "image/*": [".png", ".jpg", ".jpeg"] },
+    multiple,
+  });
+
+  return (
+    <div className="dropzone-container flex flex-col">
+      <label className="mb-2 block text-sm font-medium text-black dark:text-white">
+        {label}
+      </label>
+      <div
+        {...getRootProps()}
+        className="dropzone cursor-pointer border border-dashed p-4"
+      >
+        <input {...getInputProps()} />
+        <p>Drag and drop some files here, or click to select files</p>
+      </div>
+      <ul className="mt-2">
+        {files.map((file: File, idx: number) => (
+          <li key={idx}>
+            {file.name} - {Math.round(file.size / 1024)} KB
+          </li>
+        ))}
+      </ul>
+      {errors[name] && (
+        <small className="text-danger">{errors[name]?.message as string}</small>
+      )}
+    </div>
+  );
+};
+

@@ -5,44 +5,30 @@ import { IoAddCircleSharp } from "react-icons/io5";
 import { MdDeleteForever } from "react-icons/md";
 import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
 import { IoAddSharp } from "react-icons/io5";
-import {
-  Button as BaseButton,
-  createTheme,
-  ThemeProvider,
-} from "@mui/material";
+import { Button as BaseButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import CommonDrawer from "@/common/Drawer";
 import DeleteConfirmationDialog from "@/common/DeleteConfirmationDialog";
 import CommonSearch from "@/common/commonSearch";
-import GradeCard from "./gradeCard";
-import AddGrade from "./add";
-import EditGrade from "./edit";
+import GradeCard from "@/components/grade/detail/gradeCard";
 import { fetchGradeList } from "@/store/features/grades/gradeSlice";
+
 import { RootState, AppDispatch } from "@/store/store"; // Import RootState and AppDispatch
 import { t } from "@/utils/translation";
-import Box from "@mui/material/Box";
-import Tab from "@mui/material/Tab";
-import TabContext from "@mui/lab/TabContext";
-import TabList from "@mui/lab/TabList";
-import TabPanel from "@mui/lab/TabPanel";
 
-const GradeList: React.FC = () => {
+interface SectionsProps {
+  id: string | number | null;
+}
+const Sections: React.FC<SectionsProps> = ({ id }) => {
   const [drawerDisplay, setDrawerDisplay] = useState("add");
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [size, setSize] = useState<number>(10);
   const [page, setPage] = useState<number>(0);
-  const [id, setId] = useState<number | string | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const dispatch: AppDispatch = useDispatch(); // Use the AppDispatch type
   const { grades, loadingGrades, errorGrades } = useSelector(
     (state: RootState) => state.grades,
   );
-  const [value, setValue] = React.useState("sections");
-  const handleChange = (event: any, newValue: any) => {
-    setValue(newValue);
-  };
-
-  console.log("grades", grades);
   useEffect(() => {
     const data = { size: 10, currentPage: 1 };
     try {
@@ -62,17 +48,6 @@ const GradeList: React.FC = () => {
 
   // Conditionally create rows only when loading is false and dataYears is available
 
-  const handleEditDrawer = (id: number) => {
-    console.log("id", id);
-    setId(id);
-    setDrawerDisplay("edit");
-    toggleDrawer(true);
-  };
-  const handleDeleteDialog = (id: number) => {
-    console.log("id", id);
-    setId(id);
-    handleDialog(true);
-  };
   const handleAddDrawer = () => {
     setDrawerDisplay("add");
     toggleDrawer(true);
@@ -92,22 +67,10 @@ const GradeList: React.FC = () => {
     // Implement your search logic here
   };
 
-  const handleToggle = (id: number | string | null) => {
-    console.log("id", id);
-  };
-
   return (
     <>
       <div className="mx-auto max-w-242.5 ">
         <div className="mb-4 flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
-          <div className="w-full sm:w-1/2">
-            <CommonSearch
-              label="Search Users"
-              placeholder={t("grade.searchGrade")}
-              onSearch={handleSearch}
-            />
-          </div>
-
           <div className="w-full sm:w-auto">
             <BaseButton
               onClick={handleAddDrawer}
@@ -122,8 +85,15 @@ const GradeList: React.FC = () => {
                 className="mr-2 h-5 w-5 text-white"
                 style={{ color: "#ffffff" }}
               />
-              {t("grade.addGrade")}
+              {t("grade.addSection")}
             </BaseButton>
+          </div>
+          <div className="w-full sm:w-3/4">
+            <CommonSearch
+              label="Search Sections"
+              placeholder={t("grade.searchSection")}
+              onSearch={handleSearch}
+            />
           </div>
         </div>
       </div>
@@ -134,23 +104,8 @@ const GradeList: React.FC = () => {
           </div>
         ))}
       </div>
-
-      <CommonDrawer
-        isOpen={isDrawerOpen}
-        toggleDrawer={toggleDrawer}
-        content={
-          <div>
-            {drawerDisplay == "add" && <AddGrade toggleDrawer={toggleDrawer} />}
-            {id !== null && drawerDisplay == "edit" && (
-              <EditGrade toggleDrawer={toggleDrawer} id={id} setId={setId} />
-            )}
-          </div>
-        }
-        direction="right"
-        width={400} // Set the drawer width
-      />
     </>
   );
 };
 
-export default GradeList;
+export default Sections;

@@ -12,6 +12,8 @@ import { getStudentsById } from "@/store/features/students/studentsSlice";
 import PersonalInfo from "@/components/students/detail/personalInfo/index";
 import ParentInfo from "@/components/students/detail/parentInfo/index";
 import OverView from "@/components/students/detail/personalInfo/overView";
+import Documents from "@/components/students/detail/documents/index";
+import LoginHistory from "@/components/students/detail/loginHistory/index";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const theme = createTheme({
@@ -80,7 +82,7 @@ const StudentDetail: React.FC<GradeDetailProps> = ({ id }) => {
       )} */}
       {/* {!getStudentsByIdLoading && ( */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <div className="bg-white  md:col-span-1">
+        <div className="bg-white dark:bg-boxdark md:col-span-1">
           <OverView />
         </div>
         <div className="space-y-0 md:col-span-2">
@@ -109,6 +111,7 @@ const StudentDetail: React.FC<GradeDetailProps> = ({ id }) => {
                       <Tab
                         label="Personal Information"
                         value="personalInfo"
+                        className="text-black dark:text-white"
                         sx={{
                           ...tabStyles,
                         }}
@@ -116,6 +119,7 @@ const StudentDetail: React.FC<GradeDetailProps> = ({ id }) => {
                       <Tab
                         label="Parent Info"
                         value="parentInfo"
+                        className="text-black dark:text-white"
                         sx={{
                           ...tabStyles,
                         }}
@@ -123,6 +127,7 @@ const StudentDetail: React.FC<GradeDetailProps> = ({ id }) => {
                       <Tab
                         label="Documents"
                         value="documents"
+                        className="text-black dark:text-white"
                         sx={{
                           ...tabStyles,
                         }}
@@ -130,6 +135,7 @@ const StudentDetail: React.FC<GradeDetailProps> = ({ id }) => {
                       <Tab
                         label="Login info"
                         value="loginInfo"
+                        className="text-black dark:text-white"
                         sx={{
                           ...tabStyles,
                         }}
@@ -137,6 +143,7 @@ const StudentDetail: React.FC<GradeDetailProps> = ({ id }) => {
                       <Tab
                         label="Class Test Report "
                         value="classTestReport"
+                        className="text-black dark:text-white"
                         sx={{
                           ...tabStyles,
                         }}
@@ -156,8 +163,12 @@ const StudentDetail: React.FC<GradeDetailProps> = ({ id }) => {
                   <TabPanel value="parentInfo">
                     <ParentInfo id={id} />
                   </TabPanel>
-                  <TabPanel value="documents"> {/* <OverView /> */}</TabPanel>
-                  <TabPanel value="loginInfo"> {/* <OverView /> */}</TabPanel>
+                  <TabPanel value="documents">
+                    <Documents id={id} />
+                  </TabPanel>
+                  <TabPanel value="loginInfo">
+                    <LoginHistory id={id} />
+                  </TabPanel>
                   <TabPanel value="classTestReport">
                     {" "}
                     {/* <OverView /> */}

@@ -82,6 +82,8 @@ const config: Config = {
       fontSize: {
         "title-xxl": ["44px", "55px"],
         "title-xxl2": ["42px", "58px"],
+        "title-xxl3": ["52px", "70px"],
+        "title-xxl4": ["100px", "150px"],
         "title-xl": ["36px", "45px"],
         "title-xl2": ["33px", "45px"],
         "title-lg": ["28px", "35px"],

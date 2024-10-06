@@ -21,23 +21,23 @@ const GradeCard = ({ id, label, data }: GradeCardProps) => {
               height={20}
             />
           </div>
-          <h1 className="pt-0 text-lg font-semibold">Grade {label}</h1>
+          <h1 className="text-md pt-0 font-semibold dark:text-white">
+            Section {label}
+          </h1>
           <button className=" border-none bg-transparent p-0 focus:outline-none">
             <IoIosMore className="text-gray-600 hover:text-gray-800" />
           </button>
         </div>
-        <div className="mt-3 flex items-center justify-between gap-3">
-          <div>
-            <h6 className="text-sm font-semibold">12</h6>
-            <h3 className="text-sm ">{t("grade.sections")}</h3>
+        <div className="mt-3 flex items-center justify-between gap-5">
+          <div className="flex flex-col">
+            <h6 className="text-dark text-xs  dark:text-white ">H.R.Teacher</h6>
+            <h3 className="text-sm font-semibold dark:text-white">
+              {"Firaol getachew"}
+            </h3>
           </div>
-          <div>
-            <h6 className="text-sm font-semibold">12</h6>
-            <h3 className="text-sm ">{t("grade.subjects")}</h3>
-          </div>
-          <div>
-            <h6 className="text-sm font-semibold">12</h6>
-            <h3 className="text-sm ">{t("grade.students")}</h3>
+          <div className="flex flex-col">
+            <h6 className="text-sm  dark:text-white">T.Student</h6>
+            <h3 className="text-sm font-semibold dark:text-white">{"120"}</h3>
           </div>
         </div>
       </Link>

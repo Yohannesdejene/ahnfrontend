@@ -43,11 +43,11 @@ const formSchema = z.object({
     .max(120, "Age must be less than or equal to 120"),
 });
 
-interface AddStudentProps {
-  toggleDrawer: (open: boolean) => void; // Accepting toggleDrawer function as a prop
-}
+// interface AddStudentProps {
+//   toggleDrawer: (open: boolean) => void; // Accepting toggleDrawer function as a prop
+// }
 
-const AddStudent: React.FC<AddStudentProps> = ({ toggleDrawer }) => {
+const AddStudent = () => {
   const router = useRouter();
   const dispatch: AppDispatch = useDispatch();
   const methods = useForm<STUDENT_CREATE>({
@@ -66,79 +66,85 @@ const AddStudent: React.FC<AddStudentProps> = ({ toggleDrawer }) => {
     };
 
     dispatch(createStudents({ studentsData: newData })).then((data) => {
-      toggleDrawer(false);
+      // toggleDrawer(false);
     });
   };
 
   return (
     <>
-      <div className="flex  w-full bg-white text-black dark:bg-boxdark dark:text-white">
+      <div className="flex w-full bg-white p-10 text-black dark:bg-boxdark dark:text-white">
         <FormProvider {...methods}>
           <div className="container mx-auto mt-0">
             <div className="w-full">
               <div className="p-0">
-                <h6 className="text-gray-700 w-full text-lg font-normal ">
+                <h6 className="text-gray-700 w-full text-lg font-normal">
                   {t("students.addStudents")}
                 </h6>
 
-                <hr className="mb-4 mt-4 w-full text-lg font-normal text-normalGray " />
+                <hr className="mb-4 mt-4 w-full text-lg font-normal text-normalGray" />
                 <div className="w-full">
                   <form
                     onSubmit={methods.handleSubmit(onSubmit)}
                     className="p-fluid"
                   >
-                    <div className="mb-3 w-full">
-                      <InputString
-                        type="text"
-                        name="first_name"
-                        label={t("students.firstName")}
-                        placeholder={t("ex Firaol")}
-                      />
-                    </div>
-                    <div className="mb-3 w-full">
-                      <InputString
-                        type="text"
-                        name="middle_name"
-                        label={t("students.middleName")}
-                        placeholder={t("ex Getachew")}
-                      />
-                    </div>
-                    <div className="mb-3 w-full">
-                      <InputString
-                        type="text"
-                        name="last_name"
-                        label={t("students.lastName")}
-                        placeholder={t("ex bogale")}
-                      />
+                    <div className="xs:flex xs:flex-column gap-5 sm:flex sm:flex-row">
+                      <div className="mb-3 w-full">
+                        <InputString
+                          type="text"
+                          name="first_name"
+                          label={t("students.firstName")}
+                          placeholder={t("ex Firaol")}
+                        />
+                      </div>
+                      <div className="mb-3 w-full">
+                        <InputString
+                          type="text"
+                          name="middle_name"
+                          label={t("students.middleName")}
+                          placeholder={t("ex Getachew")}
+                        />
+                      </div>
                     </div>
 
-                    <div className="mb-3 w-full">
-                      <InputString
-                        type="text"
-                        name="phone_number"
-                        label={t("students.phoneNumber")}
-                        placeholder={t("ex 0912345678")}
-                      />
+                    <div className="xs:flex xs:flex-column gap-5 sm:flex sm:flex-row">
+                      <div className="mb-3 w-full">
+                        <InputString
+                          type="text"
+                          name="last_name"
+                          label={t("students.lastName")}
+                          placeholder={t("ex bogale")}
+                        />
+                      </div>
+                      <div className="mb-3 w-full">
+                        <InputString
+                          type="text"
+                          name="phone_number"
+                          label={t("students.phoneNumber")}
+                          placeholder={t("ex 0912345678")}
+                        />
+                      </div>
                     </div>
 
-                    <div className="mb-3 w-full">
-                      <InputString
-                        type="text"
-                        name="father_name"
-                        label={t("students.fatherName")}
-                        placeholder={t("ex Getachew")}
-                      />
-                    </div>
-                    <div className="mb-3 w-full">
-                      <InputString
-                        type="text"
-                        name="father_phone"
-                        label={t("students.fatherPhone")}
-                        placeholder={t("ex 0912345678")}
-                      />
+                    <div className="xs:flex xs:flex-column gap-5 sm:flex sm:flex-row">
+                      <div className="mb-3 w-full">
+                        <InputString
+                          type="text"
+                          name="father_name"
+                          label={t("students.fatherName")}
+                          placeholder={t("ex Getachew")}
+                        />
+                      </div>
+                      <div className="mb-3 w-full">
+                        <InputString
+                          type="text"
+                          name="father_phone"
+                          label={t("students.fatherPhone")}
+                          placeholder={t("ex 0912345678")}
+                        />
+                      </div>
                     </div>
 
-                    <div className="flex flex-row gap-5">
+                    <div className="xs:flex xs:flex-column gap-5 sm:flex sm:flex-row">
                       <div className="mb-3 w-full">
                         <InputNumber
                           name="houseNo"
@@ -154,7 +160,8 @@ const AddStudent: React.FC<AddStudentProps> = ({ toggleDrawer }) => {
                         />
                       </div>
                     </div>
-                    <div className="flex flex-row gap-5">
+
+                    <div className="xs:flex xs:flex-column gap-5 sm:flex sm:flex-row">
                       <div className="mb-3 w-full">
                         <InputNumber
                           name="age"
@@ -172,24 +179,26 @@ const AddStudent: React.FC<AddStudentProps> = ({ toggleDrawer }) => {
                       </div>
                     </div>
 
-                    <div className="mb-3 w-full">
-                      <InputString
-                        type="text"
-                        name="subcity"
-                        label={t("students.subcity")}
-                        placeholder={t("ex Addis Ababa")}
-                      />
+                    <div className="xs:flex xs:flex-column gap-5 sm:flex sm:flex-row">
+                      <div className="mb-3 w-full">
+                        <InputString
+                          type="text"
+                          name="subcity"
+                          label={t("students.subcity")}
+                          placeholder={t("ex Addis Ababa")}
+                        />
+                      </div>
+                      <div className="mb-3 w-full">
+                        <InputString
+                          type="text"
+                          name="prev_school"
+                          label={t("students.prevSchool")}
+                          placeholder={t("ex Addis Ababa")}
+                        />
+                      </div>
                     </div>
 
-                    <div className="mb-3 w-full">
-                      <InputString
-                        type="text"
-                        name="prev_school"
-                        label={t("students.prevSchool")}
-                        placeholder={t("ex Addis Ababa")}
-                      />
-                    </div>
-                    <div className="flex flex-row gap-5">
+                    <div className="xs:flex xs:flex-column gap-5 sm:flex sm:flex-row">
                       <div className="mb-3 w-full">
                         <SelectInput
                           name="sex"
@@ -197,10 +206,7 @@ const AddStudent: React.FC<AddStudentProps> = ({ toggleDrawer }) => {
                           placeholder={t("students.sexPlaceholder")}
                           options={[
                             { value: "Male", label: t("common.male") },
-                            {
-                              value: "Female",
-                              label: t("common.female"),
-                            },
+                            { value: "Female", label: t("common.female") },
                           ]}
                         />
                       </div>
@@ -211,14 +217,12 @@ const AddStudent: React.FC<AddStudentProps> = ({ toggleDrawer }) => {
                           placeholder={t("students.statusPlaceholder")}
                           options={[
                             { value: "Active", label: t("common.active") },
-                            {
-                              value: "Inactive",
-                              label: t("common.inactive"),
-                            },
+                            { value: "Inactive", label: t("common.inactive") },
                           ]}
                         />
                       </div>
                     </div>
+
                     <div className="mb-3 w-full">
                       <InputString
                         type="text"
@@ -227,6 +231,7 @@ const AddStudent: React.FC<AddStudentProps> = ({ toggleDrawer }) => {
                         placeholder={t("ex computer science")}
                       />
                     </div>
+
                     <div className="mb-4">
                       <CommonButton
                         loading={createStudentsLoading}

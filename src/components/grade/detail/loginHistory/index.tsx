@@ -21,10 +21,10 @@ const formSchema = z.object({
   father_phone: z.string().regex(/^\d{10}$/, "Phone number must be 10 digits"),
 });
 
-interface ParentInfoProps {
+interface LoginHistoryProps {
   id: string | number | null;
 }
-const ParentInfo: React.FC<ParentInfoProps> = ({ id }) => {
+const LoginHistory: React.FC<LoginHistoryProps> = ({ id }) => {
   const router = useRouter();
 
   const dispatch: AppDispatch = useDispatch();
@@ -68,23 +68,23 @@ const ParentInfo: React.FC<ParentInfoProps> = ({ id }) => {
                   >
                     <div className="w-full  bg-white p-5 text-black dark:bg-boxdark dark:text-white">
                       <h6 className="text-gray-700 mb-5 w-full text-lg font-normal ">
-                        {t("students.fatherInfo")}
+                        {t("students.loginHistory")}
                       </h6>
                       <div className="xs:flex xs:flex-column gap-5 sm:flex sm:flex-row">
                         <div className="mb-3 w-full">
                           <InputString
                             type="text"
-                            name="father_name"
-                            label={t("students.fatherName")}
+                            name="username"
+                            label={t("students.username")}
                             placeholder={t("ex Getachew")}
                           />
                         </div>
                         <div className="mb-3 w-full">
                           <InputString
-                            type="text"
-                            name="father_phone"
-                            label={t("students.fatherPhone")}
-                            placeholder={t("ex 0912345678")}
+                            type="password"
+                            name="password"
+                            label={t("students.password")}
+                            placeholder={t("ex 123")}
                           />
                         </div>
                       </div>
@@ -107,4 +107,4 @@ const ParentInfo: React.FC<ParentInfoProps> = ({ id }) => {
   );
 };
 
-export default ParentInfo;
+export default LoginHistory;

@@ -19,7 +19,7 @@ const statusShow = (status: string | undefined) => {
     );
   } else {
     return (
-      <div className="color-white  w-full justify-center bg-danger pb-1 pt-1 text-white">
+      <div className="color-white w-full justify-center bg-danger pb-1 pt-1 text-white">
         Not active
       </div>
     );
@@ -32,7 +32,7 @@ const OverView: React.FC = () => {
 
   return (
     <>
-      <div className=" flex-column w-full bg-white text-black dark:bg-boxdark dark:text-white">
+      <div className=" flex-column h-auto w-full  text-black dark:text-white">
         <div className="d-xs-none flex justify-center">
           {statusShow(selectedStudents?.user?.is_active)}
         </div>
@@ -70,24 +70,24 @@ const OverView: React.FC = () => {
         </div>
         <hr className="ml-5 mr-5  pl-5" style={{ color: "#e7e7e7" }}></hr>
         <div className="mb-10 flex w-full flex-col space-y-5 p-5">
-          <div className="flex-column h-auto gap-1 bg-gray3 p-2">
+          <div className="flex-column h-auto gap-1 bg-gray3 p-2 dark:bg-graydark">
             <h6 className="text-title-xsm2 font-light">Admission Date</h6>
             <h6 className="text-title-xsm2 font-medium">
               {convertISOToNormalDate(selectedStudents?.user?.created_date)}
             </h6>
           </div>
-          <div className="flex-column h-auto gap-1 bg-gray3 p-2">
+          <div className="flex-column h-auto gap-1 bg-gray3 p-2 dark:bg-graydark">
             <h6 className="text-title-xsm2 font-light">Registration Id</h6>
             <h6 className="text-title-xsm2 font-medium">
               {" "}
               {selectedStudents?.user?.id}
             </h6>
           </div>
-          <div className="flex-column h-auto gap-1 bg-gray3 p-2">
+          <div className="flex-column h-auto gap-1 bg-gray3 p-2 dark:bg-graydark">
             <h6 className="text-title-xsm2 font-light">Grade</h6>
             <h6 className="text-title-xsm2 font-medium">9</h6>
           </div>
-          <div className="flex-column h-auto gap-1 bg-gray3 p-2">
+          <div className="flex-column h-auto gap-1 bg-gray3 p-2 dark:bg-graydark">
             <h6 className="text-title-xsm2 font-light">Section</h6>
             <h6 className="text-title-xsm2 font-medium">C</h6>
           </div>

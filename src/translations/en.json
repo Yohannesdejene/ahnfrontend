@@ -126,9 +126,23 @@
     "searchGrade": "Search Grade",
     "sections": "Sections",
     "subjects": "Subjects",
-    "students": "Students"
+    "students": "Students",
+    "updatingGrade": "Updating Grade",
+    "gradeUpdatedSuccessfully": "Grade updated successfully",
+    "creatingGrade": "Creating Grade",
+    "gradeCreatedSuccessfully": "Grade created successfully",
+    "deletingGrade": "Deleting Grade",
+    "gradeDeletedSuccessfully": "Grade deleted successfully",
+    "getGradeById": "Getting Grade by ID",
+    "gradeRetrievedSuccessfully": "Grade retrieved successfully",
+    "getGradeByIdError": "Error getting grade by ID",
+    "getGradeByIdLoading": "Getting grade by ID",
+    "addSection": "Add Section",
+    "searchSection": "Search Section"
   },
   "students": {
+    "username": "Username",
+    "password": "Password",
     "listStudents": "List Students",
     "addStudents": "Add Student",
     "editStudents": "Edit Student",
@@ -181,7 +195,9 @@
     "personalInformation": "Personal Information",
     "contact": "Contact",
     "schoolInfo": "School Info",
-    "fatherInfo": "Father Info"
+    "fatherInfo": "Father Info",
+    "studentDocument": "Student Document",
+    "loginHistory": "Login History"
   }
 }
     

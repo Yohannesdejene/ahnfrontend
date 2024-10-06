@@ -1,10 +1,16 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import { IoAddCircleSharp } from "react-icons/io5";
 import { t } from "@/utils/translation";
 import { useDispatch, useSelector } from "react-redux";
 import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
-import { Button as BaseButton, Alert } from "@mui/material";
+import {
+  Button as BaseButton,
+  Alert,
+  createTheme,
+  Box,
+  ThemeProvider,
+  Tab,
+} from "@mui/material";
 import { IconButton, Tooltip } from "@mui/material";
 import Chip from "@mui/material/Chip";
 import CommonDrawer from "@/common/Drawer";
@@ -15,6 +21,53 @@ import CommonSearch from "@/common/commonSearch";
 import AddStudent from "./add";
 import { useRouter } from "next/navigation";
 import { LIST_DETAIL_STUDENTS } from "@/routes";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel/TabPanel";
+import TabContext from "@mui/lab/TabContext";
+import { FaUserGraduate } from "react-icons/fa"; // Import the icon you want to use
+import { IoAddCircleSharp } from "react-icons/io5";
+import { IoMdAdd } from "react-icons/io";
+
+const theme = createTheme({
+  components: {
+    MuiTabs: {
+      styleOverrides: {
+        indicator: {
+          backgroundColor: "#0097B2",
+          // Set your custom color here
+        },
+      },
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          "&.Mui-selected": {
+            color: "#0097B2", // Set the text color for active tab here
+          },
+          "&.MuiTab-textColorInherit": {
+            color: "red", // Set the text color for inactive tab here
+          },
+        },
+      },
+    },
+  },
+});
+const tabStyles = {
+  flexDirection: {
+    xs: "column",
+    sm: "row",
+  },
+  // fontWeight: "bold",
+  alignItems: "center",
+  fontSize: "15px",
+  textDecoration: "none",
+  textTransform: "none",
+  "& .MuiTab-wrapper": {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+};
+
 function convertISOToNormalDate(isoDate: string): string {
   const date = new Date(isoDate);
 
@@ -53,6 +106,10 @@ const StudentsList: React.FC = () => {
   const { students, loadingStudents } = useSelector(
     (state: RootState) => state.students,
   );
+  const [value, setValue] = React.useState("listStudents");
+  const handleChange = (event: any, newValue: any) => {
+    setValue(newValue);
+  };
   const handleSearch = (searchTerm: string) => {
     const data = { size: 10, currentPage: 1, search: searchTerm };
     dispatch(fetchStudentsList(data));
@@ -178,79 +235,147 @@ const StudentsList: React.FC = () => {
   ];
   return (
     <>
-      <div className="mx-auto max-w-242.5">
-        <label className="mb-4 block  text-title-md font-medium text-black dark:text-white">
-          {t("students.listStudents")}
-        </label>
-        <div className=" xs:d-flex xs:flex-column  md:flex md:justify-between ">
-          <BaseButton
-            onClick={handleAddDrawer}
-            variant="contained"
-            startIcon={<IoAddCircleSharp size={24} />}
-            sx={{
-              textTransform: "none",
-              backgroundColor: "#0097B2",
-              color: "white",
-              marginBottom: "10px",
-              "&:hover": {
-                backgroundColor: "#0097B2",
-              },
-              "& .MuiButton-startIcon": {
-                marginRight: 1,
-              },
-            }}
-            style={{ backgroundColor: "#0097B2" }}
-          >
-            {t("students.addStudents")}
-          </BaseButton>
-          <div className="flex w-full gap-2 sm:w-1/2">
-            <div className="w-full ">
-              <CommonSearch
-                label="Search students"
-                placeholder={t("students.searchStudents")}
-                onSearch={handleSearch}
-              />
-            </div>
+      <Box
+        sx={{
+          width: "100%",
+          typography: "body1",
+        }}
+      >
+        <ThemeProvider theme={theme}>
+          <TabContext value={value}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <TabList
+                onChange={handleChange}
+                aria-label="lab API tabs example"
+                variant="scrollable"
+                scrollButtons="auto"
+                allowScrollButtonsMobile
+                sx={{
+                  [`& .MuiTabs-scrollButtons`]: {
+                    "&.Mui-disabled": { opacity: 0.3 },
+                  },
+                }}
+              >
+                <Tab
+                  icon={
+                    <div className="mr-2 mt-1 flex items-center justify-center">
+                      <FaUserGraduate />
+                    </div>
+                  }
+                  label="List Students"
+                  value="listStudents"
+                  className="text-black dark:text-white"
+                  sx={{
+                    ...tabStyles,
+                  }}
+                />
 
-            <BaseButton
-              onClick={handleReset}
-              variant="contained"
-              sx={{
+                <Tab
+                  icon={
+                    <div className=" mr-2 mt-1 flex items-center justify-center">
+                      <IoMdAdd />
+                    </div>
+                  }
+                  label="Add Students"
+                  value="addStudent"
+                  className="text-black dark:text-white"
+                  sx={{
+                    ...tabStyles,
+                  }}
+                />
+              </TabList>
+            </Box>
+            <TabPanel
+              value="listStudents"
+              style={{
                 textTransform: "none",
-                backgroundColor: "#0097B2",
-                color: "white",
-                mt: "3px",
-                marginBottom: "10px",
-                "&:hover": {
-                  backgroundColor: "#0097B2",
-                },
+                textDecoration: "none",
+                color: "#000000",
               }}
-              style={{ backgroundColor: "#0097B2", height: "31px" }}
             >
-              {t("common.reset")}
-            </BaseButton>
-          </div>
-        </div>
+              {/* <Sections id={id} /> */}
+              <div className="mx-auto max-w-242.5">
+                <label className="mb-4 block  text-title-md font-medium text-black dark:text-white">
+                  {t("students.listStudents")}
+                </label>
+                <div className=" xs:d-flex xs:flex-column  md:flex md:justify-between ">
+                  <div className="flex w-full gap-2 sm:w-1/2">
+                    <div className="w-full ">
+                      <CommonSearch
+                        label="Search students"
+                        placeholder={t("students.searchStudents")}
+                        onSearch={handleSearch}
+                      />
+                    </div>
 
-        <div className="flex h-screen w-full bg-white text-black dark:bg-boxdark dark:text-white">
-          <div className="container mx-auto mt-0">
-            <div className="">
-              <div className="p-4">
-                {/* Restrict the DataGrid's height and width, and allow horizontal scrolling */}
-                <div className="overflow-x-auto bg-white text-black dark:bg-normalGray">
-                  <DataGrid
-                    loading={loadingStudents}
-                    rows={rows}
-                    columns={columns}
-                    autoHeight
-                  />
+                    <BaseButton
+                      onClick={handleReset}
+                      variant="contained"
+                      sx={{
+                        textTransform: "none",
+                        backgroundColor: "#0097B2",
+                        color: "white",
+                        mt: "3px",
+                        marginBottom: "10px",
+                        "&:hover": {
+                          backgroundColor: "#0097B2",
+                        },
+                      }}
+                      style={{ backgroundColor: "#0097B2", height: "31px" }}
+                    >
+                      {t("common.reset")}
+                    </BaseButton>
+                  </div>
+                  <BaseButton
+                    onClick={handleAddDrawer}
+                    variant="contained"
+                    startIcon={<IoAddCircleSharp size={24} />}
+                    sx={{
+                      textTransform: "none",
+                      backgroundColor: "#0097B2",
+                      color: "white",
+                      marginBottom: "10px",
+                      "&:hover": {
+                        backgroundColor: "#0097B2",
+                      },
+                      "& .MuiButton-startIcon": {
+                        marginRight: 1,
+                      },
+                    }}
+                    style={{ backgroundColor: "#0097B2" }}
+                  >
+                    {t("students.addStudents")}
+                  </BaseButton>
+                </div>
+
+                <div className="flex h-screen w-full bg-white text-black dark:bg-boxdark dark:text-white">
+                  <div className="container mx-auto mt-0">
+                    <div className="">
+                      <div className="p-4">
+                        {/* Restrict the DataGrid's height and width, and allow horizontal scrolling */}
+                        <div className="overflow-x-auto bg-white text-black dark:bg-normalGray">
+                          <DataGrid
+                            loading={loadingStudents}
+                            rows={rows}
+                            columns={columns}
+                            autoHeight
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <CommonDrawer
+            </TabPanel>
+
+            <TabPanel value="addStudent">
+              <AddStudent />
+            </TabPanel>
+          </TabContext>
+        </ThemeProvider>
+      </Box>
+
+      {/* <CommonDrawer
         isOpen={isDrawerOpen}
         toggleDrawer={toggleDrawer}
         content={
@@ -260,7 +385,7 @@ const StudentsList: React.FC = () => {
         }
         direction="right"
         width={400} // Set the drawer width
-      />
+      /> */}
     </>
   );
 };
