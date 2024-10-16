@@ -1,13 +1,15 @@
 ///course
 import HttpService from "@/services/HttpService";
 import { SECTION_CREATE } from "./type";
-export async function apiGetSectionList(
+export async function apiGetSectionsList(
   size: number,
   currentPage: number,
+  search?: string,
 ): Promise<any> {
   const method = "GET"; // Use GET method
-  let url = `/education/section/all`; // Adjust the endpoint to match your API's URL
-  if (size && currentPage) url += `?size${size}&page${currentPage}`;
+  let url = `/education/section`; // Adjust the endpoint to match your API's URL
+  if (size && currentPage) url += `?limit=${size}&page=${currentPage}`;
+  if (search) url += `&search=${search}`;
 
   try {
     const response = await HttpService.request({
