@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { t } from "@/utils/translation";
 import { useDispatch, useSelector } from "react-redux";
 import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
+
 import {
   Button as BaseButton,
   Alert,
@@ -10,6 +11,10 @@ import {
   Box,
   ThemeProvider,
   Tab,
+  Button,
+  Select,
+  MenuItem,
+  Pagination,
 } from "@mui/material";
 import { IconButton, Tooltip } from "@mui/material";
 import Chip from "@mui/material/Chip";
@@ -27,6 +32,7 @@ import TabContext from "@mui/lab/TabContext";
 import { FaUserGraduate } from "react-icons/fa"; // Import the icon you want to use
 import { IoAddCircleSharp } from "react-icons/io5";
 import { IoMdAdd } from "react-icons/io";
+import { register } from "module";
 
 const theme = createTheme({
   components: {
@@ -87,6 +93,8 @@ const optionsPerPage = [
   { label: "30", value: 30 },
   { label: "40", value: 40 },
   { label: "50", value: 50 },
+  { label: "100", value: 100 },
+  { label: "500", value: 500 },
 ];
 const statusShow = (status: boolean) => {
   if (status) {
@@ -102,21 +110,46 @@ const StudentsList: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [id, setId] = useState<number | string | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [size, setSize] = useState(10);
   const dispatch: AppDispatch = useDispatch(); // Use the AppDispatch type
-  const { students, loadingStudents } = useSelector(
+  const { students, loadingStudents, pagination } = useSelector(
     (state: RootState) => state.students,
   );
+  console.log("pagination-pagination", pagination);
   const [value, setValue] = React.useState("listStudents");
   const handleChange = (event: any, newValue: any) => {
     setValue(newValue);
   };
   const handleSearch = (searchTerm: string) => {
+        // setPage(1);
+        // setSize(10);
     const data = { size: 10, currentPage: 1, search: searchTerm };
     dispatch(fetchStudentsList(data));
   };
-  const handleReset = () => {
-    const data = { size: 10, currentPage: 1 };
+  useEffect(() => {
+    const data = { size: size, currentPage: page };
     dispatch(fetchStudentsList(data));
+  }, [page, size, dispatch]);
+
+  const handlePageSizeChange = (
+    event: React.ChangeEvent<{ value: unknown }>,
+  ) => {
+    setSize(event.target.value as number);
+    setPage(1); // Reset to first page when changing page size
+  };
+
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number,
+  ) => {
+    setPage(value);
+  };
+
+  const handleReset = () => {
+    setPage(1);
+    setSize(10);
+    dispatch(fetchStudentsList({ size: 10, currentPage: 1 }));
   };
   // Function to toggle the drawer open/close
   const toggleDrawer = (open: boolean) => {
@@ -126,10 +159,6 @@ const StudentsList: React.FC = () => {
     setIsDialogOpen(open);
   };
 
-  useEffect(() => {
-    const data = { size: 10, currentPage: 1 };
-    dispatch(fetchStudentsList(data));
-  }, [dispatch]);
   // Conditionally create rows only when loading is false and students is available
   const rows: GridRowsProp =
     !loadingStudents && students && students?.length > 0
@@ -326,29 +355,23 @@ const StudentsList: React.FC = () => {
                       {t("common.reset")}
                     </BaseButton>
                   </div>
-                  <BaseButton
-                    onClick={handleAddDrawer}
-                    variant="contained"
-                    startIcon={<IoAddCircleSharp size={24} />}
-                    sx={{
-                      textTransform: "none",
-                      backgroundColor: "#0097B2",
-                      color: "white",
-                      marginBottom: "10px",
-                      "&:hover": {
-                        backgroundColor: "#0097B2",
-                      },
-                      "& .MuiButton-startIcon": {
-                        marginRight: 1,
-                      },
-                    }}
-                    style={{ backgroundColor: "#0097B2" }}
-                  >
-                    {t("students.addStudents")}
-                  </BaseButton>
+                  <div className="ml-3 mr-3 flex items-center">
+                    <select
+                      className="font-sans focus:shadow-outline-primary dark:focus:shadow-outline-primary w-full rounded-lg border border-solid border-slate-300 bg-white px-3 py-2 text-sm font-normal leading-5 text-slate-900 shadow-md shadow-slate-100 focus:border-primary focus:shadow-lg focus-visible:outline-0 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-300 dark:shadow-slate-900 dark:focus:border-primary"
+                      // aria-label={label}
+                      onChange={handlePageSizeChange}
+                      defaultValue={10}// Ensure a default value is set
+                    >
+                      {[5, 10, 20, 30, 50, 100].map((size) => (
+                        <option key={size} value={size}>
+                          {size} per page
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
 
-                <div className="flex h-screen w-full bg-white text-black dark:bg-boxdark dark:text-white">
+                <div className="auto flex w-full bg-white text-black dark:bg-boxdark dark:text-white">
                   <div className="container mx-auto mt-0">
                     <div className="">
                       <div className="p-4">
@@ -359,11 +382,25 @@ const StudentsList: React.FC = () => {
                             rows={rows}
                             columns={columns}
                             autoHeight
+                            disableColumnFilter
+                            disableColumnSelector
+                            disableDensitySelector
+                            disableColumnMenu
+                            hideFooter
+                            paginationMode="server"
                           />
                         </div>
                       </div>
                     </div>
                   </div>
+                </div>
+                <div className="mt-5 flex justify-center mb-5 ">
+                  <Pagination
+                    count={pagination?.numberOfPages}
+                    page={page}
+                    onChange={handlePageChange}
+                    color="primary"
+                  />
                 </div>
               </div>
             </TabPanel>

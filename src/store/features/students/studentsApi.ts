@@ -7,8 +7,8 @@ export async function apiGetStudentsList(
   search?: string,
 ): Promise<any> {
   const method = "GET"; // Use GET method
-  let url = `/who/student/`; // Adjust the endpoint to match your API's URL
-  if (size && currentPage) url += `?limit${size}&page${currentPage}`;
+  let url = `/who/student`; // Adjust the endpoint to match your API's URL
+  if (size && currentPage) url += `?limit=${size}&page=${currentPage}`;
   if (search) url += `&search=${search}`;
 
   try {

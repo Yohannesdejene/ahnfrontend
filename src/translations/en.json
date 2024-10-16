@@ -57,7 +57,15 @@
     "female": "Female",
     "active": "Active",
     "inactive": "Inactive",
-    "reset": "Reset"
+    "reset": "Reset",
+    "primary": "Primary",
+    "secondary": "Secondary",
+    "tertiary": "Tertiary",
+    "ethiopian": "Ethiopian",
+    "eritrean": "Eritrean",
+    "somali": "Somali",
+    "sudanese": "Sudanese",
+    "other": "Other"
   },
   "year": {
     "listYears": "List years",
@@ -158,7 +166,6 @@
     "religion": "Religion",
     "phoneNumber": "Phone Number",
     "fatherName": "Father Name",
-    "fatherPhone": "Father Phone",
     "email": "Email",
     "address": "Address",
     "city": "City",
@@ -197,7 +204,35 @@
     "schoolInfo": "School Info",
     "fatherInfo": "Father Info",
     "studentDocument": "Student Document",
-    "loginHistory": "Login History"
+    "loginHistory": "Login History",
+    "studentInfo": "Student Info",
+    "parentInfo": "Parent Info",
+    "motherInfo": "Mother Info",
+    "fatherFirstName": "Father First Name",
+    "fatherMiddleName": "Father Middle Name",
+    "fatherLastName": "Father Last Name",
+    "father_name": "Father Name",
+    "fatherPhone": "Father Phone",
+    "fatherEmail": "Father Email",
+    "fatherAge": "Father Age",
+    "occupation": "Occupation",
+    "fatherOccupation": "Father Occupation",
+    "fatherPhoto": "Father Photo",
+
+    "fatherLiteracyLevel": "Father Literacy Level",
+    "motherName": "Mother Name",
+    "motherFirstName": "Mother First Name",
+    "motherMiddleName": "Mother Middle Name",
+    "motherLastName": "Mother Last Name",
+    "motherPhone": "Mother Phone",
+    "motherEmail": "Mother Email",
+    "selectLiteracyLevel": "Select Literacy Level",
+    "selectNationality": "Select Nationality",
+    "motherLiteracyLevel": "Mother Literacy Level"
+  },
+  "section": {
+    "section": "Section",
+    "sectionPlaceholder": "Select Section"
   }
 }
     

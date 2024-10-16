@@ -10,3 +10,5 @@ export const LIST_GRADE = "/grade/list";
 
 export const LIST_STUDENTS = "/students/list";
 export const LIST_DETAIL_STUDENTS = "/students/details";
+export const LIST_SECTIONS = "/sections/list";
+export const LIST_SECTION_DETAILS = "/sections/details";

@@ -61,14 +61,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         {
           icon: <FcDepartment className="text-title-sm text-white" />,
           label: t("sideLayout.sections"), // Translated label
-          route: "#",
-          children: [
-            {
-              icon: <IoIosAddCircle className="text-title-md text-white" />,
-              label: t("sideLayout.addSections"), // Translated label
-              route: "#",
-            },
-          ],
+          route: `${URL.LIST_SECTIONS}`,
         },
         {
           icon: <IoPeopleSharp className="text-title-sm text-white" />,
@@ -92,11 +85,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           label: t("sideLayout.viewYear"), // Translated label
           route: `${URL.LIST_YEARS}`,
         },
-        {
-          icon: <FaSchool className="text-title-sm text-white" />,
-          label: t("sideLayout.viewSchools"), // Translated label
-          route: `${URL.LIST_SCHOOLS}`,
-        },
+
         {
           icon: (
             <LiaChalkboardTeacherSolid className="text-title-sm text-white" />

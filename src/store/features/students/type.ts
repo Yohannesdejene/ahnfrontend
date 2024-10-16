@@ -6,8 +6,6 @@ export interface STUDENT_CREATE {
   last_name: string;
   phone_number: string;
   department: string;
-  father_name: string;
-  father_phone: string;
   sex: string;
   nationality: string;
   status: string;
@@ -16,6 +14,16 @@ export interface STUDENT_CREATE {
   subcity: string;
   prev_school: string;
   age: number;
+  father_name: string;
+  father_phone: string;
+  father_literacy_level: string;
+  father_occupation: string;
+  father_photo: string;
+  mother_name: string;
+  mother_phone: string;
+  mother_literacy_level: string;
+  mother_occupation: string;
+  mother_photo: string;
 }
 export interface PAGINATION {
   page: number;
@@ -44,6 +52,7 @@ export interface STUDENT {
 }
 export interface GET_STUDENT_BY_ID {
   student: STUDENT;
+  parent?: any;
   user?: USER;
   documents?: any;
 }
