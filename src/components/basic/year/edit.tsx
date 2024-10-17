@@ -62,8 +62,8 @@ const formSchema = z
 interface AddYearProps {
   id: number | string | null;
 
-  toggleDrawer: (open: boolean) => void; // Accepting toggleDrawer function as a prop
-  setId: (id: number | null) => void; // Setters don't return a value
+  toggleDrawer: (open: boolean) => void; 
+  setId: (id: number | null) => void;
 }
 
 type FormData = z.infer<typeof formSchema>;
