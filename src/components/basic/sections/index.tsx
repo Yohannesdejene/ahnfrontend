@@ -150,7 +150,6 @@ const SectionsList: React.FC = () => {
     setSize(10);
     dispatch(fetchStudentsList({ size: 10, currentPage: 1 }));
   };
-  // Function to toggle the drawer open/close
   const toggleDrawer = (open: boolean) => {
     setIsDrawerOpen(open);
   };
@@ -158,7 +157,6 @@ const SectionsList: React.FC = () => {
     setIsDialogOpen(open);
   };
 
-  // Conditionally create rows only when loading is false and students is available
   const rows: GridRowsProp =
     !loadingStudents && students && students?.length > 0
       ? students?.map((yearData: any, index: number) => ({
