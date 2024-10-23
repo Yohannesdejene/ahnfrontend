@@ -182,7 +182,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               {" "}
               {t("sideLayout.dashboards")}
             </h1>
-            {/* <hr className="border-gray-100 text- my-2 font-medium " /> */}
           </Link>
 
           <button

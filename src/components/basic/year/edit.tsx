@@ -55,7 +55,7 @@ const formSchema = z
     },
     {
       message: "Start date must be before or the same as the end date",
-      path: ["end_date"], // Error will be assigned to the end_date field
+      path: ["end_date"],
     },
   );
 
