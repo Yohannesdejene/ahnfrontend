@@ -6,7 +6,7 @@ import { z } from "zod";
 import { t } from "@/utils/translation";
 import { LinearProgress, Chip } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "@/store/store"; // Import RootState and AppDispatch
+import { RootState, AppDispatch } from "@/store/store";
 import convertISOToNormalDate from "@/utils/formatDate";
 
 import Image from "next/image";
@@ -26,7 +26,7 @@ const statusShow = (status: string | undefined) => {
   }
 };
 const OverView: React.FC = () => {
-  const dispatch: AppDispatch = useDispatch(); // Use the AppDispatch type
+  const dispatch: AppDispatch = useDispatch(); 
   const { selectedStudents, getStudentsByIdLoading, getStudentsByIdError } =
     useSelector((state: RootState) => state.students);
 
