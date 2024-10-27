@@ -67,9 +67,7 @@ const parentInfoSchema = z.object({
     .min(1, "Mother's literacy level is required"),
 });
 
-// interface AddStudentProps {
-//   toggleDrawer: (open: boolean) => void; // Accepting toggleDrawer function as a prop
-// }
+
 const formSchema = studentInfoSchema.merge(parentInfoSchema);
 
 const AddStudent = () => {
