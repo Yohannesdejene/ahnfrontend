@@ -74,13 +74,6 @@ const StudentDetail: React.FC<GradeDetailProps> = ({ id }) => {
   }, [dispatch, id]);
   return (
     <div className="container mx-auto p-4">
-      {/* Main grid */}
-      {/* {getStudentsByIdLoading && (
-        <div className="flex h-screen items-center justify-center">
-          <CircularProgress />
-        </div>
-      )} */}
-      {/* {!getStudentsByIdLoading && ( */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div className="bg-white dark:bg-boxdark md:col-span-1">
           <OverView />
