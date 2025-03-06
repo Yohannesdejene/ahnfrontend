@@ -1,5 +1,11 @@
 import HttpService from "./HttpService";
-import { SIGN_IN_DATA, SIGN_UP_DATA, CHANGE_PASSWORD_DATA } from "@/types/auth";
+import {
+  SIGN_IN_DATA,
+  VERIFY_OTP_PASSWORD,
+  FORGET_PASSWORD_DATA,
+  SIGN_UP_DATA,
+  CHANGE_PASSWORD_DATA,
+} from "@/types/auth";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export async function apiSignIn(data: SIGN_IN_DATA): Promise<any> {
@@ -12,7 +18,6 @@ export async function apiSignIn(data: SIGN_IN_DATA): Promise<any> {
     if (response.status === 200) {
       return response.data; // Return the data if the response is successful
     } else {
-      console.log("else part ");
       throw new Error(
         response?.data?.message || "Error fetching payment methods",
       );
@@ -22,24 +27,45 @@ export async function apiSignIn(data: SIGN_IN_DATA): Promise<any> {
     // throw new Error(error?.response?.data?.errors || "An error occurred");
 
     // Default error message
-    let errorMessage = "Email or password invalid, please try again.";
-
-    if (
-      error?.response?.data?.errors &&
-      Array.isArray(error.response.data.errors)
-    ) {
-      // If the error contains an array, combine the messages
-      const errorMessagesArray = error.response.data.errors;
-      errorMessage = errorMessagesArray.join(", "); // Join all error messages into a single string
-    } else if (typeof error?.message === "string") {
-      // If the error has a single message string, use it
-      errorMessage = error.message;
-    }
+    let errorMessage =
+      error.response?.data?.message ||
+      "Email or password invalid, please try again.";
     throw new Error(errorMessage);
 
     // Set the error message to be displayed in the UI
     // setErrorMessage(errorMessage);
   }
+}
+
+export async function forgetPassword(data: FORGET_PASSWORD_DATA): Promise<any> {
+  const method = "POST";
+  const url = `${BASE_URL}auth/forgetPassword`;
+
+  try {
+    const response = await HttpService.request({ method, data, url });
+    if (response.status === 200) {
+      return response; // Return the data if the response is successful
+    } else {
+      throw new Error(
+        response?.data?.message || "Error fetching payment methods",
+      );
+    }
+  } catch (error: any) {
+    // throw new Error(error?.response?.data?.errors || "An error occurred");
+
+    // Default error message
+    let errorMessage =
+      error.response?.data?.message ||
+      "Email or password invalid, please try again.";
+    throw new Error(errorMessage);
+  }
+}
+export async function verifyOtp(data: VERIFY_OTP_PASSWORD): Promise<any> {
+  const method = "POST";
+  const url = `${BASE_URL}auth/verifyOtp`;
+
+  const response = await HttpService.request({ method, data, url });
+  return response;
 }
 
 export async function apiSignup(data: SIGN_UP_DATA): Promise<any> {

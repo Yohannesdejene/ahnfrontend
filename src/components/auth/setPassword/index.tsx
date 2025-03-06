@@ -84,13 +84,31 @@ const SetPassword: React.FC = () => {
 "
       >
         <div className=" flex h-full w-full justify-center ">
+          <div
+            className="hidden   h-screen items-center justify-center bg-whitishPrimary dark:bg-boxdark xl:block xl:w-1/2"
+            // style={{
+            //   background: "linear-gradient(to top, #0097B2, #ffffff)", // Replace with your colors
+            // }}
+          >
+            <div className="flex flex-col items-center justify-center px-26 py-0 text-center">
+              <Link className="mb-5.5 mt-8 inline-block" href="#">
+                <Image
+                  className="dark:block"
+                  src={"/images/auth-images/reset.png"}
+                  alt="Logo"
+                  width={350}
+                  height={300}
+                />
+              </Link>
+            </div>
+          </div>
           <div className=" hidden  h-full w-full items-center justify-center xl:block  xl:w-1/2">
             <div className=" float-right mr-10 mt-5">
               <DarkModeSwitcher />
             </div>
             <div className=" mt-20 w-full max-w-lg  p-8 ">
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                Change password
+                Set password
               </h2>
 
               <FormProvider {...methods}>
@@ -107,18 +125,18 @@ const SetPassword: React.FC = () => {
                 >
                   <div className="mb-3">
                     <InputString
-                      type="oldPassword"
-                      name="oldPassword"
-                      label="oldPassword"
-                      placeholder="ex 1234"
+                      type="text"
+                      name="newPassword"
+                      label="New Password"
+                      placeholder="ex type here"
                     />
                   </div>
                   <div className="mb-3">
                     <InputString
-                      type="newPassword"
-                      name="newPassword"
-                      label="newPassword"
-                      placeholder="ex 1233e"
+                      type="text"
+                      name="confirmPassword"
+                      label="Confirm Password"
+                      placeholder="ex type here "
                     />
                   </div>
                   <div className="mb-4">

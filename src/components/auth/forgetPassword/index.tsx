@@ -8,15 +8,16 @@ import { z } from "zod";
 import { useDispatch } from "react-redux";
 import Alert from "@mui/material/Alert";
 import { InputString, CommonButton } from "@/common/formElements";
+import { useRouter } from "next/navigation";
 import DarkModeSwitcher from "@/components/Header/DarkModeSwitcher";
-
 import { loginSuccess, logout } from "@/store/actions";
 import { RootState } from "@/store/store";
-import { apiSignIn } from "@/services/AuthService";
+import { apiSignIn, forgetPassword } from "@/services/AuthService";
 import {
   getSessionKey,
   setSessionKey,
   setTemporaryToken,
+  setEmailInfo,
 } from "@/utils/sessionManager";
 import { toast } from "react-toastify";
 import { FaLock } from "react-icons/fa6";
@@ -25,60 +26,47 @@ import { IoIosArrowBack } from "react-icons/io";
 // Define the form schema with Zod
 const formSchema = z.object({
   email: z.string().email("Invalid email address").min(1, "Email is required"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 type FormData = z.infer<typeof formSchema>;
 
 const ForgetPassword: React.FC = () => {
+  const router = useRouter();
+
+  // Perform the redirect
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const methods = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
-  const onSignIn = async (values: any) => {
+  const onForget = async (values: any) => {
     setErrorMessage(null);
     setLoading(true);
     try {
       // const { email, password } = values;
-      const res = await apiSignIn(values);
-
-      const { status, message, email, isPasswordChanged, token } = res?.data;
-      if (status == 200) {
-        if (isPasswordChanged === true) {
-          dispatch(loginSuccess(token));
-          const res_0 = setSessionKey({
-            userToken: token,
-          });
-          if (res_0) {
-            toast.success("Logged in successfully ");
-            setTimeout(() => {
-              window.location.replace("/");
-            }, 500);
-          } else {
-            throw new Error("Failed to login, please try again");
-          }
-        } else {
-          toast.success("Logged in successfully,change password");
-          // showToast("Logged in successfully,change password", "success");
-          setTemporaryToken({ userToken: token });
-          setTimeout(() => {
-            window.location.replace("/auth/change-password");
-          }, 300);
-        }
+      const res = await forgetPassword(values);
+      console.log("res", res);
+      if (res?.status == 200) {
+        toast.success(res?.data?.message);
+        console.log("values?.email", values?.email);
+        setEmailInfo(values?.email);
+        setTimeout(() => {
+          router.push("/auth/verify-otp-code");
+          // window.location.replace("/auth/change-password");
+        }, 300);
       } else {
-        setErrorMessage("Email or password invalid try again ");
+        setErrorMessage("something went wrong , try again ");
       }
     } catch (errors) {
       console.log("errors", errors);
-      setErrorMessage("Email or password invalid try again ");
+      setErrorMessage("something went wrong , try again ");
     } finally {
       setLoading(false);
     }
   };
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    onSignIn(data);
+    onForget(data);
   };
 
   return (
@@ -131,8 +119,8 @@ const ForgetPassword: React.FC = () => {
                   <FaLock className="text-goldon" />
                 </div>
                 <h2 className="mb-4 text-title-xsm1  text-black dark:text-white">
-                  Enter your email, and we will send you instractions to reset
-                  your password
+                  Enter your email, and we will send you one time password to
+                  reset your password
                 </h2>
 
                 <FormProvider {...methods}>

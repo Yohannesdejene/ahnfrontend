@@ -40,7 +40,12 @@ const config: Config = {
         bodydark2: "#8A99AF",
         // primary: "#0097B2",
         // primary: "#ff5a00",
-        primary: "#0097B2",
+        // primary: "#0097B2",
+        // secondary: "#80CAEE",
+
+        primary: "#109101",
+        secondary: "#2f322f",
+
         whitishPrimary: "#e8f9fc",
         greyishWhite: "#cecccc",
         gradiant: "linear-gradient(to top, #0097B2, #ffffff)",
@@ -48,7 +53,6 @@ const config: Config = {
 
         primaryLightHighOpacity: "#33B2D4CC", // Lighter variant with high opacity
         primaryDarkHighOpacity: "#007B8ACC", // Darker variant with high opacity
-        secondary: "#80CAEE",
         stroke: "#E2E8F0",
 
         normalGray: "#D3D3D3",

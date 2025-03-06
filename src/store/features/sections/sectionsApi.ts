@@ -1,7 +1,7 @@
 ///course
 import HttpService from "@/services/HttpService";
 import { SECTION_CREATE } from "./type";
-export async function apiGetSectionsList(
+export async function apiGetSectionList(
   size: number,
   currentPage: number,
   search?: string,

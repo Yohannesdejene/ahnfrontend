@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
-import TwoStepVerification from "@/components/auth/twoStepVerification";
+import VerifyOptCode from "@/components/auth/verifyOtpCode";
 
 export const metadata: Metadata = {
   title: "Sign in to HudHud express",
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 const SignIn: React.FC = () => {
-  return <TwoStepVerification />;
+  return <VerifyOptCode />;
 };
 
 export default SignIn;

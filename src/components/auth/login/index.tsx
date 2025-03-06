@@ -7,12 +7,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useDispatch } from "react-redux";
 import Alert from "@mui/material/Alert";
-import { InputString, CommonButton } from "@/common/formElements";
-import DarkModeSwitcher from "@/components/Header/DarkModeSwitcher";
+import { FaCheck } from "react-icons/fa6";
 
+import {
+  InputString,
+  CommonButton,
+  EthiopianNumberInput,
+} from "@/common/formElements";
+import DarkModeSwitcher from "@/components/Header/DarkModeSwitcher";
 import { loginSuccess, logout } from "@/store/actions";
 import { RootState } from "@/store/store";
 import { apiSignIn } from "@/services/AuthService";
+
 import {
   getSessionKey,
   setSessionKey,
@@ -22,26 +28,52 @@ import {
 } from "@/utils/sessionManager";
 import toast from "react-hot-toast";
 import { FaLock } from "react-icons/fa6";
+const phoneRegex = /^[97]\d{8}$/; // Starts with 9 or 7 and has exactly 9 digits
 
 // Define the form schema with Zod
-const formSchema = z.object({
-  username: z.string().min(1, "Username  is required"),
-  password: z.string().min(4, "Password must be at least 4 characters"),
-});
+const formSchema = z.discriminatedUnion("loginType", [
+  z.object({
+    loginType: z.literal("phone"),
+    phone: z
+      .string()
+      .regex(
+        phoneRegex,
+        "Phone number must start with 9 or 7 and have exactly 9 digits",
+      ),
+    password: z.string().min(4, "Password must be at least 4 characters"),
+  }),
+  z.object({
+    loginType: z.literal("email"),
+    email: z.string().email("Invalid email"),
+    password: z.string().min(4, "Password must be at least 4 characters"),
+  }),
+]);
+
 type FormData = z.infer<typeof formSchema>;
 
 const Login: React.FC = () => {
+  const [value, setValue] = useState("phone");
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  // const methods = useForm<FormData>({
+  //   resolver: zodResolver(formSchema),
+  // });
   const methods = useForm<FormData>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      loginType: "phone",
+    },
   });
+
   const onSignIn = async (values: any) => {
     setErrorMessage(null);
     setLoading(true);
     try {
       // const { email, password } = values;
+      if (values.phone) {
+        values.phone = `251${values.phone}`;
+      }
       const res = await apiSignIn(values);
       const { user, permissions, token } = res;
       dispatch(loginSuccess(token));
@@ -62,7 +94,8 @@ const Login: React.FC = () => {
       } else {
         throw new Error("Failed to login, please try again");
       }
-    } catch (errors:any) {
+    } catch (errors: any) {
+      console.log("errors-errors-errors", errors);
       let errorMessage;
 
       // Check if the error response exists and has a message
@@ -97,20 +130,23 @@ const Login: React.FC = () => {
           <div
             className=" hidden h-screen items-center justify-center  xl:block xl:w-1/2 "
             style={{
-              background: "linear-gradient(to top, #0097B2, #ffffff)",
+              background: "linear-gradient(to top, #109101, #ffffff)",
             }}
           >
-            <div className="flex flex-col items-center justify-center px-26 py-0 text-center">
-              <Link className="mb-5.5 mt-10 inline-block" href="#">
+            <div className="flex h-full flex-col justify-center px-26 py-0 text-center">
+              <Link className="mb-5.5 inline-block" href="#">
                 <Image
-                  // className="dark:block"
-                  src={"/images/auth-images/login.png"}
-                  // src={"/images/auth-images/show.png"}
+                  className="dark:block"
+                  src={"/images/logo.png"}
                   alt="Logo"
-                  width={350}
-                  height={300}
+                  width={150}
+                  height={100}
                 />
               </Link>
+              <p className="text-xlg 2xl:px-20">
+                HudHud Express is a leading provider of courier, logistics,
+                supply chain management, and freight transportation solutions.
+              </p>
             </div>
           </div>
 
@@ -120,7 +156,7 @@ const Login: React.FC = () => {
             </div>
             <div className="flex flex-grow items-center justify-center">
               <div className="w-full max-w-lg p-8">
-                <div className="mb-6 flex  items-center gap-2">
+                <div className="mb-5 flex  items-center gap-2">
                   <Image
                     className="dark:block"
                     src={"/images/logo.png"}
@@ -128,13 +164,117 @@ const Login: React.FC = () => {
                     width={40}
                     height={50}
                   />
-                  <h6 className="text-lg font-bold text-primary">Alphatech</h6>
+                  <h6 className="text-lg font-bold text-black dark:text-white">
+                    Alpha tech
+                  </h6>
                 </div>
-                <div className="mb-3  flex  items-center gap-2">
+                <div className="mb-3 mt-3  flex  items-center gap-2">
                   <h2 className=" text-title-lg  font-bold text-black dark:text-white sm:text-title-sm">
-                    Sign in
+                    Sign in to continue
                   </h2>
                   <FaLock className="text-goldon" />
+                </div>
+                <div className="align-center flex justify-center ">
+                  {/* <button
+                    className="flex items-center "
+                    style={{
+                      border: "none",
+                      width: "120px",
+                      height: "35px",
+                      // padding: "10px",
+                      paddingLeft: "20px",
+                      paddingRight: "20px",
+                      paddingTop: "10px",
+                      paddingBottom: "10px",
+                      borderBottomLeftRadius: "20px",
+                      borderTopLeftRadius: "20px",
+                      backgroundColor: value == "phone" ? "#109101" : "#cecccc",
+                      color: value == "phone" ? "#ffffff" : "#000000",
+                    }}
+                    onClick={() => setValue("phone")}
+                  >
+                    {value == "phone" && <FaCheck className="mr-2" />}
+                    Phone
+                  </button>
+                  <button
+                    className="flex items-center gap-1"
+                    style={{
+                      backgroundColor: value == "phone" ? "#cecccc" : "#109101",
+                      color: value == "email" ? "#ffffff" : "#000000",
+                      borderBottomRightRadius: "20px",
+                      borderTopRightRadius: "20px",
+                      width: "120px",
+                      height: "35px",
+                      paddingLeft: "20px",
+                      paddingRight: "20px",
+                      paddingTop: "5px",
+                      paddingBottom: "5px",
+                    }}
+                    onClick={() => setValue("email")}
+                  >
+                    {" "}
+                    {value == "email" && <FaCheck className="mr-2" />} Email
+                  </button> */}
+
+                  <button
+                    className="flex items-center "
+                    onClick={() => methods.setValue("loginType", "phone")}
+                    style={{
+                      border: "none",
+                      width: "120px",
+                      height: "35px",
+                      // padding: "10px",
+                      paddingLeft: "20px",
+                      paddingRight: "20px",
+                      paddingTop: "10px",
+                      paddingBottom: "10px",
+                      borderBottomLeftRadius: "20px",
+                      borderTopLeftRadius: "20px",
+                      backgroundColor:
+                        methods.watch("loginType") === "phone"
+                          ? "#109101"
+                          : "#cecccc",
+                      color:
+                        methods.watch("loginType") === "phone"
+                          ? "#ffffff"
+                          : "#000000",
+                    }}
+                  >
+                    {methods.watch("loginType") === "phone" && (
+                      <FaCheck className="mr-2" />
+                    )}{" "}
+                    Phone
+                  </button>
+
+                  <button
+                    onClick={() => methods.setValue("loginType", "email")}
+                    className="flex items-center gap-1"
+                    style={{
+                      // backgroundColor: value == "phone" ? "#cecccc" : "#109101",
+                      // color: value == "email" ? "#ffffff" : "#000000",
+                      backgroundColor:
+                        methods.watch("loginType") === "email"
+                          ? "#109101"
+                          : "#cecccc",
+                      color:
+                        methods.watch("loginType") === "email"
+                          ? "#ffffff"
+                          : "#000000",
+                      borderBottomRightRadius: "20px",
+                      borderTopRightRadius: "20px",
+                      width: "120px",
+                      height: "35px",
+                      paddingLeft: "20px",
+                      paddingRight: "20px",
+                      paddingTop: "5px",
+                      paddingBottom: "5px",
+                    }}
+                  >
+                    {methods.watch("loginType") === "email" && (
+                      <FaCheck className="mr-2" />
+                    )}{" "}
+                    Email
+                  </button>
                 </div>
 
                 <FormProvider {...methods}>
@@ -152,22 +292,23 @@ const Login: React.FC = () => {
                     onSubmit={methods.handleSubmit(onSubmit)}
                     className="p-fluid" // PrimeReact class for fluid layout
                   >
-                    <div className="mb-3">
+                    {methods.watch("loginType") == "phone" ? (
+                      <>
+                        <EthiopianNumberInput
+                          type="number"
+                          name="phone"
+                          label="Phone Number"
+                          placeholder=" ex 912345678"
+                        />
+                      </>
+                    ) : (
                       <InputString
-                        type="text"
-                        name="username"
-                        label="User Name"
-                        placeholder=" ex johnabi"
+                        type="email"
+                        name="email"
+                        label="Email"
+                        placeholder=" ex smaple@gmail.com"
                       />
-                    </div>
-                    <div className="mt-3 h-6 w-full">
-                      <Link
-                        href="/auth/forget-password"
-                        className="float-right  text-primary"
-                      >
-                        Forgot password ?
-                      </Link>
-                    </div>
+                    )}{" "}
                     <div className="mb-3 w-full">
                       <InputString
                         type="password"
@@ -176,20 +317,27 @@ const Login: React.FC = () => {
                         placeholder=" ex #12372525"
                       />
                     </div>
-
+                    <div className="mb-3 mt-3 h-6 w-full">
+                      <Link
+                        href="/auth/forget-password"
+                        className="float-right text-black dark:text-white "
+                      >
+                        Forgot password ?
+                      </Link>
+                    </div>
                     <div className="mb-4 w-full">
                       <CommonButton loading={loading} label="Submit" />
                     </div>
                   </form>
                 </FormProvider>
-                <div className="mt-6 w-full text-center">
+                {/* <div className="mt-6 w-full text-center">
                   <p>
                     Don’t have any account?{" "}
                     <Link href="/auth/signup" className=" text-primary">
                       Sign Up
                     </Link>
                   </p>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

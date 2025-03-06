@@ -266,7 +266,6 @@ export const SelectInput: React.FC<SelectInputProps> = ({
   );
 };
 
-
 export const NumberInput: React.FC<NumberInputProps> = ({
   name,
   label,
@@ -301,6 +300,108 @@ export const NumberInput: React.FC<NumberInputProps> = ({
   );
 };
 
+interface EthiopianInputProps {
+  name: string;
+  label: string;
+  placeholder?: string;
+}
+
+// export const EthiopianNumberInput: React.FC<NumberInputProps> = ({
+//   name,
+//   label,
+//   placeholder,
+// }) => {
+//   const {
+//     register,
+//     formState: { errors },
+//   } = useFormContext();
+
+//   return (
+//     <div className="flex w-full flex-col" style={{ backgroundColor: "redF" }}>
+//       <label className="mb-2 block text-sm font-medium text-black dark:text-white">
+//         {label}
+//       </label>
+//       <div
+//         className=" flex w-full  items-center "
+//         style={{ backgroundColor: "yellow" }}
+//       >
+//         <span
+//           style={{
+//             borderBottomLeftRadius: "10px",
+//             borderTopLeftRadius: "10px",
+//           }}
+//           className="text-gray-600 dark:text-gray-300  font-sans focus:shadow-outline-primary dark:focus:shadow-outline-primary left-3 border border-solid border-slate-300 bg-white py-2 pl-5 pr-5 leading-5 text-slate-900 shadow-md shadow-slate-100 focus:border-primary focus:shadow-lg focus-visible:outline-0 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-300 dark:shadow-slate-900 dark:focus:border-primary"
+//         >
+//           +251
+//         </span>
+//         <Input
+//           style={{
+//             borderBottomRightRadius: "10px",
+//             borderTopRightRadius: "10px",
+//           }}
+//           slotProps={{
+//             input: {
+//               className:
+//                 " rounded-r-lg w-full   text-sm font-sans font-normal leading-5 pl-14 pr-3 py-2  shadow-md shadow-slate-100 dark:shadow-slate-900 focus:shadow-outline-primary dark:focus:shadow-outline-primary focus:shadow-lg border border-solid border-slate-300 focus:border-primary dark:focus:border-primary dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-300 focus-visible:outline-0",
+//             },
+//           }}
+//           aria-label="Phone number input"
+//           placeholder={placeholder ? placeholder : "912345678"} // Ethiopian phone format
+//           {...register(name)}
+//           type="tel"
+//         />
+//       </div>
+//       {errors[name] && (
+//         <small className="text-danger">{errors[name]?.message as string}</small>
+//       )}
+//     </div>
+//   );
+// };
+
+export const EthiopianNumberInput: React.FC<InputProps> = ({
+  name,
+  label,
+  type = "text",
+  placeholder,
+}) => {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
+
+  return (
+    <div className="flex flex-col">
+      <label className="mb-2 block text-sm font-medium text-black dark:text-white">
+        {label}
+      </label>
+      <div className="flex">
+        <span
+          className="text-gray-600 dark:text-gray-300 font-sans border border-solid border-slate-300 bg-white py-2 pl-5 pr-5 leading-5 text-slate-900 shadow-md dark:border-slate-600 dark:bg-slate-900 dark:text-slate-300 dark:shadow-slate-900"
+          style={{
+            borderBottomLeftRadius: "10px",
+            borderTopLeftRadius: "10px",
+          }}
+        >
+          +251
+        </span>
+        <input
+          style={{
+            borderBottomRightRadius: "10px",
+            borderTopRightRadius: "10px",
+          }}
+          className="font-sans w-full rounded-r-lg border border-solid border-slate-300 bg-white px-3 py-2 text-sm leading-5 text-slate-900 shadow-md focus:border-primary focus-visible:outline-0 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-300 dark:focus:border-primary"
+          aria-label="Ethiopian phone number input"
+          placeholder={placeholder ? placeholder : "912345678"}
+          {...register(name)}
+          type={type}
+        />
+      </div>
+      {errors[name] && (
+        <small className="text-danger">{errors[name]?.message as string}</small>
+      )}
+    </div>
+  );
+};
 export const InputString: React.FC<InputProps> = ({
   name,
   label,
@@ -356,7 +457,7 @@ export const CommonButton: React.FC<ButtonProps> = ({ label, loading }) => {
         disabled={loading} // Disable button when loading
         style={{
           textTransform: "none",
-          backgroundColor: "#0097B2",
+          backgroundColor: "#0f6f03",
           color: "white",
         }}
       >
@@ -427,7 +528,6 @@ export const InputNumber: React.FC<InputNumberProps> = ({
     </div>
   );
 };
- 
 
 interface FileDropzoneProps {
   name: string;
@@ -486,4 +586,3 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
     </div>
   );
 };
-

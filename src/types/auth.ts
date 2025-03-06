@@ -2,6 +2,13 @@ export interface SIGN_IN_DATA {
   email: string;
   password: string;
 }
+export interface FORGET_PASSWORD_DATA {
+  email: string;
+}
+export interface VERIFY_OTP_PASSWORD {
+  email: string;
+  otp: string;
+}
 
 export interface SIGN_UP_DATA {
   username: string;

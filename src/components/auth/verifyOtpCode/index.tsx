@@ -12,18 +12,18 @@ import DarkModeSwitcher from "@/components/Header/DarkModeSwitcher";
 
 import { loginSuccess, logout } from "@/store/actions";
 import { RootState } from "@/store/store";
-import { apiSignIn } from "@/services/AuthService";
-import {
-  getSessionKey,
-  setSessionKey,
-  setTemporaryToken,
-} from "@/utils/sessionManager";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { FaLock } from "react-icons/fa6";
 import { IoIosArrowBack } from "react-icons/io";
 import { MuiOtpInput } from "mui-one-time-password-input";
 import { RiMessage2Line } from "react-icons/ri";
-
+import { apiSignIn, forgetPassword, verifyOtp } from "@/services/AuthService";
+import {
+  getEmailInfo,
+  setTemporaryToken,
+  deleteTempEmailSession,
+} from "@/utils/sessionManager";
 // Define the form schema with Zod
 
 const schema = z.object({
@@ -34,7 +34,9 @@ const schema = z.object({
 type FormData = {
   otp: string;
 };
-const TwoStepVerification: React.FC = () => {
+const VerifyOptCode: React.FC = () => {
+  const router = useRouter();
+
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -49,23 +51,52 @@ const TwoStepVerification: React.FC = () => {
     }
   };
 
-
-
   const handleComplete = (finalValue: string) => {
     fetch("...");
   };
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    setErrorMessage("");
     event.preventDefault(); // Prevent default form submission
-    if (value.length < 6) {
-      return alert("fill 6 digit value ");
+    if (value.length < 8) {
+      alert("fill 8 digit value ");
+      return;
     }
-    if (value.length === 6) {
-      // Ensure all fields are filled
-      setLoading(true);
-      console.log("Submitted OTP: ", value);
-      // Add your submission logic here (e.g., API call)
-      // After submission, reset loading state
-      setLoading(false);
+    setLoading(true);
+    if (value.length === 8) {
+      try {
+        const email = getEmailInfo();
+        // const { email, password } = values;
+        const requestBody = {
+          email: email ? email : "",
+          otp: value,
+        };
+        const res = await verifyOtp(requestBody);
+        console.log("res", res);
+        if (res?.status == 200) {
+          toast.success(res?.data?.message);
+          const userToken = res?.data?.token || "";
+          setTemporaryToken(userToken);
+          deleteTempEmailSession();
+          toast.success(res?.data?.message || "Otp  verified successfully ");
+          setTimeout(() => {
+            router.push("/auth/set-password");
+            // window.location.replace("/auth/change-password");
+          }, 300);
+        } else {
+          console.log("else ");
+          setErrorMessage(
+            res?.data?.message || "something went wrong  nn, try again ",
+          );
+        }
+      } catch (errors: any) {
+        console.log("error", errors);
+        setErrorMessage(
+          errors?.response?.data?.message ||
+            "something went wrong , try again ",
+        );
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -113,32 +144,29 @@ const TwoStepVerification: React.FC = () => {
                 </div>
                 <div className="mb-2  flex  items-center gap-2">
                   <h2 className=" text-title-lg  font-bold text-black dark:text-white sm:text-title-sm">
-                    Two step verification{" "}
+                    Verify OTP code
                   </h2>
 
                   <RiMessage2Line className="text-goldon" />
                 </div>
                 <h2 className="mb-4 text-title-xsm1  text-black dark:text-white">
-                  We have sent verification code to your mobile , Enter the code
+                  We have sent verification code to your email , Enter the code
                   from your mobile to the field below
                 </h2>
-
+                {errorMessage ? (
+                  <div className="mb-5 mt-2">
+                    <Alert severity="error">{errorMessage}</Alert>
+                  </div>
+                ) : (
+                  ""
+                )}
                 <form onSubmit={handleSubmit}>
                   <div className="mb-5 mt-2">
-                    {/* <MuiOtpInput
-                      value={value}
-                      onChange={handleChange}
-                      onComplete={handleComplete}
-                      length={6}
-                      autoFocus
-                      validateChar={(character, index) => true}
-                      inputRef={(el) => (inputRefs.current[index] = el)} // Set ref for each input
-                    /> */}
                     <MuiOtpInput
                       value={value}
                       onChange={handleChange}
                       onComplete={handleComplete}
-                      length={6}
+                      length={8}
                       autoFocus
                       validateChar={(character: string, index: number) => true}
                     />
@@ -168,4 +196,4 @@ const TwoStepVerification: React.FC = () => {
   );
 };
 
-export default TwoStepVerification;
+export default VerifyOptCode;
