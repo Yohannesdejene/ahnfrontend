@@ -72,9 +72,7 @@ const AdminFrom = () => {
       if (status == 200) {
         if (isPasswordChanged === true) {
           dispatch(loginSuccess(token));
-          const res_0 = setSessionKey({
-            userToken: token,
-          });
+          const res_0 = setSessionKey(token);
           if (res_0) {
             toast.success("Logged in successfully ");
             setTimeout(() => {
