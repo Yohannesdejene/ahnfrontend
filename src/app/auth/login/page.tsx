@@ -5,7 +5,7 @@ import { Metadata } from "next";
 import Login from "@/components/auth/login";
 
 export const metadata: Metadata = {
-  title: "Sign in to Ahunu Express",
+  title: "Sign in to Ahununu Express",
   description:
     "Ahununu Express is a leading provider of courier, logistics, supply chain management, and freight transportation solutions ",
 };
