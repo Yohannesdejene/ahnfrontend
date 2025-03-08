@@ -14,7 +14,6 @@ export async function apiSignIn(data: SIGN_IN_DATA): Promise<any> {
 
   try {
     const response = await HttpService.request({ method, data, url });
-    console.log("response-response", response);
     if (response.status === 200) {
       return response.data; // Return the data if the response is successful
     } else {
@@ -76,13 +75,12 @@ export async function apiSignup(data: SIGN_UP_DATA): Promise<any> {
 
 export async function apiChangePasswordRequest(
   data: CHANGE_PASSWORD_DATA,
-  token: string, // Add token as a parameter
 ): Promise<any> {
   const method = "POST";
-  const url = `${BASE_URL}admin/password-reset`;
+  const url = `${BASE_URL}auth/setPassword`;
   // Add the token to the headers
   const headers = {
-    Authorization: `Bearer ${token}`, // Authorization header with Bearer token
+    Authorization: `Bearer ${data?.token}`, // Authorization header with Bearer token
     "Content-Type": "application/json", // Ensure content type is set
   };
 

@@ -15,10 +15,7 @@ const SidebarDropdown = ({ item }: any) => {
             className={`${pathname === item.route ? "bg-primary  text-white hover:bg-primary hover:text-white" : " text-white  hover:bg-hoverBg hover:bg-primary hover:text-white"}  flex cursor-pointer items-center rounded-md   p-2  text-white `}
           >
             {" "}
-            {/* <span
-              style={{ width: "8px", height: "8px", marginLeft: "5px" }}
-              className={`mr-2  rounded-full  ${pathname === item.route ? " bg-white text-typeBlackLight  dark:bg-white " : " bg-typeBlackLight dark:bg-white "} `}
-            ></span> */}
+           
             {item.icon}
             <Link href={item.route} className="ml-2 text-sm">
               {item.label}

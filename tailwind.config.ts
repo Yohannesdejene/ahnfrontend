@@ -46,7 +46,7 @@ const config: Config = {
         primary: "#109101",
         secondary: "#2f322f",
 
-        whitishPrimary: "#e8f9fc",
+        whitishPrimary: "#c6ffc0",
         greyishWhite: "#cecccc",
         gradiant: "linear-gradient(to top, #0097B2, #ffffff)",
         // "#f1fdff"

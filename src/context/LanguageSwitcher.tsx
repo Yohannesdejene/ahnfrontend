@@ -33,7 +33,7 @@ const LanguageSwitcher: React.FC = () => {
     >
       <option value="en">English</option>
       <option value="am">አማርኛ</option>
-      <option value="om">Afan Oromo</option>
+      {/* <option value="om">Afan Oromo</option> */}
     </select>
   );
 };

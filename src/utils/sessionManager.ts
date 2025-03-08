@@ -7,7 +7,7 @@ const temp_key_email = "temp-email";
 
 const language_key = "lang";
 
-const permissions_key_name = "yfvhW";
+const permissions_key_name = "pryfvhW";
 
 interface SET_SESSION_TOKEN {
   userToken: string;
@@ -34,9 +34,10 @@ interface PERMISSION_TYPE {
   permission: string[] | null;
 }
 
-export function setSessionKey({ userToken }: SET_SESSION_TOKEN): boolean {
+export function setSessionKey(userToken: string): boolean {
   try {
     if (userToken) {
+      console.log("userToken-userToken", userToken);
       const hashed_token = btoa(userToken);
 
       const jwt: { exp: number } = jwtDecode(userToken); // Define the structure of the decoded JWT
@@ -51,6 +52,7 @@ export function setSessionKey({ userToken }: SET_SESSION_TOKEN): boolean {
       return false;
     }
   } catch (error) {
+    console.log("error", error);
     return false;
   }
 }
@@ -77,10 +79,14 @@ export function setUserInfo(user: USER_TYPE): boolean {
       return false;
     }
   } catch (error) {
+    console.log("else part in the user setting part ");
     return false;
   }
 }
 
+export function deleteUserIfo(): void {
+  localStorage.remove(session_user);
+}
 export function setEmailInfo(email: SET_TEMP_EMAIL): boolean {
   try {
     if (email) {
@@ -108,7 +114,6 @@ export function getEmailInfo(): string | null | undefined {
   }
 }
 export function deleteTempEmailSession(): void {
-  console.log("12345678990");
   if (typeof window !== "undefined") {
     localStorage.removeItem(temp_key_email);
   }
@@ -121,14 +126,14 @@ export function getUserInfo(): string | null | undefined {
     if (session_key) {
       const plain_session_key = atob(session_key);
       const plain_user = JSON.parse(plain_session_key);
-      return plain_user;
+      return plain_user?.user;
     }
   } catch (e) {
     return null;
   }
 }
 
-export function setPermissionInfo(permission: PERMISSION_TYPE): boolean {
+export function setPermissionInfo(permission: any): boolean {
   try {
     if (permission) {
       const userString = JSON.stringify(permission);
@@ -142,7 +147,7 @@ export function setPermissionInfo(permission: PERMISSION_TYPE): boolean {
     return false;
   }
 }
-export function getPermissionInfo(): string[] | null | undefined {
+export function getPermissionInfo(): any[] | null | undefined {
   try {
     // const session_key = localStorage.getItem(permissions_key_name);
     const session_key = JSON.parse(
@@ -157,13 +162,12 @@ export function getPermissionInfo(): string[] | null | undefined {
     return null;
   }
 }
-
-export function setTemporaryToken({ userToken }: SET_SESSION_TOKEN): boolean {
+export function setTemporaryToken(userToken: SET_SESSION_TOKEN): boolean {
   try {
     if (userToken) {
-      const hashed_token = btoa(userToken);
-
-      const jwt: { exp: number } = jwtDecode(userToken); // Define the structure of the decoded JWT
+      // const userString = JSON.stringify(userToken);
+      const hashed_token = btoa(userToken.toString());
+      const jwt: { exp: number } = jwtDecode(userToken.toString()); // Define the structure of the decoded JWT
       const expiry = jwt.exp;
       if (Date.now() >= expiry * 1000) {
         return false;
@@ -172,23 +176,14 @@ export function setTemporaryToken({ userToken }: SET_SESSION_TOKEN): boolean {
       localStorage.setItem(temp_token_key, hashed_token);
       return true;
     } else {
+      console.log("else");
       return false;
     }
   } catch (error) {
+    console.log("error", error);
     return false;
   }
 }
-export function verifyPermission(permission: string): string[] | null {
-  try {
-    const perms = JSON.parse(
-      localStorage.getItem(permissions_key_name) || "[]",
-    );
-    return perms.includes(permission);
-  } catch (e) {
-    return null;
-  }
-}
-
 export function getTemporaryToken(): string | null | undefined {
   try {
     const session_key = localStorage.getItem(temp_token_key);
@@ -202,6 +197,17 @@ export function getTemporaryToken(): string | null | undefined {
 }
 export function deleteTempSession(): void {
   localStorage.remove(temp_token_key);
+}
+
+export function verifyPermission(permission: string): string[] | null {
+  try {
+    const perms = JSON.parse(
+      localStorage.getItem(permissions_key_name) || "[]",
+    );
+    return perms.includes(permission);
+  } catch (e) {
+    return null;
+  }
 }
 
 export function deleteSessionKeys(): void {

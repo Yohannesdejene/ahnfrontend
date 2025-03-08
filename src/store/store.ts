@@ -5,11 +5,12 @@ import semestersReducer from "./features/semesters/semesterSlice"; // Import the
 import gradesReducer from "./features/grades/gradeSlice";
 import studentsSlice from "./features/students/studentsSlice";
 import sectionsReducer from "./features/sections/sectionsSlice";
-
+import authReducer from "./authReducer";
 // Import the courses slice reducer
 // Configure the Redux store and add the courses reducer
 export const store = configureStore({
   reducer: {
+    user: authReducer,
     courses: coursesReducer, // Attach courses reducer to the store
     years: yearsReducer,
     semesters: semestersReducer,

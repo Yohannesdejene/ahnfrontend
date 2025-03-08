@@ -18,8 +18,8 @@ export interface SIGN_UP_DATA {
 }
 
 export interface CHANGE_PASSWORD_DATA {
-  oldPassword: string;
-  newPassword: string;
+  token: string;
+  password: string;
 }
 
 export interface API_OPTIONS {

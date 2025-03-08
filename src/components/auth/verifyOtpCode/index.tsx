@@ -13,7 +13,7 @@ import DarkModeSwitcher from "@/components/Header/DarkModeSwitcher";
 import { loginSuccess, logout } from "@/store/actions";
 import { RootState } from "@/store/store";
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { FaLock } from "react-icons/fa6";
 import { IoIosArrowBack } from "react-icons/io";
 import { MuiOtpInput } from "mui-one-time-password-input";
@@ -73,7 +73,6 @@ const VerifyOptCode: React.FC = () => {
         const res = await verifyOtp(requestBody);
         console.log("res", res);
         if (res?.status == 200) {
-          toast.success(res?.data?.message);
           const userToken = res?.data?.token || "";
           setTemporaryToken(userToken);
           deleteTempEmailSession();
@@ -81,7 +80,7 @@ const VerifyOptCode: React.FC = () => {
           setTimeout(() => {
             router.push("/auth/set-password");
             // window.location.replace("/auth/change-password");
-          }, 300);
+          }, 200);
         } else {
           console.log("else ");
           setErrorMessage(
@@ -109,9 +108,9 @@ const VerifyOptCode: React.FC = () => {
         <div className="flex h-screen w-full ">
           <div
             className="hidden h-screen  items-center justify-center bg-whitishPrimary dark:bg-boxdark    xl:block xl:w-1/2"
-            // style={{
-            //   background: "linear-gradient(to top, #0097B2, #ffffff)", // Replace with your colors
-            // }}
+            style={{
+              background: "linear-gradient(to top, #109101, #ffffff)", // Replace with your colors
+            }}
           >
             <div className="flex flex-col items-center justify-center px-26 py-0 text-center">
               <Link className="mb-5.5 mt-10 inline-block" href="#">
@@ -127,20 +126,22 @@ const VerifyOptCode: React.FC = () => {
           </div>
 
           <div className="flex h-screen w-full flex-col border-l-2 border-stroke dark:border-strokedark xl:w-1/2">
-            <div className="mr-10 mt-4 self-end">
+            {/* <div className="mr-10 mt-4 self-end">
               <DarkModeSwitcher />
-            </div>
+            </div> */}
             <div className="flex flex-grow items-center justify-center">
               <div className="w-full max-w-lg p-8">
-                <div className="mb-6 flex  items-center gap-2">
+                <div className="mb-6 flex  items-center justify-center gap-2">
                   <Image
                     className="dark:block"
-                    src={"/images/logo.png"}
+                    src={"/images/logo/ahunlogo.jpg"}
                     alt="Logo"
-                    width={40}
-                    height={50}
+                    // width={40}
+                    // height={50}
+                    width={200}
+                    height={250}
                   />
-                  <h6 className="text-lg font-bold text-primary">Alphatech</h6>
+                  {/* <h6 className="text-lg font-bold text-primary">Alphatech</h6> */}
                 </div>
                 <div className="mb-2  flex  items-center gap-2">
                   <h2 className=" text-title-lg  font-bold text-black dark:text-white sm:text-title-sm">
@@ -150,8 +151,8 @@ const VerifyOptCode: React.FC = () => {
                   <RiMessage2Line className="text-goldon" />
                 </div>
                 <h2 className="mb-4 text-title-xsm1  text-black dark:text-white">
-                  We have sent verification code to your email , Enter the code
-                  from your mobile to the field below
+                  We have sent 8 digit verification code to your email , Enter
+                  the code in to the field below
                 </h2>
                 {errorMessage ? (
                   <div className="mb-5 mt-2">

@@ -10,6 +10,8 @@ import { PiStudentBold } from "react-icons/pi";
 import { GiTeacher } from "react-icons/gi";
 import { SiVirustotal } from "react-icons/si";
 import { GiDiceTarget } from "react-icons/gi";
+import { useSelector } from "react-redux";
+import { RootState, AppDispatch } from "@/store/store";
 
 import { useSearchParams } from "next/navigation";
 import { t } from "@/utils/translation";
@@ -23,11 +25,12 @@ const ChartThree = dynamic(() => import("@/components/Charts/ChartThree"), {
 });
 
 const ECommerce: React.FC = () => {
+  const data = useSelector((state: RootState) => state.user);
   return (
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
         <CardDataStats
-          title="Total Students "
+          title="Total Shipments "
           total="2.450"
           rate="2.59%"
           levelUp
@@ -35,7 +38,7 @@ const ECommerce: React.FC = () => {
           <PiStudentBold className="text-primary" />
         </CardDataStats>
         <CardDataStats
-          title="Total Teachers"
+          title="Total Branches"
           total="3.456"
           rate="0.95%"
           levelDown
@@ -63,12 +66,7 @@ const ECommerce: React.FC = () => {
       <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
         <ChartOne />
         <ChartTwo />
-        <ChartThree />
-        <MapOne />
-        <div className="col-span-12 xl:col-span-8">
-          <TableOne />
-        </div>
-        <ChatCard />
+        {/* <ChartThree /> */}
       </div>
     </>
   );

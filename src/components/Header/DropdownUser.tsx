@@ -3,20 +3,22 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { LinearProgress } from "@mui/material";
+import { AppDispatch } from "@/store/store";
+import { logout } from "@/store/actions";
+import { useDispatch, useSelector } from "react-redux";
+
 import ClickOutside from "@/components/ClickOutside";
-import { deleteSessionKeys } from "@/utils/sessionManager";
+import { deleteSessionKeys, deleteUserIfo } from "@/utils/sessionManager";
 const DropdownUser = () => {
+  const dispatch: AppDispatch = useDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [logoutLoading, setLoutLoading] = useState(false);
   const router = useRouter();
   const handleLogout = () => {
     setLoutLoading(true);
-    deleteSessionKeys();
-
+    dispatch(logout());
+    setLoutLoading(false);
     router.push("/auth/login");
-    setTimeout(() => {
-      setLoutLoading(false);
-    }, 6000);
   };
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
@@ -29,7 +31,7 @@ const DropdownUser = () => {
           <span className="block text-sm font-medium text-black dark:text-white">
             John abi
           </span>
-          <span className="block text-xs">School manager</span>
+          <span className="block text-xs">Admin</span>
         </span>
 
         <span className="h-8 w-8 rounded-full sm:h-12 sm:w-12">
