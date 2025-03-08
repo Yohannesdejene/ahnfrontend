@@ -5,7 +5,7 @@ import ProtectedRoute from "@/context/ProtectedRoute";
 
 export const metadata: Metadata = {
   title: "Dashboard",
-  description: "",
+  description: "Ahununu Express",
 };
 
 export default function Home() {
