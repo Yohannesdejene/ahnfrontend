@@ -5,9 +5,9 @@ import { Metadata } from "next";
 import ResetPassword from "@/components/auth/resetPassword";
 
 export const metadata: Metadata = {
-  title: "Sign in to HudHud express",
+  title: "Sign in to Ahununu express",
   description:
-    "HudHud Express is a leading provider of courier, logistics, supply chain management, and freight transportation solutions ",
+    "Ahununu Express is a leading provider of courier, logistics, supply chain management, and freight transportation solutions ",
 };
 
 const SignIn: React.FC = () => {

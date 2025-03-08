@@ -7,7 +7,7 @@ import Login from "@/components/auth/login";
 export const metadata: Metadata = {
   title: "Sign in to Ahunu Express",
   description:
-    "School management is a leading provider of courier, logistics, supply chain management, and freight transportation solutions ",
+    "Ahununu Express is a leading provider of courier, logistics, supply chain management, and freight transportation solutions ",
 };
 
 const SignIn: React.FC = () => {

@@ -7,7 +7,7 @@ import SetPassword from "@/components/auth/setPassword";
 export const metadata: Metadata = {
   title: "Change password ",
   description:
-    "HudHud Express is a leading provider of courier, logistics, supply chain management, and freight transportation solutions ",
+    "Ahununu Express is a leading provider of courier, logistics, supply chain management, and freight transportation solutions ",
 };
 
 const SignIn: React.FC = () => {
