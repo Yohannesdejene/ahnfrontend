@@ -47,7 +47,6 @@ interface SidebarProps {
   setSidebarOpen: (arg: boolean) => void;
 }
 
-
 const menuGroups = [
   {
     name: "Shipments",
@@ -325,7 +324,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             /> */}
             <h1 className=" mb-5 mt-3 flex  items-center justify-center text-title-md font-bold text-white">
               {" "}
-              Dashboard{" "}
+              Ahununu Express
             </h1>
             <hr className="border-gray-100 text- my-2 font-medium " />
           </Link>

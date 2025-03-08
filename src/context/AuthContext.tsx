@@ -34,6 +34,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     // const token = localStorage.getItem("token");
     const token = getSessionKey();
+    console.log("token-92222222222", token);
     if (token) {
       setUser({ token });
     }

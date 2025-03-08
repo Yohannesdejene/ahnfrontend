@@ -100,8 +100,7 @@ const Login: React.FC = () => {
         dispatch(loginSuccess(token));
         const res_0 = setSessionKey(token);
         const user_0 = setUserInfo(user);
-        console.log("res_0", res_0);
-        console.log("user_0", user_0);
+
         // const perm_0 = setPermissionInfo(permission);
         // console.log("permission-", permission);
 
@@ -109,9 +108,8 @@ const Login: React.FC = () => {
           toast.success("Logged in successfully, redirecting.. ");
           setTimeout(() => {
             router.push("/");
-
             // window.location.replace("/");
-          }, 200);
+          }, 500);
         } else {
           throw new Error("Failed to login, please try again");
         }

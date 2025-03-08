@@ -9,6 +9,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const { user, loading } = useAuth();
+  console.log("user", user);
   const router = useRouter();
 
   useEffect(() => {
