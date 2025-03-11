@@ -12,28 +12,8 @@ export async function apiSignIn(data: SIGN_IN_DATA): Promise<any> {
   const method = "POST";
   const url = `${BASE_URL}auth/login`;
 
-  try {
-    const response = await HttpService.request({ method, data, url });
-    if (response.status === 200) {
-      return response.data; // Return the data if the response is successful
-    } else {
-      throw new Error(
-        response?.data?.message || "Error fetching payment methods",
-      );
-    }
-  } catch (error: any) {
-    console.log("error catch ", error);
-    // throw new Error(error?.response?.data?.errors || "An error occurred");
-
-    // Default error message
-    let errorMessage =
-      error.response?.data?.message ||
-      "Email or password invalid, please try again.";
-    throw new Error(errorMessage);
-
-    // Set the error message to be displayed in the UI
-    // setErrorMessage(errorMessage);
-  }
+  const response = await HttpService.request({ method, data, url });
+  return response;
 }
 
 export async function forgetPassword(data: FORGET_PASSWORD_DATA): Promise<any> {
@@ -86,7 +66,14 @@ export async function apiChangePasswordRequest(
 
   return HttpService.request({ method, data, url, headers });
 }
+///get permission
+export async function apiGetMyPermissions(): Promise<any> {
+  const method = "GET";
+  const url = `${BASE_URL}roleAndPermission/getAllMyPermission`;
 
+  const response = await HttpService.request({ method, url });
+  return response;
+}
 // export async function apiVerifyChangePasswordOTP(
 //   data: VerifyChangePasswordOTPData,
 // ): Promise<any> {

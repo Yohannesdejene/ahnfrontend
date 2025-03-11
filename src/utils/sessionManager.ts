@@ -37,16 +37,14 @@ interface PERMISSION_TYPE {
 export function setSessionKey(userToken: string): boolean {
   try {
     if (userToken) {
-      console.log("userToken-userToken", userToken);
       const hashed_token = btoa(userToken);
-
       const jwt: { exp: number } = jwtDecode(userToken); // Define the structure of the decoded JWT
       const expiry = jwt.exp;
       if (Date.now() >= expiry * 1000) {
         return false;
       }
 
-      localStorage.setItem(session_key_name, hashed_token);
+      localStorage.setItem(session_key_name, userToken);
       return true;
     } else {
       return false;
@@ -59,11 +57,25 @@ export function setSessionKey(userToken: string): boolean {
 export function getSessionKey(): string | null | undefined {
   try {
     const session_key = localStorage.getItem(session_key_name);
-    if (session_key) {
-      const plain_session_key = atob(session_key);
-      return plain_session_key;
+    console.log("session_key10000000000000000", session_key);
+    const jwt: { exp: number } = jwtDecode(session_key || ""); // Define the structure of the decoded JWT
+    const expiry = jwt.exp;
+    if (Date.now() >= expiry * 1000) {
+      console.log("expired new ");
+      localStorage.clear();
+      return null;
     }
+    return session_key;
+    // if (session_key) {
+    //   const plain_session_key = atob(session_key);
+    //   return plain_session_key;
+    // } else {
+    //   console.log(
+    //     "011111111111111111111111111111111111111111111111111111111111111111else",
+    //   );
+    // }
   } catch (e) {
+    console.log("e-event", e);
     return null;
   }
 }
@@ -83,7 +95,6 @@ export function setUserInfo(user: USER_TYPE): boolean {
     return false;
   }
 }
-
 export function deleteUserIfo(): void {
   localStorage.remove(session_user);
 }
@@ -126,7 +137,7 @@ export function getUserInfo(): string | null | undefined {
     if (session_key) {
       const plain_session_key = atob(session_key);
       const plain_user = JSON.parse(plain_session_key);
-      return plain_user?.user;
+      return plain_user;
     }
   } catch (e) {
     return null;
@@ -150,15 +161,15 @@ export function setPermissionInfo(permission: any): boolean {
 export function getPermissionInfo(): any[] | null | undefined {
   try {
     // const session_key = localStorage.getItem(permissions_key_name);
-    const session_key = JSON.parse(
-      localStorage.getItem(permissions_key_name) || "[]",
-    );
+    const session_key = localStorage.getItem(permissions_key_name) || "[]";
+    console.log("session_key-permission", session_key);
     if (session_key) {
       const plain_session_key = atob(session_key);
       const plain_user = JSON.parse(plain_session_key);
       return plain_user;
     }
   } catch (e) {
+    console.log("e-1111111111111111", e);
     return null;
   }
 }

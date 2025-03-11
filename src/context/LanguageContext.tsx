@@ -1,3 +1,4 @@
+"use client"; // Add this at the very top
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 type Locale = "en" | "am" | "om"; // Define your supported locales

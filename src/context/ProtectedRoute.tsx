@@ -1,36 +1,39 @@
-// app/components/ProtectedRoute.tsx
-"use client";
-import React, { useEffect } from "react";
-import { useAuth } from "./AuthContext"; // Adjust the path as necessary
-import { useRouter } from "next/navigation";
-import { CircularProgress, Box } from "@mui/material";
+// import React, { useEffect } from "react";
+// import { useAuth } from "./AuthContext";
+// import { useRouter } from "next/navigation";
+// import { CircularProgress } from "@mui/material";
 
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const { user, loading } = useAuth();
-  console.log("user", user);
-  const router = useRouter();
+// const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
+//   children,
+// }) => {
+//   const { user, loggedIn, loading } = useAuth();
+//   const router = useRouter();
+//   console.log("ProtectedRoute - user:", user);
+//   console.log("ProtectedRoute - loggedIn:", loggedIn);
+//   console.log("ProtectedRoute - loading:", loading);
 
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push("/auth/login");
-    }
-  }, [loading, user, router]);
+//   useEffect(() => {
+//     if (!loading && !loggedIn) {
+//       console.log("ProtectedRoute - Redirecting to /auth/login");
+//       router.push("/auth/login");
+//     }
+//   }, [loading, loggedIn, router]);
 
-  if (loading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <CircularProgress />
-      </div>
-    );
-  }
+//   if (loading) {
+//     console.log("ProtectedRoute - Showing loading spinner");
+//     return (
+//       <div className="flex h-screen items-center justify-center">
+//         <CircularProgress />
+//       </div>
+//     );
+//   }
 
-  if (user && !loading) {
-    return <>{children}</>;
-  }
+//   if (loggedIn) {
+//     console.log("ProtectedRoute - Rendering children");
+//     return <>{children}</>;
+//   }
+//   console.log("ProtectedRoute - Returning null");
+//   return null;
+// };
 
-  return null;
-};
-
-export default ProtectedRoute;
+// export default ProtectedRoute;

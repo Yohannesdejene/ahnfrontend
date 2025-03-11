@@ -1,22 +1,23 @@
+"use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { LinearProgress } from "@mui/material";
 import { AppDispatch } from "@/store/store";
-import { logout } from "@/store/actions";
+// import { logout } from "@/store/features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 import ClickOutside from "@/components/ClickOutside";
 import { deleteSessionKeys, deleteUserIfo } from "@/utils/sessionManager";
 const DropdownUser = () => {
-  const dispatch: AppDispatch = useDispatch();
+  // const dispatch: AppDispatch = useDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [logoutLoading, setLoutLoading] = useState(false);
   const router = useRouter();
   const handleLogout = () => {
     setLoutLoading(true);
-    dispatch(logout());
+    // dispatch(logout());
     setLoutLoading(false);
     router.push("/auth/login");
   };

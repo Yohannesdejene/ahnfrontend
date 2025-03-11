@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
 import SetPassword from "@/components/auth/setPassword";
+import { PermissionProvider } from "@/context/PermissionContext"; // New permission provider
 
 export const metadata: Metadata = {
   title: "Change password ",
@@ -11,7 +12,12 @@ export const metadata: Metadata = {
 };
 
 const SignIn: React.FC = () => {
-  return <SetPassword />;
+  return (
+    <PermissionProvider>
+      {" "}
+      <SetPassword />
+    </PermissionProvider>
+  );
 };
 
 export default SignIn;

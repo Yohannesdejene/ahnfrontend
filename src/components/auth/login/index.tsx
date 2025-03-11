@@ -15,10 +15,9 @@ import {
   EthiopianNumberInput,
 } from "@/common/formElements";
 import DarkModeSwitcher from "@/components/Header/DarkModeSwitcher";
-import { loginSuccess, saveUserInfo, logout } from "@/store/actions";
+// import { loginSuccess, saveUserInfo, logout } from "@/store/actions";
 import { RootState } from "@/store/store";
 import { apiSignIn } from "@/services/AuthService";
-
 import {
   getSessionKey,
   setSessionKey,
@@ -29,6 +28,15 @@ import {
 import toast from "react-hot-toast";
 import { FaLock } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
+import { usePermission } from "@/context/PermissionContext";
+// import { useAuth } from "@/context/AuthContext";
+import {
+  setUser,
+  setToken,
+  setPermissions,
+  setLoggedIn,
+  setAuthLoading,
+} from "@/store/features/auth/authSlice";
 function formatPermissions(permissions: any) {
   return permissions.map((permission: any) => ({
     name: permission.name,
@@ -62,6 +70,7 @@ const formSchema = z.discriminatedUnion("loginType", [
 type FormData = z.infer<typeof formSchema>;
 
 const Login: React.FC = () => {
+  // const { user, loggedIn, setUser, setLoggedIn } = useAuth();
   const [value, setValue] = useState("phone");
   const dispatch = useDispatch();
   const router = useRouter();
@@ -86,33 +95,42 @@ const Login: React.FC = () => {
         values.phone = `251${values.phone}`;
       }
       const res = await apiSignIn(values);
-      const { user, token } = res;
-      // const permission = formatPermissions(user?.Role?.Permissions);
-      if (user?.userType == 1) {
-        setTemporaryToken(token || "");
-        toast.success("Logged in successfully, set  new password");
-        setTimeout(() => {
-          // window.location.replace("/set-password");
+      if (res?.status == 200) {
+        const { user, token } = res?.data;
+        const permission = formatPermissions(user?.Role?.Permissions);
+        if (user?.userType == 1) {
+          setTemporaryToken(token || "");
+          toast.success("Logged in successfully, set  new password");
           router.push("/set-password");
-        }, 300);
-      } else {
-        dispatch(saveUserInfo(user));
-        dispatch(loginSuccess(token));
-        const res_0 = setSessionKey(token);
-        const user_0 = setUserInfo(user);
 
-        // const perm_0 = setPermissionInfo(permission);
-        // console.log("permission-", permission);
-
-        if (res_0 && user_0) {
-          toast.success("Logged in successfully, redirecting.. ");
-          setTimeout(() => {
-            router.push("/");
-            // window.location.replace("/");
-          }, 500);
+          // setTimeout(() => {
+          //   window.location.replace("/set-password");
+          // }, 500);
         } else {
-          throw new Error("Failed to login, please try again");
+          dispatch(setUser(user));
+          dispatch(setToken(token));
+          dispatch(setLoggedIn(true));
+          dispatch(setPermissions(permission));
+          dispatch(setAuthLoading(false));
+          const res_0 = setSessionKey(token);
+          const user_0 = setUserInfo(user);
+          const perm_0 = setPermissionInfo(permission);
+
+          // console.log("permission-", permission);
+
+          if (res_0 && user_0) {
+            toast.success("Logged in successfully, redirecting.. ");
+            router.push("/");
+
+            // setTimeout(() => {
+            //   window.location.replace("/");
+            // }, 200);
+          } else {
+            throw new Error("Failed to login, please try again");
+          }
         }
+      } else {
+        setErrorMessage("something went wrong , try again ");
       }
     } catch (errors: any) {
       console.log("errors-errors-errors", errors);
@@ -153,16 +171,10 @@ const Login: React.FC = () => {
               background: "linear-gradient(to top, #109101, #ffffff)",
             }}
           >
-            <div className="flex h-full flex-col justify-center px-26 py-0 text-center">
+            {/* <div className="flex h-full flex-col justify-center px-26 py-0 text-center">
               <Link className="mb-5.5 inline-block" href="#">
-                {/* <Image
-                  className="dark:block"
-                  src={"/images/logo/ahunlogo.jpg"}
-                  alt="Logo"
-                  width={150}
-                  height={100}
-                /> */}
-                <h5 className="fs-bold text-title-xxl">Ahununu Express </h5>
+              
+              <h5 className="fs-bold text-title-xxl">Ahununu Express </h5>
               </Link>
               <p className="text-xlg 2xl:px-20">
                 Welcome to Ahununu Trading PLC, your trusted partner for
@@ -170,7 +182,7 @@ const Login: React.FC = () => {
                 in providing reliable and efficient delivery solutions to meet
                 your business and personal needs.{" "}
               </p>
-            </div>
+            </div> */}
           </div>
 
           <div className="flex h-screen w-full flex-col border-l-2 border-stroke dark:border-strokedark xl:w-1/2">
@@ -180,7 +192,7 @@ const Login: React.FC = () => {
             <div className="flex flex-grow items-center justify-center">
               <div className="w-full max-w-lg p-8">
                 <div className=" flex  items-center justify-center  gap-2">
-                  <Image
+                  {/* <Image
                     className="dark:block"
                     src={"/images/logo/ahunlogo.jpg"}
                     alt="Logo"
@@ -188,7 +200,7 @@ const Login: React.FC = () => {
                     // height={50}
                     width={200}
                     height={250}
-                  />
+                  /> */}
                   {/* <h6 className="text-lg font-bold text-black dark:text-white">
                     Ahunu Express
                   </h6> */}
