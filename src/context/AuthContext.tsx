@@ -46,7 +46,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (loading) {
       initializeAuth();
     }
-  }, [dispatch, router, loading]);
+  }, [dispatch, router]);
 
   if (loading) {
     return (

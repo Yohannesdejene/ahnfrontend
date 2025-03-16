@@ -40,6 +40,9 @@ import { FaListUl } from "react-icons/fa";
 import { MdFormatListBulleted } from "react-icons/md";
 import { FaMapMarkedAlt } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import { GiAirplaneDeparture } from "react-icons/gi";
+import { FiType } from "react-icons/fi";
+import { MdAttachMoney } from "react-icons/md";
 
 import * as URL from "@/route";
 
@@ -59,8 +62,78 @@ const menuGroups = [
         // children: [{ label: "eCommerce", route: "/" }],
       },
       {
+        icon: <GiAirplaneDeparture className="text-title-sm text-white" />,
+        label: "Air Shipment",
+        route: "#",
+        children: [
+          {
+            icon: <IoIosAddCircle className="text-title-md text-white" />,
+            label: "Add Shipment",
+            route: "/shipment/air/add-shipment",
+          },
+          {
+            icon: <GiPackedPlanks className="text-title-sm text-white" />,
+            label: "Ready to Pick",
+            route: "#",
+          },
+          {
+            icon: <FaPlaneArrival className="text-title-sm text-white" />,
+            label: "Arriving Shipment",
+            route: "#",
+          },
+
+          {
+            icon: (
+              <TbHomeCheck className="text-bold text-title-sm text-white" />
+            ),
+            label: "Arrived Shipment",
+            route: "#",
+          },
+          {
+            icon: <FaExchangeAlt className="text-title-sm text-white" />,
+            label: "Change Status",
+            route: "#",
+          },
+          {
+            icon: <FaBarsProgress className="text-title-sm text-white" />,
+            label: "Track Shipment",
+            route: "#",
+          },
+          {
+            icon: <FaFileInvoiceDollar className="text-title-sm text-white" />,
+            label: "Shipment Invoice",
+            route: "#",
+          },
+
+          {
+            icon: (
+              <IoCheckmarkDoneCircleSharp className="text-title-sm text-white" />
+            ),
+            label: "Delivered Shipments",
+            route: "#",
+          },
+          {
+            icon: (
+              <BsFillFileEarmarkSpreadsheetFill className="text-title-sm text-white" />
+            ),
+            label: "Delivery Run Sheet",
+            route: "#",
+          },
+          {
+            icon: <RiEdit2Fill className="text-title-sm text-white" />,
+            label: "Update Shipments",
+            route: "#",
+          },
+          {
+            icon: <MdOutlinePostAdd className="text-title-sm text-white" />,
+            label: "Add Extra Fee",
+            route: "#",
+          },
+        ],
+      },
+      {
         icon: <FaShippingFast className="text-title-sm text-white" />,
-        label: "Shipments",
+        label: "Ground Shipment",
         route: "#",
         children: [
           {
@@ -128,6 +201,7 @@ const menuGroups = [
           },
         ],
       },
+
       {
         icon: <TbReportAnalytics className="text-title-sm text-white" />,
         label: "Reports",
@@ -214,36 +288,13 @@ const menuGroups = [
       {
         icon: <FaCodeBranch className="text-title-sm text-white" />,
         label: " Branches",
-        route: "#",
-        // children: [
-        //   {
-        //     icon: (
-        //       <FaCodeBranch className="text-title-sm text-white" />
-        //     ),
-        //     label: "Branches",
-        //     route: "#",
-        //   },
-        // ],
+        route: "/manage/branch",
       },
-      {
-        icon: <FaLocationDot className="text-title-sm text-white" />,
-        label: "Countries",
-        route: "#",
-        // children: [
-        //   {
-        //     icon: (
-        //       <FaCodeBranch className="text-title-sm text-white" />
-        //     ),
-        //     label: "Countries",
-        //     route: "#",
-        //   },
-        // ],
-      },
-
       {
         icon: <FaPercent className="text-title-sm text-white" />,
-        label: " Rates",
-        route: "#",
+        label: "Shipment Rates",
+        route: "/manage/shipment-rate",
+
         // children: [
         //   {
         //     icon: <MdFormatListBulleted className="text-title-sm text-white" />,
@@ -258,7 +309,21 @@ const menuGroups = [
         //   },
         // ],
       },
-
+      {
+        icon: <FiType className="text-title-sm text-white" />,
+        label: "Shipment Type",
+        route: "/manage/shipment-type",
+      },
+      {
+        icon: <div>M</div>,
+        label: "Shipment Mode",
+        route: "/manage/shipment-mode",
+      },
+      {
+        icon: <MdAttachMoney />,
+        label: "Payment Methods",
+        route: "/manage/payment-method",
+      },
       ,
     ],
   },

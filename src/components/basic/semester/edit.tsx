@@ -12,7 +12,7 @@ import {
   updateSemester,
 } from "@/store/features/semesters/semesterSlice";
 import { InputString, CommonButton, SelectInput } from "@/common/formElements";
-import { useGetAllYears } from "@/hooks/useGetAllYears";
+import { useGetAllYears } from "@/hooks/useGetAllBranches";
 
 const formSchema = z.object({
   year_id: z.string().min(1, { message: "Year ID is required" }),

@@ -11,7 +11,7 @@ import {
   createSemester,
   fetchSemesterList,
 } from "@/store/features/semesters/semesterSlice";
-import { useGetAllYears } from "@/hooks/useGetAllYears";
+import { useGetAllYears } from "@/hooks/useGetAllBranches";
 import { RootState, AppDispatch } from "@/store/store";
 
 const formSchema = z.object({

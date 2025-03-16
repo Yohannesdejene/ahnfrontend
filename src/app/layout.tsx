@@ -12,7 +12,6 @@ import "@/css/style.css";
 import React, { useEffect, useState } from "react";
 import { store } from "@/store/store";
 import { Provider } from "react-redux";
-import Loader from "@/components/Dashboard/Loader";
 import NextTopLoader from "nextjs-toploader";
 import toast, { Toaster } from "react-hot-toast";
 import "react-toastify/dist/ReactToastify.css"; // Import CSS
