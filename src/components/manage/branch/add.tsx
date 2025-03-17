@@ -5,22 +5,43 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import toast from "react-hot-toast";
 import { CREATE_BRANCH } from "@/store/features/branches/type";
-import { InputString, InputNumber, CommonButton } from "@/common/formElements";
+import {
+  InputString,
+  InputNumber,
+  CommonButton,
+  EthiopianNumberInput,
+} from "@/common/formElements";
 import {
   createBranch,
   fetchBranchList,
 } from "@/store/features/branches/branchesSlice";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/store/store"; 
+import { AppDispatch } from "@/store/store";
 
 // Form schema for branch
 const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
-  phone: z.string().min(1, { message: "Phone is required" }),
+  phone: z
+    .string()
+    .min(9, { message: "Phone must be exactly 9 digits" })
+    .max(9, { message: "Phone must be exactly 9 digits" })
+    .regex(/^[7|9][0-9]{8}$/, {
+      message: "Phone must be 9 digits and start with 7 or 9",
+    }),
   email: z.string().optional(),
   location: z.string().min(1, { message: "Location is required" }),
-  latitude: z.string().optional(),
-  longitude: z.string().optional(),
+  latitude: z
+    .string()
+    .regex(/^-?\d*\.?\d+$/, {
+      message: "Latitude must be a number (can include decimal)",
+    })
+    .optional(),
+  longitude: z
+    .string()
+    .regex(/^-?\d*\.?\d+$/, {
+      message: "Longitude must be a number (can include decimal)",
+    })
+    .optional(),
   mapLink: z.string().optional(),
   LATA: z.string().optional(),
   description: z.string().min(1, { message: "Description is required" }),
@@ -45,13 +66,13 @@ const AddBranch: React.FC<AddBranchProps> = ({ toggleDrawer }) => {
   const addBranch = async (values: FormData) => {
     setErrorMessage(null);
     setLoading(true);
-    const create_branch: CREATE_BRANCH = {
+    const create_branch = {
       name: values.name,
-      phone: values.phone,
+      phone: `251${values.phone}`,
       email: values.email,
       location: values.location,
-      latitude: values.latitude||0,
-      longitude: values.longitude,
+      latitude: values?.latitude,
+      longitude: values?.longitude,
       mapLink: values.mapLink,
       LATA: values.LATA,
       description: values.description,
@@ -69,8 +90,6 @@ const AddBranch: React.FC<AddBranchProps> = ({ toggleDrawer }) => {
       })
       .catch((error) => {
         setLoading(false);
-        setErrorMessage(error.message || "Failed to add branch");
-        toast.error("Failed to add branch");
       });
   };
 
@@ -106,9 +125,17 @@ const AddBranch: React.FC<AddBranchProps> = ({ toggleDrawer }) => {
                     <div className="mb-3 w-full">
                       <InputString
                         type="text"
+                        name="description"
+                        label="Description"
+                        placeholder="e.g., Description of the branch"
+                      />
+                    </div>
+                    <div className="mb-3 w-full">
+                      <EthiopianNumberInput
+                        type="text"
                         name="phone"
                         label="Phone"
-                        placeholder="e.g., +251912345678"
+                        placeholder="e.g., 912345678"
                       />
                     </div>
                     <div className="mb-3 w-full">
@@ -128,14 +155,16 @@ const AddBranch: React.FC<AddBranchProps> = ({ toggleDrawer }) => {
                       />
                     </div>
                     <div className="mb-3 w-full">
-                      <InputNumber
+                      <InputString
+                        type="text"
                         name="latitude"
                         label="Latitude"
                         placeholder="e.g., 9.145"
                       />
                     </div>
                     <div className="mb-3 w-full">
-                      <InputNumber
+                      <InputString
+                        type="text"
                         name="longitude"
                         label="Longitude"
                         placeholder="e.g., 38.763"
@@ -157,22 +186,15 @@ const AddBranch: React.FC<AddBranchProps> = ({ toggleDrawer }) => {
                         placeholder="e.g., LATA Code"
                       />
                     </div>
-                    <div className="mb-3 w-full">
-                      <InputString
-                        type="text"
-                        name="description"
-                        label="Description"
-                        placeholder="e.g., Description of the branch"
-                      />
-                    </div>
-                    <div className="mb-3 w-full">
+
+                    {/* <div className="mb-3 w-full">
                       <InputString
                         type="text"
                         name="code"
                         label="Code"
                         placeholder="e.g., BR001"
                       />
-                    </div>
+                    </div> */}
 
                     <div className="mb-4">
                       <CommonButton loading={loading} label="Submit" />

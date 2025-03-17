@@ -111,7 +111,7 @@ const ListRate: React.FC = () => {
           <div className="my-2 flex gap-2">
             <BaseButton
               onClick={() => handleEditDrawer(value)}
-              className="w-full cursor-pointer rounded-lg border border-solid border-primary bg-primary py-2 text-sm leading-normal text-white"
+              className="t w-full cursor-pointer rounded-lg border  border-solid py-2  text-sm leading-normal"
               style={{ textTransform: "none" }}
             >
               <FaEdit className="mr-3" />
@@ -119,7 +119,7 @@ const ListRate: React.FC = () => {
             </BaseButton>
             <BaseButton
               type="submit"
-              className="w-full cursor-pointer rounded-lg border border-solid border-danger bg-danger py-2 text-sm leading-normal"
+              className="w-full cursor-pointer rounded-lg border border-solid  py-2 text-sm leading-normal"
               style={{
                 textTransform: "none",
                 color: "red",
@@ -201,6 +201,9 @@ const ListRate: React.FC = () => {
                           fileName: "rate", // Set your desired file name here (without extension)
                         },
                       },
+                    }}
+                    sx={{
+                      minHeight: "250px", // Set your desired minimum height
                     }}
                   />
                 </div>

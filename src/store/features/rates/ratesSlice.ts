@@ -57,7 +57,6 @@ const ratesSlice = createSlice({
         state.errorRate = null;
       })
       .addCase(fetchRateList.fulfilled, (state, action: PayloadAction<any>) => {
-        console.log("action.payload", action.payload);
         state.loadingRate = false;
         state.rates = action.payload.data?.rates;
         state.pagination = action.payload?.metadata?.pagination;

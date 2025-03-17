@@ -11,15 +11,11 @@ import {
 } from "@mui/x-data-grid";
 import { Button as BaseButton } from "@mui/material";
 import CommonDrawer from "@/common/Drawer";
-import CommonDialog from "@/common/CommonDialogBox";
-import AddPaymentMethod from "./add";
-import EditPaymentMethod from "./edit";
 import DeleteConfirmationDialog from "@/common/DeleteConfirmationDialog";
+import AddUnit from "./add";
+import EditUnit from "./edit";
 import { RootState, AppDispatch } from "@/store/store";
-import {
-  fetchPaymentMethodList,
-  deletePaymentMethod,
-} from "@/store/features/paymentMethods/paymentMethodsSlice";
+import { fetchUnitList, deleteUnit } from "@/store/features/unit/unitsSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 function convertISOToNormalDate(isoDate: string): string {
@@ -34,10 +30,12 @@ function convertISOToNormalDate(isoDate: string): string {
   return date.toLocaleDateString(undefined, options);
 }
 
-const ListPaymentMethod: React.FC = () => {
+const ListUnit: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { paymentMethods, loadingPaymentMethod, errorPaymentMethod } =
-    useSelector((state: RootState) => state.paymentMethod);
+  const { units, loadingUnit, errorUnit } = useSelector(
+    (state: RootState) => state.unit,
+  );
+
   const [drawerDisplay, setDrawerDisplay] = useState("add");
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [id, setId] = useState<number | string | null>(null);
@@ -52,10 +50,12 @@ const ListPaymentMethod: React.FC = () => {
   };
 
   const rows: GridRowsProp =
-    !loadingPaymentMethod && paymentMethods
-      ? paymentMethods.map((paymentMethod: any, index: number) => ({
-          id: paymentMethod.id,
-          ...paymentMethod,
+    !loadingUnit && units
+      ? units.map((unit: any) => ({
+          id: unit.id,
+          code: unit.code,
+          createdAt: unit.createdAt,
+          updatedAt: unit.updatedAt,
         }))
       : [];
 
@@ -76,8 +76,7 @@ const ListPaymentMethod: React.FC = () => {
   };
 
   const columns: GridColDef[] = [
-    { field: "code", headerName: "Code", width: 160 },
-    { field: "description", headerName: "Description", width: 200 },
+    { field: "code", headerName: "Code", width: 200 },
     {
       field: "updatedAt",
       headerName: "Updated At",
@@ -134,7 +133,7 @@ const ListPaymentMethod: React.FC = () => {
 
   useEffect(() => {
     try {
-      dispatch(fetchPaymentMethodList());
+      dispatch(fetchUnitList());
     } catch (err) {
       console.log("err", err);
     }
@@ -142,9 +141,9 @@ const ListPaymentMethod: React.FC = () => {
 
   const handleDelete = async (id: any) => {
     setIsDialogOpen(false);
-    dispatch(deletePaymentMethod(id)).then(() => {
+    dispatch(deleteUnit(id)).then(() => {
       setIsDialogOpen(false);
-      dispatch(fetchPaymentMethodList());
+      dispatch(fetchUnitList());
     });
   };
 
@@ -153,7 +152,7 @@ const ListPaymentMethod: React.FC = () => {
       <div className="mx-auto max-w-242.5">
         <div className="mx-1 flex justify-between">
           <label className="mb-2 block text-title-md font-medium text-black dark:text-white">
-            Payment Method
+            Units
           </label>
 
           <BaseButton
@@ -166,7 +165,7 @@ const ListPaymentMethod: React.FC = () => {
             }}
           >
             <IoAddCircleSharp className="mr-3" />
-            Add Payment Method
+            Add Unit
           </BaseButton>
         </div>
 
@@ -176,7 +175,7 @@ const ListPaymentMethod: React.FC = () => {
               <div className="p-8">
                 <div className="overflow-x-auto bg-white text-black dark:bg-normalGray">
                   <DataGrid
-                    loading={loadingPaymentMethod}
+                    loading={loadingUnit}
                     rows={rows}
                     columns={columns}
                     autoHeight
@@ -186,13 +185,10 @@ const ListPaymentMethod: React.FC = () => {
                         showQuickFilter: true,
                         quickFilterProps: { debounceMs: 500 },
                         csvOptions: {
-                          allRows: true, // Exports all rows, not just the visible ones
-                          fileName: "payment-methods", // Set your desired file name here (without extension)
+                          allRows: true,
+                          fileName: "units", // Set your desired file name here
                         },
                       },
-                    }}
-                    sx={{
-                      minHeight: "250px", // Set your desired minimum height
                     }}
                   />
                 </div>
@@ -207,14 +203,10 @@ const ListPaymentMethod: React.FC = () => {
           content={
             <div>
               {drawerDisplay === "add" && (
-                <AddPaymentMethod toggleDrawer={toggleDrawer} />
+                <AddUnit toggleDrawer={toggleDrawer} />
               )}
               {id !== null && drawerDisplay === "edit" && (
-                <EditPaymentMethod
-                  toggleDrawer={toggleDrawer}
-                  id={id}
-                  setId={setId}
-                />
+                <EditUnit toggleDrawer={toggleDrawer} id={id} setId={setId} />
               )}
             </div>
           }
@@ -228,7 +220,7 @@ const ListPaymentMethod: React.FC = () => {
           onDelete={() => {
             handleDelete(id);
           }}
-          elementName={`Payment method with id = ${id}`}
+          elementName={`Unit with id = ${id}`}
           elementId={id}
         />
       </div>
@@ -236,4 +228,4 @@ const ListPaymentMethod: React.FC = () => {
   );
 };
 
-export default ListPaymentMethod;
+export default ListUnit;

@@ -43,6 +43,7 @@ import { useSelector } from "react-redux";
 import { GiAirplaneDeparture } from "react-icons/gi";
 import { FiType } from "react-icons/fi";
 import { MdAttachMoney } from "react-icons/md";
+import { FaUnity } from "react-icons/fa";
 
 import * as URL from "@/route";
 
@@ -74,12 +75,12 @@ const menuGroups = [
           {
             icon: <GiPackedPlanks className="text-title-sm text-white" />,
             label: "Ready to Pick",
-            route: "#",
+            route: "/shipment/ready-for-pickup",
           },
           {
             icon: <FaPlaneArrival className="text-title-sm text-white" />,
             label: "Arriving Shipment",
-            route: "#",
+            route: "/shipment/arriving",
           },
 
           {
@@ -87,17 +88,17 @@ const menuGroups = [
               <TbHomeCheck className="text-bold text-title-sm text-white" />
             ),
             label: "Arrived Shipment",
-            route: "#",
+            route: "/shipment/arrived",
           },
           {
             icon: <FaExchangeAlt className="text-title-sm text-white" />,
             label: "Change Status",
-            route: "#",
+            route: "/shipment/change-status",
           },
           {
             icon: <FaBarsProgress className="text-title-sm text-white" />,
             label: "Track Shipment",
-            route: "#",
+            route: "/shipment/track-shipment",
           },
           {
             icon: <FaFileInvoiceDollar className="text-title-sm text-white" />,
@@ -294,20 +295,6 @@ const menuGroups = [
         icon: <FaPercent className="text-title-sm text-white" />,
         label: "Shipment Rates",
         route: "/manage/shipment-rate",
-
-        // children: [
-        //   {
-        //     icon: <MdFormatListBulleted className="text-title-sm text-white" />,
-        //     label: "View Rate",
-        //     route: `${URL.LIST_RATE}`,
-        //     // route: "#",
-        //   },
-        //   {
-        //     icon: <IoIosAddCircle className="text-title-md text-white" />,
-        //     label: "Add Rates",
-        //     route: `${URL.ADD_RATE}`,
-        //   },
-        // ],
       },
       {
         icon: <FiType className="text-title-sm text-white" />,
@@ -324,7 +311,11 @@ const menuGroups = [
         label: "Payment Methods",
         route: "/manage/payment-method",
       },
-      ,
+      {
+        icon: <FaUnity />,
+        label: "Unit ",
+        route: "/manage/unit",
+      },
     ],
   },
   {

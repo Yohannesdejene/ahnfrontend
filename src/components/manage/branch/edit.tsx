@@ -4,7 +4,12 @@ import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import toast from "react-hot-toast";
-import { InputString, InputNumber, CommonButton } from "@/common/formElements";
+import {
+  InputString,
+  InputNumber,
+  CommonButton,
+  EthiopianNumberInput,
+} from "@/common/formElements";
 import { RootState, AppDispatch } from "@/store/store"; // Import RootState and AppDispatch
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -16,11 +21,27 @@ import {
 // Form schema for branch
 const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
-  phone: z.string().min(1, { message: "Phone is required" }),
+  phone: z
+    .string()
+    .min(9, { message: "Phone must be exactly 9 digits" })
+    .max(9, { message: "Phone must be exactly 9 digits" })
+    .regex(/^[7|9][0-9]{8}$/, {
+      message: "Phone must be 9 digits and start with 7 or 9",
+    }),
   email: z.string().optional(),
   location: z.string().min(1, { message: "Location is required" }),
-  latitude: z.number().optional(),
-  longitude: z.number().optional(),
+  latitude: z
+    .string()
+    .regex(/^-?\d*\.?\d+$/, {
+      message: "Latitude must be a number (can include decimal)",
+    })
+    .optional(),
+  longitude: z
+    .string()
+    .regex(/^-?\d*\.?\d+$/, {
+      message: "Longitude must be a number (can include decimal)",
+    })
+    .optional(),
   mapLink: z.string().optional(),
   LATA: z.string().optional(),
   description: z.string().min(1, { message: "Description is required" }),
@@ -48,16 +69,16 @@ const EditBranch: React.FC<EditBranchProps> = ({ toggleDrawer, setId, id }) => {
   const editBranch = async (values: FormData) => {
     setLoading(true);
     const updatedBranch = {
-      name: values.name,
-      phone: values.phone,
-      email: values.email,
-      location: values.location,
-      latitude: values.latitude,
-      longitude: values.longitude,
-      mapLink: values.mapLink,
-      LATA: values.LATA,
-      description: values.description,
-      code: values.code,
+      name: values?.name?.toString(),
+      phone: `251${values?.phone?.toString()}`,
+      email: values?.email?.toString(),
+      location: values?.location?.toString(),
+      latitude: values?.latitude?.toString(),
+      longitude: values?.longitude?.toString(),
+      mapLink: values?.mapLink?.toString(),
+      LATA: values?.LATA?.toString(),
+      description: values?.description?.toString(),
+      code: values?.code?.toString(),
     };
     dispatch(updateBranch({ id, branchData: updatedBranch }))
       .then((data) => {
@@ -65,10 +86,8 @@ const EditBranch: React.FC<EditBranchProps> = ({ toggleDrawer, setId, id }) => {
           toggleDrawer(false);
           setLoading(false);
           dispatch(fetchBranchList());
-          toast.success("Branch updated successfully!");
         } else {
           setLoading(false);
-          toast.error("Failed to update branch");
         }
       })
       .catch((error) => {
@@ -85,17 +104,18 @@ const EditBranch: React.FC<EditBranchProps> = ({ toggleDrawer, setId, id }) => {
     if (id) {
       dispatch(getBranchById(id))
         .then((data: any) => {
+          console.log("new data test", data?.payload?.data?.branch);
           methods.reset({
-            name: data?.payload?.name || "",
-            phone: data?.payload?.phone || "",
-            email: data?.payload?.email || "",
-            location: data?.payload?.location || "",
-            latitude: data?.payload?.latitude || undefined,
-            longitude: data?.payload?.longitude || undefined,
-            mapLink: data?.payload?.mapLink || "",
-            LATA: data?.payload?.LATA || "",
-            description: data?.payload?.description || "",
-            code: data?.payload?.code || "",
+            name: data?.payload?.data?.branch?.name || "",
+            phone: data?.payload?.data?.branch?.phone?.toString() || "",
+            email: data?.payload?.data?.branch?.email || "",
+            location: data?.payload?.data?.branch?.location || "",
+            latitude: data?.payload?.data?.branch?.latitude?.toString() || "",
+            longitude: data?.payload?.data?.branch?.longitude?.toString() || "",
+            mapLink: data?.payload?.data?.branch?.mapLink || "",
+            LATA: data?.payload?.data?.branch?.LATA || "",
+            description: data?.payload?.data?.branch?.description || "",
+            code: data?.payload?.data?.branch?.code || "",
           });
         })
         .catch((error) => {
@@ -130,11 +150,11 @@ const EditBranch: React.FC<EditBranchProps> = ({ toggleDrawer, setId, id }) => {
                       />
                     </div>
                     <div className="mb-3 w-full">
-                      <InputString
+                      <EthiopianNumberInput
                         type="text"
                         name="phone"
                         label="Phone"
-                        placeholder="e.g., +251912345678"
+                        placeholder="e.g., 912345678"
                       />
                     </div>
                     <div className="mb-3 w-full">
@@ -154,14 +174,16 @@ const EditBranch: React.FC<EditBranchProps> = ({ toggleDrawer, setId, id }) => {
                       />
                     </div>
                     <div className="mb-3 w-full">
-                      <InputNumber
+                      <InputString
+                        type="text"
                         name="latitude"
                         label="Latitude"
                         placeholder="e.g., 9.145"
                       />
                     </div>
                     <div className="mb-3 w-full">
-                      <InputNumber
+                      <InputString
+                        type="text"
                         name="longitude"
                         label="Longitude"
                         placeholder="e.g., 38.763"
@@ -191,14 +213,14 @@ const EditBranch: React.FC<EditBranchProps> = ({ toggleDrawer, setId, id }) => {
                         placeholder="e.g., Description of the branch"
                       />
                     </div>
-                    <div className="mb-3 w-full">
+                    {/* <div className="mb-3 w-full">
                       <InputString
                         type="text"
                         name="code"
                         label="Code"
                         placeholder="e.g., BR001"
                       />
-                    </div>
+                    </div> */}
                     <div className="mb-4">
                       <CommonButton loading={loading} label="Update" />
                     </div>

@@ -54,3 +54,20 @@ export async function apiDeleteRate(id: number | string | null): Promise<any> {
   const response = await HttpService.request({ method, url });
   return response;
 }
+// Search for a rate based on parameters
+export async function apiSearchRate(params: {
+  sourceBranchId: number;
+  destinationBranchId: number;
+  shipmentTypeId: number;
+  shipmentModeId: number;
+}): Promise<any> {
+  const method = "GET";
+  const { sourceBranchId, destinationBranchId, shipmentTypeId, shipmentModeId } = params;
+  const url = `shipments/rate/getRates?sourceBranchId=${sourceBranchId}&destinationBranchId=${destinationBranchId}&shipmentTypeId=${shipmentTypeId}&shipmentModeId=${shipmentModeId}`; // Endpoint for searching rates
+
+  const response = await HttpService.request({
+    method,
+    url,
+  });
+  return response;
+}

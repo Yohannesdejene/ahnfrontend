@@ -6,9 +6,9 @@ import { useSelector } from "react-redux";
 
 const SidebarItem = ({ item, pageName, setPageName }: any) => {
   const auth = useSelector((state: any) => state?.auth?.permissions);
-  const hasCreateUserPermission = auth.some(
-    (permission: any) => permission.code === "CREATE_USER",
-  );
+  // const hasCreateUserPermission = auth.some(
+  //   (permission: any) => permission.code === "CREATE_USER",
+  // );
 
   const handleClick = () => {
     const updatedPageName =

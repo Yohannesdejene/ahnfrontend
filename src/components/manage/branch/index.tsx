@@ -39,7 +39,6 @@ const ListBranch: React.FC = () => {
   const { branches, loadingBranch, errorBranch } = useSelector(
     (state: RootState) => state.branches,
   );
-  console.log("branches-branches", branches);
   const [drawerDisplay, setDrawerDisplay] = useState("add");
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [id, setId] = useState<number | string | null>(null);
@@ -87,15 +86,7 @@ const ListBranch: React.FC = () => {
     { field: "location", headerName: "Location", width: 200 },
     { field: "phone", headerName: "Phone", width: 150 },
     { field: "email", headerName: "Email", width: 200 },
-    {
-      field: "updatedAt",
-      headerName: "Updated At",
-      width: 150,
-      renderCell: (params) => {
-        const value = params.value;
-        return <h6>{convertISOToNormalDate(value)}</h6>;
-      },
-    },
+
     {
       field: "createdAt",
       headerName: "Created At",
@@ -199,6 +190,9 @@ const ListBranch: React.FC = () => {
                           fileName: "branches", // Set your desired file name here
                         },
                       },
+                    }}
+                    sx={{
+                      minHeight: "200px", // Set your desired minimum height
                     }}
                   />
                 </div>

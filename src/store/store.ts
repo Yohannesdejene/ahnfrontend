@@ -11,6 +11,8 @@ import shipmentMode from "./features/shipmentModes/shipmentModesSlice";
 import paymentMode from "./features/paymentModes/paymentModesSlice";
 import paymentMethod from "./features/paymentMethods/paymentMethodsSlice";
 import rate from "./features/rates/ratesSlice";
+import unit from "./features/unit/unitsSlice";
+import shipment from "./features/shipments/shipmentslice";
 // Import the courses slice reducer
 // Configure the Redux store and add the courses reducer
 export const store = configureStore({
@@ -21,6 +23,8 @@ export const store = configureStore({
     paymentMode: paymentMode,
     paymentMethod: paymentMethod,
     rate: rate,
+    unit: unit,
+    shipment: shipment,
     courses: coursesReducer, // Attach courses reducer to the store
     branches: branchReducer,
     semesters: semestersReducer,

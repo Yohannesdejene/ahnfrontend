@@ -59,9 +59,9 @@ const AddRate: React.FC<AddRateProps> = ({ toggleDrawer }) => {
     dataShipmentMode,
     reloadShipmentModes,
   } = useGetAllShipmentModes();
-
   const { loadingBranch, errorBranch, optionsBranch, dataBranch, reloadYears } =
     useGetAllBranches();
+
   const methods = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });

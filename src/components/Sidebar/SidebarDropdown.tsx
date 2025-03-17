@@ -6,9 +6,9 @@ import { useSelector } from "react-redux";
 const SidebarDropdown = ({ item }: any) => {
   const pathname = usePathname();
   const auth = useSelector((state: any) => state?.auth?.permissions);
-  const hasCreateUserPermission = auth.some(
-    (permission: any) => permission.code === "CREATE_USER",
-  );
+  // const hasCreateUserPermission = auth.some(
+  //   (permission: any) => permission.code === "CREATE_USER",
+  // );
   return (
     <>
       <ul className="mb-5.5 mt-2 flex list-disc flex-col gap-2.5 pl-6">

@@ -218,6 +218,9 @@ const ListShipmentType: React.FC = () => {
                         },
                       },
                     }}
+                    sx={{
+                      minHeight: "250px", // Set your desired minimum height
+                    }}
                   />
                 </div>
               </div>

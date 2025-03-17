@@ -1,15 +1,25 @@
-///course
 import HttpService from "@/services/HttpService";
-import { STUDENT_CREATE, GET_STUDENT_BY_ID } from "./type";
+import { STUDENT_CREATE } from "./type";
+
+// Fetch all students with pagination and filters
 export async function apiGetStudentsList(
   size: number,
   currentPage: number,
-  search?: string,
+  filters?: Record<string, any>, // Filters as key-value pairs
 ): Promise<any> {
   const method = "GET"; // Use GET method
   let url = `/who/student`; // Adjust the endpoint to match your API's URL
   if (size && currentPage) url += `?limit=${size}&page=${currentPage}`;
-  if (search) url += `&search=${search}`;
+
+  // Append filters to the URL only if they have valid values
+  if (filters) {
+    Object.keys(filters).forEach((key) => {
+      const value = filters[key];
+      if (value !== null && value !== undefined && value !== "") {
+        url += `&${key}=${encodeURIComponent(value)}`;
+      }
+    });
+  }
 
   try {
     const response = await HttpService.request({
@@ -21,18 +31,16 @@ export async function apiGetStudentsList(
     if (response.status === 200) {
       return response.data; // Return the data if the response is successful
     } else {
-      // throw new Error(response?.message || "Error fetching payment methods");
-      throw new Error(response?.data?.message || "Error fetching students ");
+      throw new Error(response?.data?.message || "Error fetching students");
     }
   } catch (error: any) {
-    console.log("error", error);
+    console.error("Error fetching students:", error);
     throw new Error(error?.response?.data?.message || "An error occurred");
   }
 }
 
-export async function apiCreateStudentsList(
-  data: STUDENT_CREATE,
-): Promise<any> {
+// Create a new student
+export async function apiCreateStudentsList(data: STUDENT_CREATE): Promise<any> {
   const method = "POST";
   const url = `/who/student`;
   try {
@@ -41,32 +49,16 @@ export async function apiCreateStudentsList(
     if (response.status === 200) {
       return response.data; // Return the data if the response is successful
     } else {
-      throw new Error(response?.data?.message || "Error fetching semester ");
-      // throw new Error("Error fetching payment methods");
+      throw new Error(response?.data?.message || "Error creating student");
     }
   } catch (error: any) {
-    let errorMessage = "An error occurred.";
-
-    if (
-      error?.response?.data?.error && // Adjusted the path to match your error structure
-      Array.isArray(error?.response?.data?.error)
-    ) {
-      // If the error contains an array, combine the messages with line breaks
-      const errorMessagesArray = error?.response?.data?.error?.map(
-        (err: any) => `${err.path}: ${err.message}`, // Format each error message
-      );
-      errorMessage = errorMessagesArray.join("\n"); // Join all error messages into a single string with line breaks
-    } else if (typeof error?.message === "string") {
-      // If the error has a single message string, use it
-      errorMessage = error?.message;
-    }
-
-    throw new Error(errorMessage);
+    console.error("Error creating student:", error);
+    throw new Error(error?.response?.data?.message || "An error occurred");
   }
 }
-export async function apiGetStudentsById(
-  id: number | string | null,
-): Promise<any> {
+
+// Get a student by ID
+export async function apiGetStudentsById(id: number | string | null): Promise<any> {
   const method = "GET"; // Use GET method
   const url = `/who/student/${id}`; // Adjust the endpoint to match your API's URL
 
@@ -76,18 +68,18 @@ export async function apiGetStudentsById(
       url,
     });
 
-    // Assuming the response returns JSON data, you can handle it here
     if (response.status === 200) {
       return response.data; // Return the data if the response is successful
     } else {
-      // throw new Error(response?.message || "Error fetching payment methods");
-      throw new Error(response?.data?.message || "Error fetching year ");
+      throw new Error(response?.data?.message || "Error fetching student by ID");
     }
   } catch (error: any) {
-    console.log("error", error);
+    console.error("Error fetching student by ID:", error);
     throw new Error(error?.response?.data?.message || "An error occurred");
   }
 }
+
+// Update a student
 export async function apiUpdateStudents(
   id: number | string | null,
   data: STUDENT_CREATE,
@@ -101,28 +93,10 @@ export async function apiUpdateStudents(
     if (response.status === 200) {
       return response.data; // Return the data if the response is successful
     } else {
-      throw new Error(
-        response?.data?.message || "Error fetching school methods",
-      );
-      // throw new Error("Error fetching payment methods");
+      throw new Error(response?.data?.message || "Error updating student");
     }
   } catch (error: any) {
-    let errorMessage = "An error occurred.";
-
-    if (
-      error?.response?.data?.error && // Adjusted the path to match your error structure
-      Array.isArray(error?.response?.data?.error)
-    ) {
-      // If the error contains an array, combine the messages with line breaks
-      const errorMessagesArray = error?.response?.data?.error?.map(
-        (err: any) => `${err.path}: ${err.message}`, // Format each error message
-      );
-      errorMessage = errorMessagesArray.join("\n"); // Join all error messages into a single string with line breaks
-    } else if (typeof error?.message === "string") {
-      // If the error has a single message string, use it
-      errorMessage = error?.message;
-    }
-
-    throw new Error(errorMessage);
+    console.error("Error updating student:", error);
+    throw new Error(error?.response?.data?.message || "An error occurred");
   }
 }
