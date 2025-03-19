@@ -14,8 +14,8 @@ const initialState: SHIPMENT_STATE = {
   pagination: {
     page: 1,
     pageSize: 10,
-    numberOfResults: 0,
-    numberOfPages: 1,
+    totalItems: 0,
+    totalPages: 1,
   },
   loadingShipments: false,
   errorShipments: null,
@@ -63,7 +63,7 @@ const shipmentsSlice = createSlice({
           state.loadingShipments = false;
           state.shipments = action.payload?.data?.shipments || [];
           state.pagination =
-            action.payload?.metadata?.pagination || initialState.pagination;
+            action.payload?.data?.pagination || initialState.pagination;
         },
       )
       .addCase(fetchShipmentsList.rejected, (state, action: any) => {

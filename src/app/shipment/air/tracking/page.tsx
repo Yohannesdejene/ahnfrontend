@@ -1,18 +1,18 @@
 import React from "react";
 import Image from "next/image";
 import { Metadata } from "next";
-import AddShipment from "@/components/shipment/addShipment";
+import TrackingPage from "@/components/shipment/tracking";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { AuthProvider } from "@/context/AuthContext"; // Adjust the path as necessary
 
 export const metadata: Metadata = {
-  title: "Add Air  Shipment",
+  title: "Tracking  air shipment",
   description: "Ahununu Express",
 };
 
 interface PageProps {
   params: {
-    id: string | number | null;
+    id: string;
   };
 }
 
@@ -20,7 +20,7 @@ const Detail: React.FC<PageProps> = ({ params }) => {
   return (
     <AuthProvider>
       <DefaultLayout>
-        <AddShipment id={"air"} />
+        <TrackingPage id={"air"} />
       </DefaultLayout>
     </AuthProvider>
   );

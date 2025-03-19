@@ -22,6 +22,9 @@ import { FaBarsProgress } from "react-icons/fa6";
 import { FaFileInvoiceDollar } from "react-icons/fa";
 import { BsFillFileEarmarkSpreadsheetFill } from "react-icons/bs";
 import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
+import { SiVirustotal } from "react-icons/si";
+import { MdCreditCard } from "react-icons/md";
+
 import { RiEdit2Fill } from "react-icons/ri";
 import { MdOutlinePostAdd } from "react-icons/md";
 import { FaMoneyCheckDollar } from "react-icons/fa6";
@@ -75,60 +78,52 @@ const menuGroups = [
           {
             icon: <GiPackedPlanks className="text-title-sm text-white" />,
             label: "Ready to Pick",
-            route: "/shipment/ready-for-pickup",
+            route: "/shipment/air/ready-for-pickup",
           },
           {
             icon: <FaPlaneArrival className="text-title-sm text-white" />,
             label: "Arriving Shipment",
-            route: "/shipment/arriving",
+            route: "/shipment/air/arriving",
           },
-
           {
             icon: (
               <TbHomeCheck className="text-bold text-title-sm text-white" />
             ),
             label: "Arrived Shipment",
-            route: "/shipment/arrived",
+            route: "/shipment/air/arrived",
           },
-          {
-            icon: <FaExchangeAlt className="text-title-sm text-white" />,
-            label: "Change Status",
-            route: "/shipment/change-status",
-          },
-          {
-            icon: <FaBarsProgress className="text-title-sm text-white" />,
-            label: "Track Shipment",
-            route: "/shipment/track-shipment",
-          },
-          {
-            icon: <FaFileInvoiceDollar className="text-title-sm text-white" />,
-            label: "Shipment Invoice",
-            route: "#",
-          },
-
           {
             icon: (
               <IoCheckmarkDoneCircleSharp className="text-title-sm text-white" />
             ),
             label: "Delivered Shipments",
-            route: "#",
+            route: "/shipment/air/delivered",
           },
           {
-            icon: (
-              <BsFillFileEarmarkSpreadsheetFill className="text-title-sm text-white" />
-            ),
-            label: "Delivery Run Sheet",
-            route: "#",
+            icon: <MdCreditCard className="text-title-sm text-white" />,
+            label: " Credit shipments",
+            route: "/shipment/air/credit-shipmnents",
           },
           {
-            icon: <RiEdit2Fill className="text-title-sm text-white" />,
-            label: "Update Shipments",
-            route: "#",
+            icon: <SiVirustotal className="text-title-sm text-white" />,
+            label: "All Air Shipments",
+            route: "/shipment/air/all-air-shipments",
+          },
+
+          {
+            icon: <FaExchangeAlt className="text-title-sm text-white" />,
+            label: "Change Status",
+            route: "/shipment/air/change-status",
           },
           {
-            icon: <MdOutlinePostAdd className="text-title-sm text-white" />,
-            label: "Add Extra Fee",
-            route: "#",
+            icon: <FaBarsProgress className="text-title-sm text-white" />,
+            label: "Track Shipment",
+            route: "/shipment/air/tracking",
+          },
+          {
+            icon: <FaFileInvoiceDollar className="text-title-sm text-white" />,
+            label: "Shipment Invoice",
+            route: "/shipment/air/invoice",
           },
         ],
       },
@@ -140,17 +135,17 @@ const menuGroups = [
           {
             icon: <IoIosAddCircle className="text-title-md text-white" />,
             label: "Add Shipment",
-            route: "#",
+            route: "/shipment/ground/add-shipment",
           },
           {
             icon: <GiPackedPlanks className="text-title-sm text-white" />,
             label: "Ready to Pick",
-            route: "#",
+            route: "/shipment/ground/ready-for-pickup",
           },
           {
             icon: <FaPlaneArrival className="text-title-sm text-white" />,
             label: "Arriving Shipment",
-            route: "#",
+            route: "/shipment/griund/arriving",
           },
 
           {
@@ -158,47 +153,39 @@ const menuGroups = [
               <TbHomeCheck className="text-bold text-title-sm text-white" />
             ),
             label: "Arrived Shipment",
-            route: "#",
+            route: "/shipment/ground/arrived",
           },
-          {
-            icon: <FaExchangeAlt className="text-title-sm text-white" />,
-            label: "Change Status",
-            route: "#",
-          },
-          {
-            icon: <FaBarsProgress className="text-title-sm text-white" />,
-            label: "Track Shipment",
-            route: "#",
-          },
-          {
-            icon: <FaFileInvoiceDollar className="text-title-sm text-white" />,
-            label: "Shipment Invoice",
-            route: "#",
-          },
-
           {
             icon: (
               <IoCheckmarkDoneCircleSharp className="text-title-sm text-white" />
             ),
             label: "Delivered Shipments",
-            route: "#",
+            route: "/shipment/ground/delivered",
           },
           {
-            icon: (
-              <BsFillFileEarmarkSpreadsheetFill className="text-title-sm text-white" />
-            ),
-            label: "Delivery Run Sheet",
-            route: "#",
+            icon: <SiVirustotal className="text-title-sm text-white" />,
+            label: "All ground Shipments",
+            route: "/shipment/ground/all",
           },
           {
-            icon: <RiEdit2Fill className="text-title-sm text-white" />,
-            label: "Update Shipments",
-            route: "#",
+            icon: <MdCreditCard className="text-title-sm text-white" />,
+            label: "Ground  Credit shipments",
+            route: "/shipment/credit/all",
           },
           {
-            icon: <MdOutlinePostAdd className="text-title-sm text-white" />,
-            label: "Add Extra Fee",
-            route: "#",
+            icon: <FaExchangeAlt className="text-title-sm text-white" />,
+            label: "Change Status",
+            route: "/shipment/ground/change-status",
+          },
+          {
+            icon: <FaBarsProgress className="text-title-sm text-white" />,
+            label: "Track Shipment",
+            route: "/shipment/ground/tracking",
+          },
+          {
+            icon: <FaFileInvoiceDollar className="text-title-sm text-white" />,
+            label: "Shipment Invoice",
+            route: "/shipment/ground/invoice",
           },
         ],
       },

@@ -66,7 +66,6 @@ const AddRate: React.FC<AddRateProps> = ({ toggleDrawer }) => {
     resolver: zodResolver(formSchema),
   });
   const formValues = methods.watch(); // This will give you the current form values
-  console.log("formValues-formValues", formValues);
   const addRate = async (values: FormData) => {
     setErrorMessage(null);
     setLoading(true);

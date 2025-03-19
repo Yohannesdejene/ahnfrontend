@@ -19,7 +19,7 @@ export const store = configureStore({
   reducer: {
     auth: authReducer,
     shipmentType: shipmentType,
-    shipmentMode: shipmentMode,lmdscdc
+    shipmentMode: shipmentMode,
     paymentMode: paymentMode,
     paymentMethod: paymentMethod,
     rate: rate,

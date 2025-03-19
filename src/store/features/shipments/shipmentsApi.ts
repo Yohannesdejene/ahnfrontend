@@ -8,13 +8,19 @@ export async function apiGetShipmentsList(
   filters?: any,
 ): Promise<any> {
   const method = "GET";
-  let url = `/shipments/crud/getShipments?page=${page}&limit=${pageSize}`;
-
+  let url = `/shipments/crud/getShipments?page=${page}&pageSize=${pageSize}`;
+  console.log("filter in api", filters);
+  // Append filters to the URL
   // Append filters to the URL
   if (filters) {
     Object.keys(filters).forEach((key) => {
-      if (filters[key]) {
-        url += `&${key}=${filters[key]}`;
+      // Check if the value is not undefined, null, or an empty string
+      if (
+        filters[key] !== undefined &&
+        filters[key] !== null &&
+        filters[key] !== ""
+      ) {
+        url += `&${key}=${encodeURIComponent(filters[key])}`;
       }
     });
   }
@@ -22,7 +28,6 @@ export async function apiGetShipmentsList(
   const response = await HttpService.request({ method, url });
   return response;
 }
-
 // Create a new shipment
 export async function apiCreateShipment(
   data: SHIPMENT_CREATE_UPDATE,
@@ -33,7 +38,6 @@ export async function apiCreateShipment(
   const response = await HttpService.request({ method, data, url });
   return response;
 }
-
 // Get a shipment by ID
 export async function apiGetShipmentById(id: number | string): Promise<any> {
   const method = "GET";
@@ -66,6 +70,38 @@ export async function apiGetShipmentsByIdOrAwb(
   if (id) url += `?id=${id}`;
   if (awb) url += `${id ? "&" : "?"}awb=${awb}`;
 
+  const response = await HttpService.request({ method, url });
+  return response;
+}
+export async function apiChangeShipmentStatus(
+  awb: string,
+  statusId: number,
+  shipmentModeId: number,
+  remark?: string | number,
+): Promise<any> {
+  const method = "POST";
+  let url = `/shipments/tracking/changeShipmentStatus`;
+  const data = {
+    awb,
+    statusId,
+    shipmentModeId,
+    remark,
+  };
+  const response = await HttpService.request({ method, data, url });
+  return response;
+}
+export async function apiGetStatuses(type: string): Promise<any> {
+  const method = "GET";
+  let url = `/shipments/status/getShipPackDisStatus?type=${type}`;
+  const response = await HttpService.request({ method, url });
+  return response;
+}
+export async function apiGetShipmentTracking(
+  shipmentModeId: number,
+  awb: string,
+): Promise<any> {
+  const method = "GET";
+  let url = `/shipments/tracking/getShipmentTrackingByAwb?awb=${awb}&shipmentModeId=${shipmentModeId}`;
   const response = await HttpService.request({ method, url });
   return response;
 }

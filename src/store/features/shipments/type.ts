@@ -52,6 +52,11 @@ export interface SHIPMENT {
   destinationBranchId: number;
   createdAt: string; // ISO date string
   updatedAt: string; // ISO date string
+  recipientBranch?: any;
+  senderBranch?: any;
+  PaymentMode?: any;
+  PaymentMethod?: any;
+  ShipmentPackageDispatchStatus?: any;
 }
 
 // Interface for fetching shipments with filters
@@ -75,8 +80,8 @@ export interface SHIPMENT_FILTERS {
 export interface PAGINATION {
   page: number;
   pageSize: number;
-  numberOfResults: number;
-  numberOfPages: number;
+  totalItems: number;
+  totalPages: number;
 }
 
 // Interface for the shipment state

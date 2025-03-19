@@ -105,9 +105,10 @@ interface GradeDetailProps {
 }
 const AddShipment: React.FC<GradeDetailProps> = ({ id }) => {
   const dispatch: AppDispatch = useDispatch();
+
+  const { user, token } = useSelector((state: RootState) => state.auth);
   const { loadingBranch, errorBranch, optionsBranch, dataBranch, reloadYears } =
     useGetAllBranches();
-  const { user, token } = useSelector((state: RootState) => state.auth);
   const {
     loadingShipmentType,
     errorShipmentType,
@@ -219,7 +220,7 @@ const AddShipment: React.FC<GradeDetailProps> = ({ id }) => {
     const create_shipment: any = {
       manualAwb: values?.manualAwb ? values?.manualAwb : "",
       shipmentTypeId: parseInt(values.shipmentTypeId),
-      shipmentModeId: 1,
+      shipmentModeId: id == "air" ? 1 : 2,
       paymentModeId: parseInt(values.paymentModeId),
       paymentMethodId: values.paymentMethodId
         ? parseInt(values.paymentMethodId)
@@ -228,10 +229,10 @@ const AddShipment: React.FC<GradeDetailProps> = ({ id }) => {
       companyId: values?.companyId,
       senderBranchId: user?.Branch?.id,
       senderName: values.senderName,
-      senderPhone: values.senderPhone,
+      senderPhone: `251${values.senderPhone}`,
       recipientBranchId: parseInt(values.recipientBranchId),
       recipientName: values.recipientName,
-      recipientPhone: values.recipientPhone,
+      recipientPhone: `251${values.recipientPhone}`,
       shipmentDescription: values.shipmentDescription,
       rate: rate,
       rateId: rateId,
@@ -324,7 +325,7 @@ const AddShipment: React.FC<GradeDetailProps> = ({ id }) => {
                           <EthiopianNumberInput
                             type="text"
                             name="recipientPhone"
-                            label="Receiver Phone Number"
+                            label="Recipient Phone Number"
                             placeholder="e.g. 912345678"
                           />
                         </div>

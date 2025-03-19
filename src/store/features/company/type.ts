@@ -1,51 +1,59 @@
-export interface BRANCHES {
+// Interface for a single company
+export interface COMPANY {
   id: number;
+  accountNumber: string;
   name: string;
-  phone: number;
+  phone: string;
   email: string;
-  location: string;
-  latitude: number;
-  longitude: number;
-  mapLink: string;
-  LATA: string;
-  description: string;
-  code: string;
+  tin: string;
+  licenseLink: string | null;
+  otherDocumentsLink: string | null;
+  branchId: number;
+  status: string;
+  statusMessage: string;
+  addedBy: string | null;
   createdAt: string; // ISO date string
   updatedAt: string; // ISO date string
 }
+
+// Interface for creating a company
+export interface CREATE_COMPANY {
+  name: string;
+  phone: string;
+  email: string;
+  tin: string;
+  licenseLink: string;
+  otherDocumentsLink: string;
+  branchId: number;
+  status: string;
+  addedBy: string;
+}
+
+// Interface for pagination
 export interface PAGINATION {
   page: number;
   limit: number;
   numberOfResults: number;
   numberOfPages: number;
 }
-// Initial state for the courses
-export interface BRANCHES_STATE {
-  branches: BRANCHES[];
-  currentBranch: BRANCHES | null;
-  pagination: PAGINATION;
-  loadingBranch: boolean;
-  errorBranch: string | null;
-  createBranchSuccess: boolean;
-  createBranchLoading: boolean;
-  createBranchError: string | null;
-  updateBranchLoading: boolean;
-  updateBranchError: string | null;
-  updateBranchSuccess: boolean;
-  selectedBranch: BRANCHES | null;
-  getBranchByIdLoading: boolean;
-  getBranchByIdError: string | null;
-}
 
-export interface CREATE_BRANCH {
-  name: string;
-  phone: string;
-  email?: string;
-  location: string;
-  latitude?: string;
-  longitude?: string;
-  mapLink?: string;
-  LATA?: string;
-  description: string;
-  code?: string;
+// Initial state for companies
+export interface COMPANIES_STATE {
+  companies: COMPANY[];
+  currentCompany: COMPANY | null;
+  pagination: PAGINATION;
+  loadingCompany: boolean;
+  errorCompany: string | null;
+  createCompanySuccess: boolean;
+  createCompanyLoading: boolean;
+  createCompanyError: string | null;
+  updateCompanyLoading: boolean;
+  updateCompanyError: string | null;
+  updateCompanySuccess: boolean;
+  selectedCompany: COMPANY | null;
+  getCompanyByIdLoading: boolean;
+  getCompanyByIdError: string | null;
+  deleteCompanyLoading: boolean;
+  deleteCompanyError: string | null;
+  deleteCompanySuccess: boolean;
 }

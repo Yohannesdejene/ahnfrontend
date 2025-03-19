@@ -28,6 +28,8 @@ export default function RootLayout({
   // const pathname = usePathname();
 
   return (
+    lsllslsl
+    lsllllalalalalal
     <html lang="en">
       <body suppressHydrationWarning={true}>
         <div className="dark:bg-boxdark-2 dark:text-bodydark">

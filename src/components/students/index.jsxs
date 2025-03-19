@@ -1,0 +1,143 @@
+"use client";
+import React, { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "@/store/store";
+import { getShipmentById } from "@/store/features/shipments/shipmentsThunk";
+import { CircularProgress, Button } from "@mui/material";
+import { useReactToPrint } from "react-to-print";
+
+const ShipmentDetail: React.FC = () => {
+  const { id } = useParams(); // Get the shipment ID from the route
+  const dispatch: AppDispatch = useDispatch();
+  const { selectedShipment, getShipmentByIdLoading } = useSelector(
+    (state: RootState) => state.shipments,
+  );
+
+  const [loading, setLoading] = useState<boolean>(true);
+
+  // Fetch shipment details by ID
+  useEffect(() => {
+    if (id) {
+      dispatch(getShipmentById(id))
+        .then(() => setLoading(false))
+        .catch(() => setLoading(false));
+    }
+  }, [id, dispatch]);
+
+  // Reference for printing
+  const printRef = React.useRef<HTMLDivElement>(null);
+
+  const handlePrint = useReactToPrint({
+    content: () => printRef.current,
+    documentTitle: `Shipment_${id}`,
+  });
+
+  if (loading || getShipmentByIdLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <CircularProgress />
+      </div>
+    );
+  }
+
+  if (!selectedShipment) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p>No shipment details found.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container mx-auto mt-10">
+      <div className="flex justify-between items-center mb-5">
+        <h1 className="text-2xl font-bold">Shipment Details</h1>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handlePrint}
+          style={{ textTransform: "none" }}
+        >
+          Print
+        </Button>
+      </div>
+
+      {/* Shipment Details */}
+      <div ref={printRef} className="bg-white p-5 rounded-lg shadow-md">
+        <h2 className="text-xl font-semibold mb-4">Shipment Information</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <p>
+              <strong>AWB:</strong> {selectedShipment.manualAwb || "N/A"}
+            </p>
+            <p>
+              <strong>Sender Name:</strong> {selectedShipment.senderName}
+            </p>
+            <p>
+              <strong>Sender Phone:</strong> {selectedShipment.senderPhone}
+            </p>
+            <p>
+              <strong>Recipient Name:</strong> {selectedShipment.recipientName}
+            </p>
+            <p>
+              <strong>Recipient Phone:</strong> {selectedShipment.recipientPhone}
+            </p>
+            <p>
+              <strong>Recipient City:</strong>{" "}
+              {selectedShipment.recipientBranchId || "N/A"}
+            </p>
+          </div>
+          <div>
+            <p>
+              <strong>Shipment Type:</strong> {selectedShipment.shipmentTypeId}
+            </p>
+            <p>
+              <strong>Shipment Mode:</strong> {selectedShipment.shipmentModeId}
+            </p>
+            <p>
+              <strong>Delivery Mode:</strong> {selectedShipment.deliveryModeId}
+            </p>
+            <p>
+              <strong>Company:</strong>{" "}
+              {selectedShipment.companyId || "N/A"}
+            </p>
+            <p>
+              <strong>Status:</strong> {selectedShipment.status || "N/A"}
+            </p>
+            <p>
+              <strong>Rate:</strong> {selectedShipment.rate || "N/A"} Birr
+            </p>
+          </div>
+        </div>
+
+        <h2 className="text-xl font-semibold mt-6 mb-4">Additional Details</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <p>
+              <strong>Quantity:</strong> {selectedShipment.quantity}
+            </p>
+            <p>
+              <strong>No of Pieces:</strong> {selectedShipment.noOfPcs}
+            </p>
+            <p>
+              <strong>Unit:</strong> {selectedShipment.unitId || "N/A"}
+            </p>
+          </div>
+          <div>
+            <p>
+              <strong>Description:</strong>{" "}
+              {selectedShipment.shipmentDescription || "N/A"}
+            </p>
+            <p>
+              <strong>Total Fee:</strong> {selectedShipment.netFee || "N/A"}{" "}
+              Birr
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ShipmentDetail;
