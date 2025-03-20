@@ -42,7 +42,7 @@ function formatPermissions(permissions: any) {
     name: permission.name,
     description: permission.description,
     code: permission.code,
-    permissionType: permission.PermissionType.type,
+    // permissionType: permission.PermissionType.type,
   }));
 }
 

@@ -30,7 +30,7 @@ function formatPermissions(permissions: any[]): Permission[] {
     name: permission.name,
     description: permission.description,
     code: permission.code,
-    permissionType: permission.PermissionType.type, // Ensure this matches your API structure
+    // permissionType: permission.PermissionType.type, // Ensure this matches your API structure
   }));
 }
 
