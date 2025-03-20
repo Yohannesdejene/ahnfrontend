@@ -171,10 +171,9 @@ const Login: React.FC = () => {
               background: "linear-gradient(to top, #109101, #ffffff)",
             }}
           >
-            {/* <div className="flex h-full flex-col justify-center px-26 py-0 text-center">
+            <div className="flex h-full flex-col justify-center px-26 py-0 text-center">
               <Link className="mb-5.5 inline-block" href="#">
-              
-              <h5 className="fs-bold text-title-xxl">Ahununu Express </h5>
+                <h5 className="fs-bold text-title-xxl">Ahununu Express </h5>
               </Link>
               <p className="text-xlg 2xl:px-20">
                 Welcome to Ahununu Trading PLC, your trusted partner for
@@ -182,7 +181,7 @@ const Login: React.FC = () => {
                 in providing reliable and efficient delivery solutions to meet
                 your business and personal needs.{" "}
               </p>
-            </div> */}
+            </div>
           </div>
 
           <div className="flex h-screen w-full flex-col border-l-2 border-stroke dark:border-strokedark xl:w-1/2">
@@ -192,7 +191,7 @@ const Login: React.FC = () => {
             <div className="flex flex-grow items-center justify-center">
               <div className="w-full max-w-lg p-8">
                 <div className=" flex  items-center justify-center  gap-2">
-                  {/* <Image
+                  <Image
                     className="dark:block"
                     src={"/images/logo/ahunlogo.jpg"}
                     alt="Logo"
@@ -200,10 +199,10 @@ const Login: React.FC = () => {
                     // height={50}
                     width={200}
                     height={250}
-                  /> */}
-                  {/* <h6 className="text-lg font-bold text-black dark:text-white">
+                  />
+                  <h6 className="text-lg font-bold text-black dark:text-white">
                     Ahunu Express
-                  </h6> */}
+                  </h6>
                 </div>
                 <div className="mb-3 mt-3  flex  items-center gap-2">
                   <h2 className="item-center justify-center text-title-lg  font-bold text-black dark:text-white sm:text-title-sm">
