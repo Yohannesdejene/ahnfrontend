@@ -580,7 +580,7 @@ const ShipmentAirList: React.FC<GradeDetailProps> = ({ id }) => {
             ? "Incoming shipments"
             : id == "ARRIVED"
               ? "Arrived shipments"
-              : id == "delivered"
+              : id == "DELIVERED"
                 ? "Delivered shipments"
                 : ""}
       </label>
@@ -663,7 +663,7 @@ const ShipmentAirList: React.FC<GradeDetailProps> = ({ id }) => {
                 Reset Filter
               </BaseButton>
             </div>
-
+            {/* 
             <div className="mb-1 flex items-end">
               <BaseButton
                 onClick={() => {
@@ -686,11 +686,11 @@ const ShipmentAirList: React.FC<GradeDetailProps> = ({ id }) => {
               >
                 {filterMore ? "Close filter" : "More Filter"}
               </BaseButton>
-            </div>
+            </div> */}
           </div>
         </div>
         {/* more filters  */}
-        {filterMore && (
+        {/* {filterMore && (
           <div className="w-full ">
             <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-5">
               {(id == "ALL_AIR" || id == "ALL_GROUND") && (
@@ -745,7 +745,7 @@ const ShipmentAirList: React.FC<GradeDetailProps> = ({ id }) => {
               </div>
             </div>
           </div>
-        )}
+        )} */}
       </FormProvider>
 
       <div className=" flex justify-between ">

@@ -66,19 +66,19 @@ const shipmentSchema = z
     shipmentDescription: z
       .string()
       .min(1, { message: "Shipment Description  is required" }),
-    companyId: z.number().optional(), // Initially optional
+    companyId: z.string().optional(), // Initially optional
     // rate: z.number(), // Changed to number for double values
     // rateId: z.number().min(1, { message: "Quantity is required" })
     // netFee: z.string(),
     quantity: z.number().min(1, { message: "Quantity is required" }), // Changed to number with min validation
-    unitId: z.string().min(1, { message: "Units  is required" }),
+    // unitId: z.string().min(1, { message: "Units  is required" }),
     noOfPcs: z.number().min(1, { message: "Quantity is required" }),
   })
   .superRefine((data: any, ctx: any) => {
     // Check if paymentModeId is "2"
     if (data.paymentModeId === "2") {
       // If companyId is missing or not a number, add an error
-      if (!data.companyId || typeof data.companyId !== "number") {
+      if (!data.companyId || typeof data.companyId !== "string") {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: ["companyId"],
@@ -105,7 +105,7 @@ interface GradeDetailProps {
 }
 const AddShipment: React.FC<GradeDetailProps> = ({ id }) => {
   const dispatch: AppDispatch = useDispatch();
-
+  const router = useRouter(); // Initialize useRouter
   const { user, token } = useSelector((state: RootState) => state.auth);
   const { loadingBranch, errorBranch, optionsBranch, dataBranch, reloadYears } =
     useGetAllBranches();
@@ -159,6 +159,7 @@ const AddShipment: React.FC<GradeDetailProps> = ({ id }) => {
   const { errors } = methods.formState; // Get form errors
   const formValues = methods.watch(); // This will give you the current form values
   console.log("Error", errors);
+  console.log("formValues upadted", formValues);
   // Function to search for rates
   const searchRate = async () => {
     const {
@@ -181,7 +182,7 @@ const AddShipment: React.FC<GradeDetailProps> = ({ id }) => {
           sourceBranchId: user?.Branch?.id,
           destinationBranchId: parseInt(recipientBranchId),
           shipmentTypeId: parseInt(shipmentTypeId),
-          shipmentModeId: 1,
+          shipmentModeId: id == "air" ? 1 : 2,
         });
         if (response?.status == 200) {
           const foundRate = response?.data?.rates[0]?.rate || null;
@@ -217,7 +218,7 @@ const AddShipment: React.FC<GradeDetailProps> = ({ id }) => {
     setErrorMessage(null);
     setLoading(true);
 
-    const create_shipment: any = {
+    let create_shipment: any = {
       manualAwb: values?.manualAwb ? values?.manualAwb : "",
       shipmentTypeId: parseInt(values.shipmentTypeId),
       shipmentModeId: id == "air" ? 1 : 2,
@@ -226,7 +227,6 @@ const AddShipment: React.FC<GradeDetailProps> = ({ id }) => {
         ? parseInt(values.paymentMethodId)
         : 1,
       deliveryModeId: parseInt(values.deliveryModeId),
-      companyId: values?.companyId,
       senderBranchId: user?.Branch?.id,
       senderName: values.senderName,
       senderPhone: `251${values.senderPhone}`,
@@ -238,15 +238,30 @@ const AddShipment: React.FC<GradeDetailProps> = ({ id }) => {
       rateId: rateId,
       netFee: rate,
       quantity: values.quantity,
-      unitId: parseInt(values.unitId),
+      unitId: 1,
       noOfPcs: values.noOfPcs,
     };
-
+    if (
+      values?.companyId &&
+      values?.companyId !== null &&
+      values?.companyId !== ""
+    ) {
+      create_shipment.companyId = parseInt(values?.companyId);
+    }
     dispatch(createShipment({ shipmentData: create_shipment }))
       .then((data) => {
         console.log("data", data);
         if (data?.payload?.status >= 200 && data?.payload?.status < 300) {
           setLoading(false);
+          const shipmentId = data.payload.data?.shipment?.id; // Adjust based on your API response structure
+          const shipmentMode = data.payload.data?.shipment?.shipmentModeId;
+          if (shipmentId) {
+            router.push(
+              `/shipment/${shipmentMode == 1 ? "air" : "ground"}/detail/${shipmentId}`,
+            ); // Redirect to detail page
+          } else {
+            // router.push("/shipments"); // Fallback to shipment list
+          }
           // toast.success("Shipment created successfully  ");
           // dispatch(fetchShipmentsList({ page: 1, pageSize: 10 })); // Refresh the shipment list
         } else {
@@ -391,7 +406,7 @@ const AddShipment: React.FC<GradeDetailProps> = ({ id }) => {
                           Measures
                         </h4>
                         {/* ,recipientPhone, */}
-                        <div className="mb-3 w-full">
+                        {/* <div className="mb-3 w-full">
                           <SelectInput
                             name="unitId"
                             label="Unit "
@@ -399,12 +414,12 @@ const AddShipment: React.FC<GradeDetailProps> = ({ id }) => {
                             options={optionsUnit}
                             loading={loadingUnit} // Default to false if not provided
                           />
-                        </div>
+                        </div> */}
 
                         <div className="mb-3 w-full">
                           <InputNumber
                             name="quantity"
-                            label="Quantity"
+                            label="Quantity(Weight) in kg"
                             placeholder="e.g. 10"
                           />
                         </div>
@@ -451,8 +466,8 @@ const AddShipment: React.FC<GradeDetailProps> = ({ id }) => {
                         {formValues && formValues?.paymentModeId == "2" && (
                           <div className="mb-3 w-full">
                             <SelectInput
-                              name="conpanyId"
-                              label="Compnay  "
+                              name="companyId"
+                              label="Company "
                               placeholder="Select The Company"
                               options={optionsCompany}
                               loading={loadingCompany}

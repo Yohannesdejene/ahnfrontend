@@ -2,18 +2,12 @@ import React from "react";
 import Link from "next/link";
 import SidebarDropdown from "@/components/Sidebar/SidebarDropdown";
 import { usePathname } from "next/navigation";
-import { useSelector } from "react-redux";
 
 const SidebarItem = ({ item, pageName, setPageName }: any) => {
-  const auth = useSelector((state: any) => state?.auth?.permissions);
-  // const hasCreateUserPermission = auth.some(
-  //   (permission: any) => permission.code === "CREATE_USER",
-  // );
-
   const handleClick = () => {
     const updatedPageName =
       pageName !== item.label.toLowerCase() ? item.label.toLowerCase() : "";
-    return setPageName(updatedPageName);
+    setPageName(updatedPageName);
   };
 
   const pathname = usePathname();
@@ -31,13 +25,18 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
   return (
     <>
       <li>
-        <Link
-          href={item.route}
+        <div
           onClick={handleClick}
-          className={`${isItemActive ? "bg-hoverBg dark:bg-hoverBg" : ""} group  relative flex items-center gap-2.5 rounded-md px-4  py-2  font-medium text-white  duration-300 ease-in-out hover:bg-hoverBg`}
+          className={`${isItemActive ? "bg-hoverBg dark:bg-hoverBg" : ""} group relative flex cursor-pointer items-center gap-2.5 rounded-md px-4 py-2 font-medium text-white duration-300 ease-in-out hover:bg-hoverBg`}
         >
           {item.icon}
-          {item.label}
+          {item.route && item.route !== "#" ? (
+            <Link href={item.route} className="flex-1">
+              {item.label}
+            </Link>
+          ) : (
+            <span className="flex-1">{item.label}</span>
+          )}
           {item.children && (
             <svg
               className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
@@ -57,7 +56,7 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
               />
             </svg>
           )}
-        </Link>
+        </div>
 
         {item.children && (
           <div

@@ -105,3 +105,22 @@ export async function apiGetShipmentTracking(
   const response = await HttpService.request({ method, url });
   return response;
 }
+export async function getBranchShipmentSummary(filters: any): Promise<any> {
+  const method = "GET";
+  let url = `/shipments/crud/getBranchShipmentSummary?`;
+  // Append filters to the URL
+  if (filters) {
+    Object.keys(filters).forEach((key) => {
+      // Check if the value is not undefined, null, or an empty string
+      if (
+        filters[key] !== undefined &&
+        filters[key] !== null &&
+        filters[key] !== ""
+      ) {
+        url += `&${key}=${encodeURIComponent(filters[key])}`;
+      }
+    });
+  }
+  const response = await HttpService.request({ method, url });
+  return response;
+}

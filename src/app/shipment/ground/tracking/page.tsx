@@ -1,23 +1,23 @@
 import React from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
-import ListRate from "@/components/manage/rate/index";
+import TrackingPage from "@/components/shipment/ground/tracking";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { AuthProvider } from "@/context/AuthContext"; // Adjust the path as necessary
 
 export const metadata: Metadata = {
-  title: "List rates ",
+  title: "Tracking  ground shipment",
   description: "Ahununu Express",
 };
-const List: React.FC = () => {
+
+const Detail = () => {
   return (
     <AuthProvider>
       <DefaultLayout>
-        <ListRate />
+        <TrackingPage />
       </DefaultLayout>
     </AuthProvider>
   );
 };
 
-export default List;
+export default Detail;

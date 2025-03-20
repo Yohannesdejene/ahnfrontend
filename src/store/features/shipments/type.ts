@@ -57,6 +57,7 @@ export interface SHIPMENT {
   PaymentMode?: any;
   PaymentMethod?: any;
   ShipmentPackageDispatchStatus?: any;
+  Unit?: any;
 }
 
 // Interface for fetching shipments with filters
@@ -88,6 +89,7 @@ export interface PAGINATION {
 export interface SHIPMENT_STATE {
   shipments: SHIPMENT[];
   pagination: PAGINATION;
+  totalQuantity: number;
   loadingShipments: boolean;
   errorShipments: string | null;
   createShipmentSuccess: boolean;

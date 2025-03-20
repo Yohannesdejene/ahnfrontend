@@ -100,8 +100,8 @@ const ChangeStatus: React.FC<GradeDetailProps> = ({ id }) => {
           <InputString
             type="text"
             name="awb"
-            label="AWB Number"
-            placeholder="Enter AWB Number"
+            label={`${id == "air" ? "AWB" : "GWB"}`}
+            placeholder={`Enter ${id == "air" ? "AWB" : "GWB"} Number`}
           />
 
           {/* Status Dropdown */}

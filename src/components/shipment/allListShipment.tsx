@@ -534,7 +534,7 @@ const ShipmentAllList: React.FC<GradeDetailProps> = ({ id }) => {
               </BaseButton>
             </div>
 
-            <div className="mb-1 flex items-end">
+            {/* <div className="mb-1 flex items-end">
               <BaseButton
                 onClick={() => {
                   setFilterMore(!filterMore);
@@ -556,11 +556,11 @@ const ShipmentAllList: React.FC<GradeDetailProps> = ({ id }) => {
               >
                 {filterMore ? "Close filter" : "More Filter"}
               </BaseButton>
-            </div>
+            </div> */}
           </div>
         </div>
         {/* more filters  */}
-        {filterMore && (
+        {/* {filterMore && (
           <div className="w-full ">
             <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-5">
               <div className="card flex flex-col justify-center">
@@ -610,7 +610,7 @@ const ShipmentAllList: React.FC<GradeDetailProps> = ({ id }) => {
               </div>
             </div>
           </div>
-        )}
+        )} */}
       </FormProvider>
 
       <div className=" flex justify-between ">

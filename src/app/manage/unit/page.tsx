@@ -7,7 +7,7 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { AuthProvider } from "@/context/AuthContext"; // Adjust the path as necessary
 
 export const metadata: Metadata = {
-  title: "List payment method",
+  title: "List unit ",
   description: "Ahununu Express",
 };
 const List: React.FC = () => {

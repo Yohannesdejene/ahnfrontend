@@ -37,7 +37,7 @@ const shipmentSchema = z
     shipmentModeId: z.number().optional(),
     shipmentTypeId: z.string().min(1, { message: "Shipment Type is required" }),
     deliveryModeId: z.string().min(1, { message: "Delivery Mode is required" }),
-    senderBranchId: z.string().optional(),
+    senderBranchId: z.string().min(1, { message: "Sender city is required" }),
     senderName: z.string().min(1, { message: "Sender name is required" }),
     senderPhone: z
       .string()
@@ -152,7 +152,6 @@ const UpdateShipment: React.FC<UpdateShipmentProps> = ({ id, type }) => {
   const [rate, setRate] = useState<number | null>(null); // State to store the rate
   const [rateId, setRateId] = useState<number | null>(null); // State to store the rate ID
   const [loadingRateSearch, setLoadingRateSearch] = useState<boolean>(false); // Loading state for rate search
-
   const methods = useForm<FormData>({
     resolver: zodResolver(shipmentSchema),
   });
@@ -164,14 +163,14 @@ const UpdateShipment: React.FC<UpdateShipmentProps> = ({ id, type }) => {
   const [loading, setLoading] = useState(false);
   const searchRate = async () => {
     const {
-      // senderBranchId,
+      senderBranchId,
       recipientBranchId,
       shipmentTypeId,
       // shipmentModeId,
     } = formValues;
     // Ensure all required fields are filled before searching
     if (
-      // senderBranchId &&
+      senderBranchId &&
       recipientBranchId &&
       shipmentTypeId
       // shipmentModeId
@@ -179,8 +178,8 @@ const UpdateShipment: React.FC<UpdateShipmentProps> = ({ id, type }) => {
       setLoadingRateSearch(true);
       try {
         const response = await apiSearchRate({
-          // sourceBranchId: parseInt(senderBranchId),
-          sourceBranchId: user?.Branch?.id,
+          sourceBranchId: parseInt(senderBranchId),
+          // sourceBranchId: user?.Branch?.id,
           destinationBranchId: parseInt(recipientBranchId),
           shipmentTypeId: parseInt(shipmentTypeId),
           shipmentModeId: type == "air" ? 1 : 2,
@@ -210,7 +209,7 @@ const UpdateShipment: React.FC<UpdateShipmentProps> = ({ id, type }) => {
   useEffect(() => {
     searchRate();
   }, [
-    // formValues.senderBranchId,
+    formValues.senderBranchId,
     formValues.recipientBranchId,
     formValues.shipmentTypeId,
   ]);
@@ -226,7 +225,7 @@ const UpdateShipment: React.FC<UpdateShipmentProps> = ({ id, type }) => {
         deliveryModeId: selectedShipment?.deliveryModeId?.toString() || "",
         senderName: selectedShipment?.senderName || "",
         senderPhone: selectedShipment?.senderPhone?.slice(-9) || "",
-        senderBranchId: user?.Branch?.id?.toString(),
+        senderBranchId: selectedShipment?.senderBranchId?.toString() || "",
         recipientBranchId:
           selectedShipment?.recipientBranchId?.toString() || "",
         recipientName: selectedShipment?.recipientName || "",
@@ -266,8 +265,7 @@ const UpdateShipment: React.FC<UpdateShipmentProps> = ({ id, type }) => {
           : 1,
         deliveryModeId: parseInt(data.deliveryModeId),
         companyId: data?.companyId,
-        senderBranchId: user?.Branch?.id,
-
+        senderBranchId: parseInt(data?.senderBranchId),
         senderName: data?.senderName,
         senderPhone: `251${data?.senderPhone}`,
         recipientBranchId: parseInt(data?.recipientBranchId),
@@ -347,6 +345,15 @@ const UpdateShipment: React.FC<UpdateShipmentProps> = ({ id, type }) => {
                           name="senderPhone"
                           label="Sender Phone Nunber"
                           placeholder="e.g. 912345678"
+                        />
+                      </div>
+                      <div className="mb-3 w-full">
+                        <SelectInput
+                          name="senderBranchId"
+                          label="Sender city  "
+                          placeholder="Select Sender City   "
+                          options={optionsBranch}
+                          loading={loadingBranch} // Default to false if not provided
                         />
                       </div>
                     </div>

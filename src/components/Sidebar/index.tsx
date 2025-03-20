@@ -47,6 +47,7 @@ import { GiAirplaneDeparture } from "react-icons/gi";
 import { FiType } from "react-icons/fi";
 import { MdAttachMoney } from "react-icons/md";
 import { FaUnity } from "react-icons/fa";
+import { GrUserAdmin } from "react-icons/gr";
 
 import * as URL from "@/route";
 
@@ -102,7 +103,7 @@ const menuGroups = [
           {
             icon: <MdCreditCard className="text-title-sm text-white" />,
             label: " Credit shipments",
-            route: "/shipment/air/credit-shipmnents",
+            route: "/shipment/air/credit-shipments",
           },
           {
             icon: <SiVirustotal className="text-title-sm text-white" />,
@@ -123,7 +124,7 @@ const menuGroups = [
           {
             icon: <FaFileInvoiceDollar className="text-title-sm text-white" />,
             label: "Shipment Invoice",
-            route: "/shipment/air/invoice",
+            route: "/#",
           },
         ],
       },
@@ -145,7 +146,7 @@ const menuGroups = [
           {
             icon: <FaPlaneArrival className="text-title-sm text-white" />,
             label: "Arriving Shipment",
-            route: "/shipment/griund/arriving",
+            route: "/shipment/ground/arriving",
           },
 
           {
@@ -165,12 +166,12 @@ const menuGroups = [
           {
             icon: <SiVirustotal className="text-title-sm text-white" />,
             label: "All ground Shipments",
-            route: "/shipment/ground/all",
+            route: "/shipment/ground/all-ground-shipments",
           },
           {
             icon: <MdCreditCard className="text-title-sm text-white" />,
             label: "Ground  Credit shipments",
-            route: "/shipment/credit/all",
+            route: "/shipment/ground/credit-shipments",
           },
           {
             icon: <FaExchangeAlt className="text-title-sm text-white" />,
@@ -185,91 +186,81 @@ const menuGroups = [
           {
             icon: <FaFileInvoiceDollar className="text-title-sm text-white" />,
             label: "Shipment Invoice",
-            route: "/shipment/ground/invoice",
+            route: "/#",
           },
         ],
       },
 
+      // {
+      //   icon: <FaMoneyCheckDollar className="text-title-sm text-white" />,
+      //   label: "Expenses",
+      //   route: "#",
+      //   children: [
+      //     {
+      //       icon: <IoIosAddCircle className="text-title-md text-white" />,
+      //       label: "Add Expenses",
+      //       route: "#",
+      //     },
+      //   ],
+      // },
+    ],
+  },
+
+  {
+    name: "Reports",
+    menuItems: [
       {
-        icon: <TbReportAnalytics className="text-title-sm text-white" />,
-        label: "Reports",
+        icon: <GiAirplaneDeparture className="text-title-sm text-white" />,
+        label: "Air Reports",
         route: "#",
         children: [
           {
-            icon: (
-              <>
-                <BsFillCreditCardFill className="text-title-sm text-white" />
-              </>
-            ),
-            label: "Credi Shipments",
-            route: "#",
+            icon: <BsFillCreditCardFill className="text-title-sm text-white" />,
+            label: "Branch Credit Shipments",
+            route: "/report/air/branch-credit-shipment",
           },
           {
             icon: <FaCodeBranch className="text-title-sm text-white" />,
-            label: "Branch Report",
-            route: "#",
+            label: "Branch Shipment",
+            route: "/report/air/branch-shipment",
           },
           {
-            icon: <FaCodeBranch className="text-title-sm text-white" />,
-            label: "Admin Branch Report",
-            route: "#",
+            icon: <SiVirustotal className="text-title-sm text-white" />,
+            label: "All Branch  Shipment",
+            route: "/report/air/all-branch-shipment",
           },
-          {
-            icon: (
-              <>
-                <MdSummarize className="text-title-sm text-white" />
-              </>
-            ),
-            label: "Net Branch Report ",
-            route: "#",
-          },
-
-          {
-            icon: (
-              <>
-                <MdSummarize className="text-title-sm text-white" />
-              </>
-            ),
-            label: "Net Admin Branch Report ",
-            route: "#",
-          },
-          {
-            icon: (
-              <>
-                <MdSummarize className="text-title-sm text-white" />
-              </>
-            ),
-            label: "Net All Branch Report ",
-            route: "#",
-          },
-          {
-            icon: <FaMoneyCheckDollar className="text-title-sm text-white" />,
-            label: "Admin Expense Report ",
-            route: "#",
-          },
-          {
-            icon: <FaMagento className="text-title-sm text-white" />,
-            label: "Agent Report ",
-            route: "#",
-          },
-
-          ,
         ],
       },
       {
-        icon: <FaMoneyCheckDollar className="text-title-sm text-white" />,
-        label: "Expenses",
+        icon: <FaShippingFast className="text-title-sm text-white" />,
+        label: "Ground Reports",
         route: "#",
         children: [
           {
-            icon: <IoIosAddCircle className="text-title-md text-white" />,
-            label: "Add Expenses",
-            route: "#",
+            icon: <BsFillCreditCardFill className="text-title-sm text-white" />,
+            label: "Branch Credit Shipments",
+            route: "/report/ground/branch-credit-shipment",
+          },
+          {
+            icon: <FaCodeBranch className="text-title-sm text-white" />,
+            label: "Branch Shipment",
+            route: "/report/ground/branch-shipment",
+          },
+          {
+            icon: <SiVirustotal className="text-title-sm text-white" />,
+            label: "All Branch Shipment",
+            route: "/report/ground/all-branch-shipment",
           },
         ],
+      },
+      {
+        icon: <GrUserAdmin className="text-title-sm text-white" />,
+        label: "Admin Shipment Report",
+        route: "/report/admin-shipment-report",
       },
     ],
   },
+
   {
     name: "Manage",
     menuItems: [
@@ -298,11 +289,11 @@ const menuGroups = [
         label: "Payment Methods",
         route: "/manage/payment-method",
       },
-      {
-        icon: <FaUnity />,
-        label: "Unit ",
-        route: "/manage/unit",
-      },
+      // {
+      //   icon: <FaUnity />,
+      //   label: "Unit ",
+      //   route: "/manage/unit",
+      // },
     ],
   },
   {

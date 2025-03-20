@@ -19,7 +19,7 @@ const SidebarDropdown = ({ item }: any) => {
           >
             {" "}
             {item.icon}
-            <Link href={item.route} className="ml-2 text-sm">
+            <Link href={item.route} prefetch={true} className="ml-2 text-sm">
               {item.label}
             </Link>
           </li>

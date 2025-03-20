@@ -47,6 +47,7 @@ import { apiGetShipmentsList } from "@/store/features/shipments/shipmentsApi";
 import { writeFile, utils } from "xlsx";
 import { saveAs } from "file-saver";
 import Papa from "papaparse";
+import { AnyCnameRecord } from "node:dns";
 
 const shipmentSchema = z.object({
   awb: z.string().optional(),
@@ -124,7 +125,7 @@ interface GradeDetailProps {
   id: string;
 }
 
-const ShipmentGroundList: React.FC<GradeDetailProps> = ({ id }) => {
+const BranchShipment: React.FC<GradeDetailProps> = ({ id }) => {
   const router = useRouter();
   const dispatch: AppDispatch = useDispatch();
   const { user, token } = useSelector((state: RootState) => state.auth);
@@ -176,17 +177,24 @@ const ShipmentGroundList: React.FC<GradeDetailProps> = ({ id }) => {
   ////filter states all
   const [filterMore, setFilterMore] = useState(false);
   ////pagination
-  const { shipments, errorShipments, loadingShipments, pagination } =
-    useSelector((state: RootState) => state.shipment);
+  const {
+    shipments,
+    totalQuantity,
+    errorShipments,
+    loadingShipments,
+    pagination,
+  } = useSelector((state: RootState) => state.shipment);
+
+  console.log("shipments", shipments);
   const methods = useForm<any>({
     resolver: zodResolver(shipmentSchema),
     defaultValues: {
       awb: "",
       paymentModeId: "",
       paymentMethodId: "",
-      shipmentModeId: 2,
+      shipmentModeId: id == "air" ? 1 : 2,
       shipmentTypeId: "",
-      senderBranchId: "",
+      senderBranchId: user?.Branch?.id,
       recipientBranchId: "",
       startDate: "",
       endDate: "",
@@ -201,27 +209,9 @@ const ShipmentGroundList: React.FC<GradeDetailProps> = ({ id }) => {
 
   useEffect(() => {
     let filters: any = { ...formValues };
-    filters.shipmentModeId = 2;
-
+    filters.shipmentModeId = id == "air" ? 1 : 2;
+    filters.senderBranchId = user?.Branch?.id;
     // Only modify filters if id is not "ALL_AIR" or "ALL_GROUND"
-
-    switch (id) {
-      case "READY_FOR_PICK_UP":
-        filters.statusId = 1; // Example attribute
-        break;
-      case "ARRIVING":
-        filters.statusId = 3; // Example attribute
-        break;
-      case "ARRIVED":
-        filters.statusId = 5; // Example attribute
-        break;
-      case "DELIVERED":
-        filters.statusId = 6; // Example attribute
-        break;
-      default:
-        // Optionally handle unexpected id values
-        break;
-    }
 
     const data = { page, pageSize: size, filters: filters };
     let fil = dispatch(fetchShipmentsList(data));
@@ -229,34 +219,9 @@ const ShipmentGroundList: React.FC<GradeDetailProps> = ({ id }) => {
 
   const handleSearch = () => {
     let filters: any = { ...formValues };
-    filters.shipmentModeId = 2;
-    switch (id) {
-      case "READY_FOR_PICK_UP":
-        {
-          filters.status = 1; // Example attribute
-          filters.senderBranchId = user?.Branch?.id;
-        }
-        break;
-      case "ARRIVING":
-        {
-          filters.status = 3; // Example attribute
-          filters.recipientBranchId = user?.Branch?.id;
-        }
-        break;
-      case "ARRIVED":
-        {
-          filters.status = 5; // Example attribute
-          filters.recipientBranchId = user?.Branch?.id;
-        }
-        break;
-      case "DELIVERED":
-        filters.status = 6; // Example attribute
-        break;
-      default:
-        // Optionally handle unexpected id values
-        break;
-    }
+    filters.shipmentModeId = id == "air" ? 1 : 2;
 
+    filters.senderBranchId = user?.Branch?.id;
     const data = { page: 1, pageSize: size, filters: filters };
     dispatch(fetchShipmentsList(data));
   };
@@ -282,7 +247,7 @@ const ShipmentGroundList: React.FC<GradeDetailProps> = ({ id }) => {
       awb: "",
       paymentModeId: "",
       paymentMethodId: "",
-      shipmentModeId: 2,
+      shipmentModeId: id == "air" ? 1 : 2,
       shipmentTypeId: "",
       senderBranchId: "",
       recipientBranchId: "",
@@ -292,59 +257,8 @@ const ShipmentGroundList: React.FC<GradeDetailProps> = ({ id }) => {
       recipientPhone: "",
       companyId: undefined,
     };
-    filters.shipmentModeId = 2;
-    switch (id) {
-      case "READY_FOR_PICK_UP":
-        {
-          filters.status = 1; // Example attribute
-          filters.senderBranchId = user?.Branch?.id;
-        }
-        break;
-      case "ARRIVING":
-        {
-          filters.status = 3; // Example attribute
-          filters.recipientBranchId = user?.Branch?.id;
-        }
-        break;
-      case "ARRIVED":
-        {
-          filters.status = 5; // Example attribute
-          filters.recipientBranchId = user?.Branch?.id;
-        }
-        break;
-      case "DELIVERED":
-        filters.status = 6; // Example attribute
-        break;
-      default:
-        // Optionally handle unexpected id values
-        break;
-    }
-    switch (id) {
-      case "READY_FOR_PICK_UP":
-        {
-          filters.status = 1; // Example attribute
-          filters.senderBranchId = user?.Branch?.id;
-        }
-        break;
-      case "ARRIVING":
-        {
-          filters.status = 3; // Example attribute
-          filters.recipientBranchId = user?.Branch?.id;
-        }
-        break;
-      case "ARRIVED":
-        {
-          filters.status = 5; // Example attribute
-          filters.recipientBranchId = user?.Branch?.id;
-        }
-        break;
-      case "DELIVERED":
-        filters.status = 6; // Example attribute
-        break;
-      default:
-        // Optionally handle unexpected id values
-        break;
-    }
+    filters.shipmentModeId = id == "air" ? 1 : 2;
+    filters.senderBranchId = user?.Branch?.id;
 
     const data = { page, pageSize: size, filters: filters };
     let fil = dispatch(fetchShipmentsList(data));
@@ -356,34 +270,9 @@ const ShipmentGroundList: React.FC<GradeDetailProps> = ({ id }) => {
       const page = 1,
         pageSize = 200;
       let filters: any = { ...formValues };
-      switch (id) {
-        case "READY_FOR_PICK_UP":
-          {
-            filters.status = 1; // Example attribute
-            filters.senderBranchId = user?.Branch?.id;
-          }
-          break;
-        case "ARRIVING":
-          {
-            filters.status = 3; // Example attribute
-            filters.recipientBranchId = user?.Branch?.id;
-          }
-          break;
-        case "ARRIVED":
-          {
-            filters.status = 5; // Example attribute
-            filters.recipientBranchId = user?.Branch?.id;
-          }
-          break;
-        case "DELIVERED":
-          filters.status = 6; // Example attribute
-          break;
-        default:
-          // Optionally handle unexpected id values
-          break;
-      }
-      filters.shipmentModeId = 2;
-      setLoadingExport(true);
+
+      filters.shipmentModeId = id == "air" ? 1 : 2;
+      (filters.senderBranchId = user?.Branch?.id), setLoadingExport(true);
       const exportShipment = await apiGetShipmentsList(page, pageSize, filters);
       if (exportShipment?.status == 200) {
         let filename = "shipment";
@@ -418,7 +307,7 @@ const ShipmentGroundList: React.FC<GradeDetailProps> = ({ id }) => {
   const columns: GridColDef[] = [
     {
       field: "awb",
-      headerName: "GWB",
+      headerName: id == "air" ? "AWB" : "GWb",
       width: 100,
       align: "left",
       headerAlign: "left",
@@ -513,6 +402,28 @@ const ShipmentGroundList: React.FC<GradeDetailProps> = ({ id }) => {
         </div>
       ),
     },
+    {
+      field: "createdAt",
+      headerName: "Created At",
+      width: 150,
+      align: "left",
+      headerAlign: "left",
+      renderCell: (params) => (
+        <div className="overflow-hidden whitespace-normal break-words">
+          {params.value
+            ? new Date(params.value).toLocaleString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true,
+              })
+            : "N/A"}
+        </div>
+      ),
+    },
     // {
     //   field: "paymentMethod",
     //   headerName: "Payment Method",
@@ -544,48 +455,43 @@ const ShipmentGroundList: React.FC<GradeDetailProps> = ({ id }) => {
     //     />
     //   ),
     // },
-    {
-      field: "id",
-      headerName: "Action",
-      width: 100,
-      align: "center",
-      headerAlign: "center",
-      renderCell: (params) => (
-        <div className="my-2 flex justify-center">
-          <Tooltip title="View Details" arrow>
-            <IconButton
-              onClick={() =>
-                router.push(`/shipment/ground/detail/${params.value}`)
-              }
-              sx={{
-                color: "#0097B2",
-                "&:hover": { backgroundColor: "rgba(0, 151, 178, 0.04)" },
-              }}
-            >
-              <IoMdEye fontSize="large" />
-            </IconButton>
-          </Tooltip>
-        </div>
-      ),
-    },
+    // {
+    //   field: "id",
+    //   headerName: "Action",
+    //   width: 100,
+    //   align: "center",
+    //   headerAlign: "center",
+    //   renderCell: (params) => (
+    //     <div className="my-2 flex justify-center">
+    //       <Tooltip title="View Details" arrow>
+    //         <IconButton
+    //           onClick={() =>
+    //             router.push(
+    //               `/shipment/${id == "air" ? "air" : "ground"}/detail/${params.value}`,
+    //             )
+    //           }
+    //           sx={{
+    //             color: "#0097B2",
+    //             "&:hover": { backgroundColor: "rgba(0, 151, 178, 0.04)" },
+    //           }}
+    //         >
+    //           <IoMdEye fontSize="large" />
+    //         </IconButton>
+    //       </Tooltip>
+    //     </div>
+    //   ),
+    // },
   ];
 
   return (
     <div className="mx-auto max-w-242.5">
       <label className="mb-12  block text-title-lg font-medium text-black dark:text-white">
-        {id == "READY_FOR_PICK_UP"
-          ? "Ready for pick up shipments"
-          : id == "ARRIVING"
-            ? "Incoming shipments"
-            : id == "ARRIVED"
-              ? "Arrived shipments"
-              : id == "DELIVERED"
-                ? "Delivered shipments"
-                : ""}
+        Branch Shipments Report
       </label>
       {errorShipments && (
         <Alert severity="error">Something went wrong try again </Alert>
       )}
+
       <FormProvider {...methods}>
         <div className="w-full ">
           <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-6">
@@ -593,7 +499,7 @@ const ShipmentGroundList: React.FC<GradeDetailProps> = ({ id }) => {
               <InputString
                 type="text"
                 name="awb"
-                label="Search by gwb "
+                label="Search by awb "
                 placeholder="ex 48616082"
               />
             </div>
@@ -663,7 +569,7 @@ const ShipmentGroundList: React.FC<GradeDetailProps> = ({ id }) => {
               </BaseButton>
             </div>
 
-            {/* <div className="mb-1 flex items-end">
+            <div className="mb-1 flex items-end">
               <BaseButton
                 onClick={() => {
                   setFilterMore(!filterMore);
@@ -685,11 +591,11 @@ const ShipmentGroundList: React.FC<GradeDetailProps> = ({ id }) => {
               >
                 {filterMore ? "Close filter" : "More Filter"}
               </BaseButton>
-            </div> */}
+            </div>
           </div>
         </div>
         {/* more filters  */}
-        {/* {filterMore && (
+        {filterMore && (
           <div className="w-full ">
             <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-5">
               {(id == "ALL_AIR" || id == "ALL_GROUND") && (
@@ -715,7 +621,7 @@ const ShipmentGroundList: React.FC<GradeDetailProps> = ({ id }) => {
                   </div>
                 </>
               )}
-
+              {/* 
               <div className="card flex flex-col justify-center">
                 <SelectInput
                   name="paymentModeId"
@@ -725,7 +631,7 @@ const ShipmentGroundList: React.FC<GradeDetailProps> = ({ id }) => {
                   loading={loadingPaymentMode}
                   // Default to false if not provided
                 />
-              </div>
+              </div> */}
               <div className="card flex flex-col justify-center">
                 <EthiopianNumberInput
                   type="text"
@@ -744,11 +650,11 @@ const ShipmentGroundList: React.FC<GradeDetailProps> = ({ id }) => {
               </div>
             </div>
           </div>
-        )} */}
+        )}
       </FormProvider>
 
       <div className=" flex justify-between ">
-        <div>
+        <div className="flex align-middle">
           <BaseButton
             style={{ backgroundColor: "#2073de", color: "white" }}
             disabled={loadingExport}
@@ -758,6 +664,12 @@ const ShipmentGroundList: React.FC<GradeDetailProps> = ({ id }) => {
           >
             {loadingExport ? <span>exporting.....</span> : <span>Export</span>}
           </BaseButton>
+          <div
+            className="ml-10 mt-3  text-title-md text-black dark:text-white"
+            style={{ fontWeight: "bold" }}
+          >
+            Total Quantity(weight):{totalQuantity ? totalQuantity : 0} KG
+          </div>
         </div>
         <div
           className=" mb-3 ml-auto flex items-center"
@@ -812,4 +724,4 @@ const ShipmentGroundList: React.FC<GradeDetailProps> = ({ id }) => {
   );
 };
 
-export default ShipmentGroundList;
+export default BranchShipment;

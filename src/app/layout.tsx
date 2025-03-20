@@ -6,7 +6,6 @@ import "@/css/style.css";
 
 // import "primereact/resources/primereact.min.css";
 // import "primeicons/primeicons.css";
-
 // import "primereact/resources/themes/bootstrap4-dark-blue/theme.css";
 
 import React, { useEffect, useState } from "react";
@@ -28,8 +27,6 @@ export default function RootLayout({
   // const pathname = usePathname();
 
   return (
-    lsllslsl
-
     <html lang="en">
       <body suppressHydrationWarning={true}>
         <div className="dark:bg-boxdark-2 dark:text-bodydark">

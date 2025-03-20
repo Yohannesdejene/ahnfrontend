@@ -43,19 +43,13 @@ import { useGetAllPaymentModes } from "@/hooks/useGetAllPaymentModes";
 import { useGetAllUnits } from "@/hooks/useGetAllUnits";
 import { useGetAllRates } from "@/hooks/useGetAllRates";
 import { useGetAllCompanies } from "@/hooks/useGetAllCompanies";
-import { apiGetShipmentsList } from "@/store/features/shipments/shipmentsApi";
+import { getBranchShipmentSummary } from "@/store/features/shipments/shipmentsApi";
 import { writeFile, utils } from "xlsx";
 import { saveAs } from "file-saver";
 import Papa from "papaparse";
+import { AnyCnameRecord } from "node:dns";
 
 const shipmentSchema = z.object({
-  awb: z.string().optional(),
-  paymentModeId: z.string().optional(),
-  paymentMethodId: z.string().optional(), // Make it optional by default
-  shipmentModeId: z.string().optional(),
-  shipmentTypeId: z.string().optional(),
-  senderBranchId: z.string().optional(),
-  recipientBranchId: z.string().optional(),
   startDate: z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/, {
@@ -68,22 +62,6 @@ const shipmentSchema = z.object({
       message: "Invalid date format. Use YYYY-MM-DD",
     })
     .optional(),
-  senderPhone: z
-    .string()
-    .min(9, { message: "Phone must be exactly 9 digits" })
-    .max(9, { message: "Phone must be exactly 9 digits" })
-    .regex(/^[7|9][0-9]{8}$/, {
-      message: "Phone must be 9 digits and start with 7 or 9",
-    })
-    .optional(),
-  recipientPhone: z
-    .string()
-    .max(9, { message: "Phone must be exactly 9 digits" })
-    .regex(/^[7|9][0-9]{8}$/, {
-      message: "Phone must be 9 digits and start with 7 or 9",
-    })
-    .optional(),
-  companyId: z.number().optional(), // Initially optional
 });
 const formatDataForTable = (data: any) => {
   return data.map((item: any, index: any) => ({
@@ -120,151 +98,73 @@ const formatDataForTable = (data: any) => {
   }));
 };
 
-interface GradeDetailProps {
-  id: string;
-}
-
-const ShipmentCreditList: React.FC<GradeDetailProps> = ({ id }) => {
+const AdminShipmentReport = () => {
   const router = useRouter();
   const dispatch: AppDispatch = useDispatch();
   const { user, token } = useSelector((state: RootState) => state.auth);
-  const { loadingBranch, errorBranch, optionsBranch, dataBranch, reloadYears } =
-    useGetAllBranches();
-  const {
-    loadingShipmentType,
-    errorShipmentType,
-    optionsShipmentType,
-    dataShipmentType,
-    reloadShipmentTypes,
-  } = useGetAllShipmentTypes();
-  const {
-    loadingShipmentMode,
-    errorShipmentMode,
-    optionsShipmentMode,
-    dataShipmentMode,
-    reloadShipmentModes,
-  } = useGetAllShipmentModes();
-  const {
-    loadingPaymentMethod,
-    errorPaymentMethod,
-    optionsPaymentMethod,
-    dataPaymentMethod,
-    reloadPaymentMethods,
-  } = useGetAllPaymentMethods();
-  const {
-    loadingPaymentMode,
-    errorPaymentMode,
-    optionsPaymentMode,
-    dataPaymentMode,
-    reloadPaymentModes,
-  } = useGetAllPaymentModes();
-  const { loadingRate, errorRate, optionsRate, dataRate, reloadRates } =
-    useGetAllRates();
-  const { loadingUnit, errorUnit, optionsUnit, dataUnit, reloadUnits } =
-    useGetAllUnits();
-  const {
-    loadingCompany,
-    errorCompany,
-    optionsCompany,
-    dataCompany,
-    reloadCompanies,
-  } = useGetAllCompanies();
   const [loadingExport, setLoadingExport] = useState(false);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
+  const [loading, setLoading] = useState(false);
+  const [shipments, setShipments] = useState([]);
+  const [errorMessage, setErrorMessage] = useState<any>(null);
   ////filter states all
-  const [filterMore, setFilterMore] = useState(false);
-  ////pagination
-  const { shipments, errorShipments, loadingShipments, pagination } =
-    useSelector((state: RootState) => state.shipment);
+
   const methods = useForm<any>({
     resolver: zodResolver(shipmentSchema),
     defaultValues: {
-      awb: "",
-      paymentModeId: 2,
-      paymentMethodId: "",
-      shipmentModeId: 1,
-      shipmentTypeId: "",
-      senderBranchId: "",
-      recipientBranchId: "",
       startDate: "",
       endDate: "",
-      senderPhone: "",
-      recipientPhone: "",
-      companyId: undefined, // Number type, so undefined is better than ""
     },
   });
   const { reset } = methods;
   const { errors } = methods.formState; // Get form errors
   const formValues = methods.watch(); // This will give you the current form values
-
   useEffect(() => {
+    const fetchShipments = async () => {
+      try {
+        let filters: any = { ...formValues };
+
+        setLoading(true);
+        const exportShipment = await getBranchShipmentSummary(filters);
+        if (exportShipment?.status === 200) {
+          setShipments(exportShipment?.data?.shipments);
+        }
+      } catch (err: any) {
+        console.error("Error fetching shipments:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchShipments();
+  }, [formValues]);
+
+  const handleSearch = async () => {
     let filters: any = { ...formValues };
-    filters.shipmentModeId = id == "air" ? 1 : 2;
-    filters.paymentModeId = 2;
 
-    // Only modify filters if id is not "ALL_AIR" or "ALL_GROUND"
-
-    const data = { page, pageSize: size, filters: filters };
-    let fil = dispatch(fetchShipmentsList(data));
-  }, [page, size]);
-
-  const handleSearch = () => {
-    let filters: any = { ...formValues };
-    filters.shipmentModeId = id == "air" ? 1 : 2;
-
-    const data = { page: 1, pageSize: size, filters: filters };
-    dispatch(fetchShipmentsList(data));
-  };
-  const handlePageSizeChange = (
-    event: React.ChangeEvent<{ value: unknown }>,
-  ) => {
-    setSize(event.target.value as number);
-    setPage(1); // Reset to first page when changing page size
-  };
-
-  const handlePageChange = (
-    event: React.ChangeEvent<unknown>,
-    value: number,
-  ) => {
-    setPage(value);
+    setLoading(true);
+    const exportShipment = await getBranchShipmentSummary(filters);
+    if (exportShipment?.status == 200) {
+      setShipments(exportShipment?.data?.shipments);
+    }
+    setLoading(true);
   };
 
   const handleReset = () => {
-    setPage(1);
-    setSize(10);
     reset();
     let filters: any = {
-      awb: "",
-      paymentModeId: "",
-      paymentMethodId: "",
-      shipmentModeId: 1,
-      shipmentTypeId: "",
-      senderBranchId: "",
-      recipientBranchId: "",
       startDate: "",
       endDate: "",
-      senderPhone: "",
-      recipientPhone: "",
-      companyId: undefined,
     };
-    filters.shipmentModeId = id == "air" ? 1 : 2;
-    filters.paymentModeId = 2;
-    const data = { page, pageSize: size, filters: filters };
-    let fil = dispatch(fetchShipmentsList(data));
   };
 
   const handleExport = async () => {
     try {
       // const data = { page: 1, pageSize: 5000 };
-      const page = 1,
-        pageSize = 200;
+
       let filters: any = { ...formValues };
 
-      filters.shipmentModeId = id == "air" ? 1 : 2;
-      filters.paymentModeId = 2;
       setLoadingExport(true);
-      const exportShipment = await apiGetShipmentsList(page, pageSize, filters);
+      const exportShipment = await getBranchShipmentSummary(filters);
       if (exportShipment?.status == 200) {
         let filename = "shipment";
         const formattedData = formatDataForTable(
@@ -282,11 +182,10 @@ const ShipmentCreditList: React.FC<GradeDetailProps> = ({ id }) => {
   };
 
   const rows: GridRowsProp =
-    !loadingShipments && shipments && shipments?.length > 0
+    !loading && shipments && shipments?.length > 0
       ? shipments?.map((shipment: any, index: number) => ({
           id: shipment.id, // Use shipment ID as the unique identifier
-          ...shipment,
-          senderBranch: shipment?.senderBranch?.name,
+          totalQuantity: shipment?.totalQuantity,
           recipientBranch: shipment?.recipientBranch?.name,
           shipmentMode: shipment?.ShipmentMode?.description,
           shipmentType: shipment?.ShipmentType?.description,
@@ -298,7 +197,7 @@ const ShipmentCreditList: React.FC<GradeDetailProps> = ({ id }) => {
   const columns: GridColDef[] = [
     {
       field: "awb",
-      headerName: "AWB",
+      headerName: "AWB OR GWB",
       width: 100,
       align: "left",
       headerAlign: "left",
@@ -393,6 +292,28 @@ const ShipmentCreditList: React.FC<GradeDetailProps> = ({ id }) => {
         </div>
       ),
     },
+    {
+      field: "createdAt",
+      headerName: "Created At",
+      width: 150,
+      align: "left",
+      headerAlign: "left",
+      renderCell: (params) => (
+        <div className="overflow-hidden whitespace-normal break-words">
+          {params.value
+            ? new Date(params.value).toLocaleString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true,
+              })
+            : "N/A"}
+        </div>
+      ),
+    },
     // {
     //   field: "paymentMethod",
     //   headerName: "Payment Method",
@@ -424,52 +345,46 @@ const ShipmentCreditList: React.FC<GradeDetailProps> = ({ id }) => {
     //     />
     //   ),
     // },
-    {
-      field: "id",
-      headerName: "Action",
-      width: 100,
-      align: "center",
-      headerAlign: "center",
-      renderCell: (params) => (
-        <div className="my-2 flex justify-center">
-          <Tooltip title="View Details" arrow>
-            <IconButton
-              onClick={() =>
-                router.push(`/shipment/air/detail/${params.value}`)
-              }
-              sx={{
-                color: "#0097B2",
-                "&:hover": { backgroundColor: "rgba(0, 151, 178, 0.04)" },
-              }}
-            >
-              <IoMdEye fontSize="large" />
-            </IconButton>
-          </Tooltip>
-        </div>
-      ),
-    },
+    // {
+    //   field: "id",
+    //   headerName: "Action",
+    //   width: 100,
+    //   align: "center",
+    //   headerAlign: "center",
+    //   renderCell: (params) => (
+    //     <div className="my-2 flex justify-center">
+    //       <Tooltip title="View Details" arrow>
+    //         <IconButton
+    //           onClick={() =>
+    //             router.push(
+    //               `/shipment/${shipments && shipments[0] && shipments[0]?.shipmentModeId == 1 ? "air" : "ground"}/detail/${params.value}`,
+    //             )
+    //           }
+    //           sx={{
+    //             color: "#0097B2",
+    //             "&:hover": { backgroundColor: "rgba(0, 151, 178, 0.04)" },
+    //           }}
+    //         >
+    //           <IoMdEye fontSize="large" />
+    //         </IconButton>
+    //       </Tooltip>
+    //     </div>
+    //   ),
+    // },
   ];
 
   return (
     <div className="mx-auto max-w-242.5">
       <label className="mb-12  block text-title-lg font-medium text-black dark:text-white">
-        {id == "air" ? "Air Credit shipments" : "Ground credit shipments"}
+        Admin Branch Insight{" "}
       </label>
-      {errorShipments && (
+      {errorMessage && (
         <Alert severity="error">Something went wrong try again </Alert>
       )}
+
       <FormProvider {...methods}>
         <div className="w-full ">
           <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-6">
-            <div className="card flex flex-col justify-center">
-              <InputString
-                type="text"
-                name="awb"
-                label="Search by awb "
-                placeholder="ex 48616082"
-              />
-            </div>
-
             <div className="card flex flex-col justify-center">
               <InputString
                 type="date"
@@ -534,88 +449,12 @@ const ShipmentCreditList: React.FC<GradeDetailProps> = ({ id }) => {
                 Reset Filter
               </BaseButton>
             </div>
-
-            {/* <div className="mb-1 flex items-end">
-              <BaseButton
-                onClick={() => {
-                  setFilterMore(!filterMore);
-                }}
-                variant="outlined"
-                startIcon={filterMore ? <IoCloseOutline /> : <FaFilter />}
-                sx={{
-                  textTransform: "none",
-                  borderRadius: "8px",
-                  fontWeight: "500",
-                  color: "white",
-                }}
-                style={{
-                  backgroundColor: "#109101",
-                  height: "31px",
-                  width: "100%",
-                }}
-                className="flex items-center gap-2"
-              >
-                {filterMore ? "Close filter" : "More Filter"}
-              </BaseButton>
-            </div> */}
           </div>
         </div>
-        {/* more filters  */}
-        {/* {filterMore && (
-          <div className="w-full ">
-            <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-5">
-              <div className="card flex flex-col justify-center">
-                <SelectInput
-                  name="senderBranchId"
-                  label="Sender city  "
-                  placeholder="Select Sender City   "
-                  options={optionsBranch}
-                  loading={loadingBranch} // Default to false if not provided
-                />
-              </div>
-
-              <div className="card flex flex-col justify-center">
-                <SelectInput
-                  name="recipientBranchId"
-                  label="Receiver city  "
-                  placeholder="Select Receiver City   "
-                  options={optionsBranch}
-                  loading={loadingBranch} // Default to false if not provided
-                />
-              </div>
-              <div className="card flex flex-col justify-center">
-                <SelectInput
-                  name="paymentModeId"
-                  label="Payment Mode "
-                  placeholder="Select Payment Methods"
-                  options={optionsPaymentMode}
-                  loading={loadingPaymentMode}
-                  // Default to false if not provided
-                />
-              </div>
-              <div className="card flex flex-col justify-center">
-                <EthiopianNumberInput
-                  type="text"
-                  name="senderPhone"
-                  label="Sender Phone Number"
-                  placeholder="e.g. 912345678"
-                />
-              </div>
-              <div className="card flex flex-col justify-center">
-                <EthiopianNumberInput
-                  type="text"
-                  name="recipientPhone"
-                  label="Recipient Phone Number"
-                  placeholder="e.g. 912345678"
-                />
-              </div>
-            </div>
-          </div>
-        )} */}
       </FormProvider>
 
       <div className=" flex justify-between ">
-        <div>
+        <div className="flex align-middle">
           <BaseButton
             style={{ backgroundColor: "#2073de", color: "white" }}
             disabled={loadingExport}
@@ -626,31 +465,15 @@ const ShipmentCreditList: React.FC<GradeDetailProps> = ({ id }) => {
             {loadingExport ? <span>exporting.....</span> : <span>Export</span>}
           </BaseButton>
         </div>
-        <div
-          className=" mb-3 ml-auto flex items-center"
-          style={{ width: "140px" }}
-        >
-          <select
-            className="font-sans focus:shadow-outline-primary dark:focus:shadow-outline-primary w-full rounded-lg border border-solid border-slate-300 bg-white px-3 py-2 text-sm font-normal leading-5 text-slate-900 shadow-md shadow-slate-100 focus:border-primary focus:shadow-lg focus-visible:outline-0 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-300 dark:shadow-slate-900 dark:focus:border-primary"
-            onChange={handlePageSizeChange}
-            defaultValue={10} // Ensure a default value is set
-          >
-            {[5, 10, 20, 30, 50, 100].map((size) => (
-              <option key={size} value={size}>
-                {size} per page
-              </option>
-            ))}
-          </select>
-        </div>
       </div>
       <div className="auto flex w-full bg-white text-black dark:bg-boxdark dark:text-white">
         <div className="container mx-auto mt-0">
           <div className="">
             <div className="p-4">
               <div className="overflow-x-auto bg-white text-black dark:bg-normalGray">
-                {loadingShipments && <LinearProgress />}
+                {loading && <LinearProgress />}
                 <DataGrid
-                  loading={loadingShipments}
+                  loading={loading}
                   rows={rows}
                   columns={columns}
                   autoHeight
@@ -667,16 +490,8 @@ const ShipmentCreditList: React.FC<GradeDetailProps> = ({ id }) => {
           </div>
         </div>
       </div>
-      <div className="mb-5 mt-5 flex justify-center">
-        <Pagination
-          count={pagination?.totalPages}
-          page={page}
-          onChange={handlePageChange}
-          color="primary"
-        />
-      </div>
     </div>
   );
 };
 
-export default ShipmentCreditList;
+export default AdminShipmentReport;

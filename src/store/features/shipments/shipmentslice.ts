@@ -17,6 +17,7 @@ const initialState: SHIPMENT_STATE = {
     totalItems: 0,
     totalPages: 1,
   },
+  totalQuantity: 0,
   loadingShipments: false,
   errorShipments: null,
   createShipmentSuccess: false,
@@ -62,6 +63,7 @@ const shipmentsSlice = createSlice({
         (state, action: PayloadAction<any>) => {
           state.loadingShipments = false;
           state.shipments = action.payload?.data?.shipments || [];
+          state.totalQuantity = action.payload?.data?.totalQuantity;
           state.pagination =
             action.payload?.data?.pagination || initialState.pagination;
         },
@@ -82,7 +84,10 @@ const shipmentsSlice = createSlice({
       .addCase(createShipment.fulfilled, (state) => {
         state.createShipmentLoading = false;
         state.createShipmentSuccess = true;
-        toast.success("Shipment created successfully!", { id: toastId });
+        toast.success("Shipment created successfully!, redirecting....", {
+          id: toastId,
+          duration: 8000, // Toast will display for 8 seconds
+        });
       })
       .addCase(createShipment.rejected, (state, action: any) => {
         state.createShipmentLoading = false;

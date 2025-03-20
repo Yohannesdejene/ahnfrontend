@@ -1,23 +1,29 @@
 import React from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
-import ListRate from "@/components/manage/rate/index";
+import ShipmentGroundList from "@/components/shipment/ground/listGroundShipment";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { AuthProvider } from "@/context/AuthContext"; // Adjust the path as necessary
 
 export const metadata: Metadata = {
-  title: "List rates ",
+  title: "Ready for pickup ground shipment",
   description: "Ahununu Express",
 };
-const List: React.FC = () => {
+
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
+
+const Detail: React.FC<PageProps> = ({ params }) => {
   return (
     <AuthProvider>
       <DefaultLayout>
-        <ListRate />
+        <ShipmentGroundList id={"READY_FOR_PICK_UP"} />
       </DefaultLayout>
     </AuthProvider>
   );
 };
 
-export default List;
+export default Detail;
