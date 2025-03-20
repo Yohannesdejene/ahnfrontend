@@ -7,7 +7,6 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import { getStudentsById } from "@/store/features/students/studentsSlice";
 import { getShipmentById } from "@/store/features/shipments/shipmentsThunk";
 import { CircularProgress, Button } from "@mui/material";
 

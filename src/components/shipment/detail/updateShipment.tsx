@@ -103,10 +103,7 @@ const UpdateShipment: React.FC<UpdateShipmentProps> = ({ id, type }) => {
   const { selectedShipment, getShipmentByIdLoading } = useSelector(
     (state: RootState) => state.shipment,
   );
-  console.log(
-    "selectedShipment-selectedShipment-selectedShipment",
-    selectedShipment,
-  );
+
   const { user, token } = useSelector((state: RootState) => state.auth);
   const { loadingBranch, errorBranch, optionsBranch, dataBranch, reloadYears } =
     useGetAllBranches();
