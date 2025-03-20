@@ -10,12 +10,6 @@ export const metadata: Metadata = {
   description: "Ahununu Express",
 };
 
-interface PageProps {
-  params: {
-    id: string;
-  };
-}
-
 const Detail = () => {
   return (
     <AuthProvider>
