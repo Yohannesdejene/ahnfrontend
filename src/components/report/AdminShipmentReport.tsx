@@ -21,7 +21,6 @@ import { GrPowerReset } from "react-icons/gr";
 import CommonSearch from "@/common/commonSearch";
 import { IoMdEye } from "react-icons/io";
 import { TiExport } from "react-icons/ti";
-// import { LIST_DETAIL_SHIPMENTS } from "@/routes";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
