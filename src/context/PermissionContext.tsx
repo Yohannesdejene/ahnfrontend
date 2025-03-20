@@ -21,7 +21,7 @@ interface Permission {
   name: string;
   description: string;
   code: string;
-  permissionType: string; // Adjust based on PermissionType.type from your API
+  // permissionType: string; // Adjust based on PermissionType.type from your API
 }
 
 // Format permissions from the API response
