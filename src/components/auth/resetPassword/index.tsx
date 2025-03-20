@@ -10,7 +10,6 @@ import Alert from "@mui/material/Alert";
 import { InputString, CommonButton } from "@/common/formElements";
 import DarkModeSwitcher from "@/components/Header/DarkModeSwitcher";
 
-import { loginSuccess, logout } from "@/store/actions";
 import { RootState } from "@/store/store";
 import { apiSignIn } from "@/services/AuthService";
 import {
@@ -46,7 +45,6 @@ const ResetPassword: React.FC = () => {
       const { status, message, email, isPasswordChanged, token } = res?.data;
       if (status == 200) {
         if (isPasswordChanged === true) {
-          dispatch(loginSuccess(token));
           const res_0 = setSessionKey(token);
           if (res_0) {
             toast.success("Logged in successfully ");

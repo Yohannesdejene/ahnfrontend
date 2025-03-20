@@ -7,7 +7,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { InputString, CommonButton } from "@/common/formElements";
 import DarkModeSwitcher from "@/components/Header/DarkModeSwitcher";
 import { useDispatch } from "react-redux";
-import { loginSuccess, saveUserInfo, logout } from "@/store/actions";
 import { RootState } from "@/store/store";
 import { apiChangePasswordRequest } from "@/services/AuthService";
 import {
@@ -73,8 +72,8 @@ const SetPassword: React.FC = () => {
       // const permission = formatPermissions(user?.Role?.Permissions);
 
       if (res?.status == 200) {
-        dispatch(saveUserInfo(user));
-        dispatch(loginSuccess(token));
+        // dispatch(saveUserInfo(user));
+        // dispatch(loginSuccess(token));
         const res_0 = setSessionKey(token);
         const user_0 = setUserInfo(user);
         // const perm_0 = setPermissionInfo(permission);

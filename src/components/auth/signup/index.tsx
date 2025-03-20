@@ -10,7 +10,7 @@ import Alert from "@mui/material/Alert";
 import { InputString, CommonButton, SelectInput } from "@/common/formElements";
 import DarkModeSwitcher from "@/components/Header/DarkModeSwitcher";
 
-import { loginSuccess, logout } from "@/store/actions";
+// import { loginSuccess, logout } from "@/store/actions";
 import { RootState } from "@/store/store";
 import { apiSignIn } from "@/services/AuthService";
 import {
@@ -71,7 +71,7 @@ const AdminFrom = () => {
       const { status, message, email, isPasswordChanged, token } = res?.data;
       if (status == 200) {
         if (isPasswordChanged === true) {
-          dispatch(loginSuccess(token));
+          // dispatch(loginSuccess(token));
           const res_0 = setSessionKey(token);
           if (res_0) {
             toast.success("Logged in successfully ");
@@ -211,7 +211,7 @@ const SchoolFrom = () => {
       const { status, message, email, isPasswordChanged, token } = res?.data;
       if (status == 200) {
         if (isPasswordChanged === true) {
-          dispatch(loginSuccess(token));
+          // dispatch(loginSuccess(token));
           const res_0 = setSessionKey(token);
           if (res_0) {
             toast.success("Logged in successfully ");
