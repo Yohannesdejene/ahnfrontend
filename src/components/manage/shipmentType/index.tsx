@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import { useGetAllSchools } from "@/hooks/useGetAllSchool";
 import { FaEdit, FaLessThanEqual } from "react-icons/fa";
 import { IoAddCircleSharp } from "react-icons/io5";
 import { MdDeleteForever } from "react-icons/md";

@@ -158,8 +158,7 @@ const AddShipment: React.FC<GradeDetailProps> = ({ id }) => {
   });
   const { errors } = methods.formState; // Get form errors
   const formValues = methods.watch(); // This will give you the current form values
-  console.log("Error", errors);
-  console.log("formValues upadted", formValues);
+
   // Function to search for rates
   const searchRate = async () => {
     const {
