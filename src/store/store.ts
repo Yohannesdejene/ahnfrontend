@@ -1,10 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import coursesReducer from "./features/courses/courseSlice"; // Import the courses slice reducer
 import branchReducer from "./features/branches/branchesSlice"; // Import the courses slice reducer
-import semestersReducer from "./features/semesters/semesterSlice"; // Import the courses slice reducer
-import gradesReducer from "./features/grades/gradeSlice";
-import studentsSlice from "./features/students/studentsSlice";
-import sectionsReducer from "./features/sections/sectionsSlice";
+
 import authReducer from "./features/auth/authSlice";
 import shipmentType from "./features/shipmentTypes/shipmentTypeSlice";
 import shipmentMode from "./features/shipmentModes/shipmentModesSlice";
@@ -25,12 +21,7 @@ export const store = configureStore({
     rate: rate,
     unit: unit,
     shipment: shipment,
-    courses: coursesReducer, // Attach courses reducer to the store
     branches: branchReducer,
-    semesters: semestersReducer,
-    grades: gradesReducer,
-    students: studentsSlice,
-    sections: sectionsReducer,
   },
 });
 
