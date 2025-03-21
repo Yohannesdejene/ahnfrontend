@@ -482,7 +482,7 @@ const AllBranchShipment: React.FC<GradeDetailProps> = ({ id }) => {
   ];
 
   return (
-    <div className="mx-auto max-w-230" style={{ maxWidth: "90%" }}>
+    <div className="mx-auto max-w-230" style={{ maxWidth: "90vw" }}>
       <label className="mb-12  block text-title-lg font-medium text-black dark:text-white">
         All Branch Shipments Report
       </label>
@@ -648,7 +648,7 @@ const AllBranchShipment: React.FC<GradeDetailProps> = ({ id }) => {
       </FormProvider>
 
       <div className=" flex justify-between ">
-        <div className="flex align-middle">
+        <div className="mb-3 flex-col align-middle ">
           <BaseButton
             style={{ backgroundColor: "#2073de", color: "white" }}
             disabled={loadingExport}
@@ -659,7 +659,7 @@ const AllBranchShipment: React.FC<GradeDetailProps> = ({ id }) => {
             {loadingExport ? <span>exporting.....</span> : <span>Export</span>}
           </BaseButton>
           <div
-            className="ml-10 mt-3  text-title-md text-black dark:text-white"
+            className=" mt-5  text-title-md text-black dark:text-white"
             style={{ fontWeight: "bold" }}
           >
             Total Quantity(weight):{totalQuantity ? totalQuantity : 0} KG{" "}

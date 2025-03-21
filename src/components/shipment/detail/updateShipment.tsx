@@ -309,7 +309,7 @@ const UpdateShipment: React.FC<UpdateShipmentProps> = ({ id, type }) => {
   return (
     <div
       className="flex  w-full bg-white text-black dark:bg-boxdark dark:text-white"
-      style={{ maxWidth: "90%" }}
+      style={{ maxWidth: "90vw" }}
     >
       <FormProvider {...methods}>
         <div className="container mx-auto mt-0">

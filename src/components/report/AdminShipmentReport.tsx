@@ -473,7 +473,7 @@ const AdminShipmentReport = () => {
   ];
 
   return (
-    <div className="mx-auto max-w-230" style={{ maxWidth: "90%" }}>
+    <div className="mx-auto max-w-230" style={{ maxWidth: "90vw" }}>
       <label className="mb-12  block text-title-lg font-medium text-black dark:text-white">
         Admin Shipment report
       </label>
@@ -650,7 +650,7 @@ const AdminShipmentReport = () => {
       </FormProvider>
 
       <div className=" flex justify-between ">
-        <div className="flex align-middle">
+        <div className="mb-3 flex-col align-middle ">
           <BaseButton
             style={{ backgroundColor: "#2073de", color: "white" }}
             disabled={loadingExport}
