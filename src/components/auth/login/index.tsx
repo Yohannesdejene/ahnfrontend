@@ -200,9 +200,9 @@ const Login: React.FC = () => {
                     width={200}
                     height={250}
                   />
-                  <h6 className="text-lg font-bold text-black dark:text-white">
+                  {/* <h6 className="text-lg font-bold text-black dark:text-white">
                     Ahununu Express
-                  </h6>
+                  </h6> */}
                 </div>
                 <div className="mb-3 mt-3  flex  items-center gap-2">
                   <h2 className="item-center justify-center text-title-lg  font-bold text-black dark:text-white sm:text-title-sm">
