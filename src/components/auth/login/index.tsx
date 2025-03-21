@@ -201,7 +201,7 @@ const Login: React.FC = () => {
                     height={250}
                   />
                   <h6 className="text-lg font-bold text-black dark:text-white">
-                    Ahunu Express
+                    Ahununu Express
                   </h6>
                 </div>
                 <div className="mb-3 mt-3  flex  items-center gap-2">
