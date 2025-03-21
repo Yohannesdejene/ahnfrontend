@@ -43,7 +43,7 @@ const TrackingPage = () => {
     setLoading(true);
     try {
       const response = await apiGetShipmentTracking(
-        2, // Determine shipment mode based on the `id` prop
+        1, // Determine shipment mode based on the `id` prop
         data.awb,
       );
       if (response?.data?.data) {

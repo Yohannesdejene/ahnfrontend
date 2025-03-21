@@ -365,7 +365,7 @@ const AddShipment: React.FC<GradeDetailProps> = ({ id }) => {
                           <InputString
                             type="text"
                             name="manualAwb"
-                            label="Manual Awb (Optional)"
+                            label="Manual Awb/GWB (Optional)"
                             placeholder="ex. 122020202 "
                           />
                         </div>
