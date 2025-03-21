@@ -195,7 +195,7 @@ const ListShipmentType: React.FC = () => {
         <div className="flex h-screen w-full bg-white text-black dark:bg-boxdark dark:text-white">
           <div className="container mx-auto mt-0 ">
             <div className="">
-              <div className="p-6">
+              <div className="p-0 sm:p-3">
                 {/* Restrict the DataGrid's height and width, and allow horizontal scrolling */}
                 <div className=" max-w-230 overflow-x-auto bg-white text-black dark:bg-normalGray">
                   <DataGrid

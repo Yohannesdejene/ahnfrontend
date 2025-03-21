@@ -175,7 +175,7 @@ const ListBranch: React.FC = () => {
         <div className="flex h-screen w-full bg-white text-black dark:bg-boxdark dark:text-white">
           <div className="container mx-auto mt-0">
             <div className="">
-              <div className="p-6">
+              <div className="p-4">
                 <div className=" max-w-230 overflow-x-auto bg-white text-black dark:bg-normalGray">
                   <DataGrid
                     loading={loadingBranch}

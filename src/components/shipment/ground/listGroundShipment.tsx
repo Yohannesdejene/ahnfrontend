@@ -441,9 +441,9 @@ const ShipmentGroundList: React.FC<GradeDetailProps> = ({ id }) => {
       ),
     },
     {
-      field: "senderPhone",
-      headerName: "Sender Phone",
-      width: 120,
+      field: "senderBranch",
+      headerName: "Sender City",
+      width: 140,
       align: "left",
       headerAlign: "left",
       renderCell: (params) => (
@@ -452,6 +452,18 @@ const ShipmentGroundList: React.FC<GradeDetailProps> = ({ id }) => {
         </div>
       ),
     },
+    // {
+    //   field: "senderPhone",
+    //   headerName: "Sender Phone",
+    //   width: 120,
+    //   align: "left",
+    //   headerAlign: "left",
+    //   renderCell: (params) => (
+    //     <div className="overflow-hidden whitespace-normal break-words">
+    //       {params.value}
+    //     </div>
+    //   ),
+    // },
     {
       field: "recipientName",
       headerName: "Recipient Name",
@@ -464,22 +476,22 @@ const ShipmentGroundList: React.FC<GradeDetailProps> = ({ id }) => {
         </div>
       ),
     },
-    {
-      field: "recipientPhone",
-      headerName: "Recipient Phone",
-      width: 150,
-      align: "left",
-      headerAlign: "left",
-      renderCell: (params) => (
-        <div className="overflow-hidden whitespace-normal break-words">
-          {params.value}
-        </div>
-      ),
-    },
+    // {
+    //   field: "recipientPhone",
+    //   headerName: "Recipient Phone",
+    //   width: 150,
+    //   align: "left",
+    //   headerAlign: "left",
+    //   renderCell: (params) => (
+    //     <div className="overflow-hidden whitespace-normal break-words">
+    //       {params.value}
+    //     </div>
+    //   ),
+    // },
     {
       field: "recipientBranch",
       headerName: "Recipient City",
-      width: 100,
+      width: 140,
       align: "left",
       headerAlign: "left",
       renderCell: (params) => (
@@ -504,7 +516,19 @@ const ShipmentGroundList: React.FC<GradeDetailProps> = ({ id }) => {
     {
       field: "paymentMode",
       headerName: "Payment Mode",
-      width: 100,
+      width: 140,
+      align: "left",
+      headerAlign: "left",
+      renderCell: (params) => (
+        <div className="overflow-hidden whitespace-normal break-words">
+          {params.value}
+        </div>
+      ),
+    },
+    {
+      field: "quantity",
+      headerName: "Weight(KG)",
+      width: 130,
       align: "left",
       headerAlign: "left",
       renderCell: (params) => (
@@ -569,7 +593,6 @@ const ShipmentGroundList: React.FC<GradeDetailProps> = ({ id }) => {
       ),
     },
   ];
-
   return (
     <div className="mx-auto max-w-230" style={{ maxWidth: "90vw" }}>
       <label className="mb-12  block text-title-lg font-medium text-black dark:text-white">

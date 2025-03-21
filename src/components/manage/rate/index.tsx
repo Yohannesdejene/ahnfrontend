@@ -179,9 +179,9 @@ const ListRate: React.FC = () => {
         </div>
 
         <div className="flex h-screen w-full bg-white text-black dark:bg-boxdark dark:text-white">
-          <div className="container mx-auto mt-0 px-4">
+          <div className="F container mx-auto mt-0 px-4">
             <div className="">
-              <div className="p-6">
+              <div className="p-0 sm:p-3">
                 <div className=" max-w-230 overflow-x-auto bg-white text-black dark:bg-normalGray">
                   <DataGrid
                     loading={loadingRate}

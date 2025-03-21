@@ -95,8 +95,8 @@ const EditPaymentMethod: React.FC<EditPaymentMethodProps> = ({
   return (
     <>
       <div
-        className="m-0 flex  w-full max-w-full overflow-x-hidden bg-white
-       p-0 text-black dark:bg-boxdark dark:text-white"
+        className="flex w-full 
+       bg-white text-black dark:bg-boxdark dark:text-white"
       >
         <FormProvider {...methods}>
           <div className="container mx-auto mt-0  ">

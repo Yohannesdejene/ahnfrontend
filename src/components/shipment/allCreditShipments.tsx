@@ -321,9 +321,9 @@ const ShipmentCreditList: React.FC<GradeDetailProps> = ({ id }) => {
       ),
     },
     {
-      field: "senderPhone",
-      headerName: "Sender Phone",
-      width: 120,
+      field: "senderBranch",
+      headerName: "Sender City",
+      width: 140,
       align: "left",
       headerAlign: "left",
       renderCell: (params) => (
@@ -332,6 +332,18 @@ const ShipmentCreditList: React.FC<GradeDetailProps> = ({ id }) => {
         </div>
       ),
     },
+    // {
+    //   field: "senderPhone",
+    //   headerName: "Sender Phone",
+    //   width: 120,
+    //   align: "left",
+    //   headerAlign: "left",
+    //   renderCell: (params) => (
+    //     <div className="overflow-hidden whitespace-normal break-words">
+    //       {params.value}
+    //     </div>
+    //   ),
+    // },
     {
       field: "recipientName",
       headerName: "Recipient Name",
@@ -344,18 +356,19 @@ const ShipmentCreditList: React.FC<GradeDetailProps> = ({ id }) => {
         </div>
       ),
     },
-    {
-      field: "recipientPhone",
-      headerName: "Recipient Phone",
-      width: 150,
-      align: "left",
-      headerAlign: "left",
-      renderCell: (params) => (
-        <div className="overflow-hidden whitespace-normal break-words">
-          {params.value}
-        </div>
-      ),
-    },
+    // {
+    //   field: "recipientPhone",
+    //   headerName: "Recipient Phone",
+    //   width: 150,
+    //   align: "left",
+    //   headerAlign: "left",
+    //   renderCell: (params) => (
+    //     <div className="overflow-hidden whitespace-normal break-words">
+    //       {params.value}
+    //     </div>
+    //   ),
+    // },
+
     {
       field: "recipientBranch",
       headerName: "Recipient City",
@@ -425,6 +438,18 @@ const ShipmentCreditList: React.FC<GradeDetailProps> = ({ id }) => {
     //   ),
     // },
     {
+      field: "quantity",
+      headerName: "Weight(KG)",
+      width: 130,
+      align: "left",
+      headerAlign: "left",
+      renderCell: (params) => (
+        <div className="overflow-hidden whitespace-normal break-words">
+          {params.value}
+        </div>
+      ),
+    },
+    {
       field: "id",
       headerName: "Action",
       width: 100,
@@ -435,7 +460,9 @@ const ShipmentCreditList: React.FC<GradeDetailProps> = ({ id }) => {
           <Tooltip title="View Details" arrow>
             <IconButton
               onClick={() =>
-                router.push(`/shipment/air/detail/${params.value}`)
+                router.push(
+                  `/shipment/${id == "air" ? "air" : "ground"}/detail/${params.value}`,
+                )
               }
               sx={{
                 color: "#0097B2",

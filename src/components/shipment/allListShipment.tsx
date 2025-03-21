@@ -332,6 +332,18 @@ const ShipmentAllList: React.FC<GradeDetailProps> = ({ id }) => {
       ),
     },
     {
+      field: "senderBranch",
+      headerName: "Sender City",
+      width: 140,
+      align: "left",
+      headerAlign: "left",
+      renderCell: (params) => (
+        <div className="overflow-hidden whitespace-normal break-words">
+          {params.value}
+        </div>
+      ),
+    },
+    {
       field: "recipientName",
       headerName: "Recipient Name",
       width: 140,
@@ -343,18 +355,18 @@ const ShipmentAllList: React.FC<GradeDetailProps> = ({ id }) => {
         </div>
       ),
     },
-    {
-      field: "recipientPhone",
-      headerName: "Recipient Phone",
-      width: 150,
-      align: "left",
-      headerAlign: "left",
-      renderCell: (params) => (
-        <div className="overflow-hidden whitespace-normal break-words">
-          {params.value}
-        </div>
-      ),
-    },
+    // {
+    //   field: "recipientPhone",
+    //   headerName: "Recipient Phone",
+    //   width: 150,
+    //   align: "left",
+    //   headerAlign: "left",
+    //   renderCell: (params) => (
+    //     <div className="overflow-hidden whitespace-normal break-words">
+    //       {params.value}
+    //     </div>
+    //   ),
+    // },
     {
       field: "recipientBranch",
       headerName: "Recipient City",
@@ -384,6 +396,18 @@ const ShipmentAllList: React.FC<GradeDetailProps> = ({ id }) => {
       field: "paymentMode",
       headerName: "Payment Mode",
       width: 100,
+      align: "left",
+      headerAlign: "left",
+      renderCell: (params) => (
+        <div className="overflow-hidden whitespace-normal break-words">
+          {params.value}
+        </div>
+      ),
+    },
+    {
+      field: "quantity",
+      headerName: "Weight(KG)",
+      width: 130,
       align: "left",
       headerAlign: "left",
       renderCell: (params) => (
