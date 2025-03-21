@@ -67,7 +67,7 @@ const shipmentSchema = z
       .string()
       .min(1, { message: "Shipment Description  is required" }),
     companyId: z.string().optional(), // Initially optional
-    rate: z.number(), // Changed to number for double values
+    // rate: z.number(), // Changed to number for double values
     // rateId: z.number().min(1, { message: "Quantity is required" })
     // netFee: z.string(),
     quantity: z.number().min(1, { message: "Quantity is required" }), // Changed to number with min validation
@@ -158,7 +158,7 @@ const AddShipment: React.FC<GradeDetailProps> = ({ id }) => {
   });
   const { errors } = methods.formState; // Get form errors
   const formValues = methods.watch(); // This will give you the current form values
-
+  console.log("errors", errors);
   // Function to search for rates
   const searchRate = async () => {
     const {
