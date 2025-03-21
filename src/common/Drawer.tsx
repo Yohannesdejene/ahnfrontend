@@ -6,7 +6,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close"; 
+import CloseIcon from "@mui/icons-material/Close";
 
 interface LeftDrawerProps {
   isOpen: boolean;
@@ -35,6 +35,9 @@ const CommonDrawer: React.FC<LeftDrawerProps> = ({
         sx: {
           width: isMobile ? "100%" : width ? width : 250,
           mihHeight: "100vh", // Full width for mobile, specified width for larger screens
+          maxWidth: "100vw", // Ensure it doesn’t exceed viewport width
+          boxSizing: "border-box", // Include padding/border in width calculation
+          overflowX: "hidden", // Prevent horizontal overflow
         },
       }}
     >
@@ -60,7 +63,7 @@ const CommonDrawer: React.FC<LeftDrawerProps> = ({
         </Box>
 
         {/* Drawer Content */}
-        <Box className="mt-0 w-full px-2">{content}</Box>
+        <Box className="mt-0  w-full px-2">{content}</Box>
       </Box>
     </Drawer>
   );

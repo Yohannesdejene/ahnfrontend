@@ -67,41 +67,39 @@ const AddPaymentMethod: React.FC<AddPaymentMethodProps> = ({
     <>
       <div className="flex w-full bg-white text-black dark:bg-boxdark dark:text-white">
         <FormProvider {...methods}>
-          <div className="container mx-auto mt-0">
-            <div className="w-full">
-              <div className="p-0">
-                <h6 className="text-gray-700 w-full text-lg font-normal">
-                  Add Payment Method
-                </h6>
+          <div className="container  mt-0 px-4">
+            <div className="p-0">
+              <h6 className="text-gray-700 w-full text-lg font-normal">
+                Add Payment Method
+              </h6>
 
-                <hr className="mb-4 mt-4 w-full text-lg font-normal text-normalGray" />
-                <div className="w-full">
-                  <form
-                    onSubmit={methods.handleSubmit(onSubmit)}
-                    className="p-fluid"
-                  >
-                    <div className="mb-3 w-full">
-                      <InputString
-                        type="text"
-                        name="code"
-                        label="Code"
-                        placeholder="e.g., online_payment"
-                      />
-                    </div>
-                    <div className="mb-3 w-full">
-                      <InputString
-                        type="text"
-                        name="description"
-                        label="Description"
-                        placeholder="e.g., Description of the payment method"
-                      />
-                    </div>
+              <hr className="mb-4 mt-4 w-full text-lg font-normal text-normalGray" />
+              <div className="w-full">
+                <form
+                  onSubmit={methods.handleSubmit(onSubmit)}
+                  className="p-fluid"
+                >
+                  <div className="mb-3 w-full">
+                    <InputString
+                      type="text"
+                      name="code"
+                      label="Code"
+                      placeholder="e.g., online_payment"
+                    />
+                  </div>
+                  <div className="mb-3 w-full">
+                    <InputString
+                      type="text"
+                      name="description"
+                      label="Description"
+                      placeholder="e.g., Description of the payment method"
+                    />
+                  </div>
 
-                    <div className="mb-4">
-                      <CommonButton loading={loading} label="Submit" />
-                    </div>
-                  </form>
-                </div>
+                  <div className="mb-4">
+                    <CommonButton loading={loading} label="Submit" />
+                  </div>
+                </form>
               </div>
             </div>
           </div>

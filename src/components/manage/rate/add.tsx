@@ -98,9 +98,9 @@ const AddRate: React.FC<AddRateProps> = ({ toggleDrawer }) => {
 
   return (
     <>
-      <div className="flex w-full bg-white text-black dark:bg-boxdark dark:text-white">
+      <div className="flex w-full overflow-x-hidden bg-white text-black dark:bg-boxdark dark:text-white">
         <FormProvider {...methods}>
-          <div className="container mx-auto mt-0">
+          <div className="container mx-auto mt-0 max-w-full  px-4  sm:px-2">
             <div className="w-full">
               <div className="p-0">
                 <h6 className="text-gray-700 w-full text-lg font-normal">

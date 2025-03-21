@@ -59,9 +59,8 @@ interface GradeDetailProps {
 
 const ShipmentDetailIndex: React.FC<GradeDetailProps> = ({ id, type }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { selectedShipment, getShipmentByIdLoading ,getShipmentByIdError} = useSelector(
-    (state: RootState) => state.shipment,
-  );
+  const { selectedShipment, getShipmentByIdLoading, getShipmentByIdError } =
+    useSelector((state: RootState) => state.shipment);
   const [value, setValue] = React.useState("shipmentDetail");
   const handleChange = (event: any, newValue: any) => {
     setValue(newValue);
@@ -77,7 +76,7 @@ const ShipmentDetailIndex: React.FC<GradeDetailProps> = ({ id, type }) => {
     }
   }, [id, dispatch]);
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4" style={{ maxWidth: "90%" }}>
       <div className="space-y-0 md:col-span-2">
         <div>
           <Box

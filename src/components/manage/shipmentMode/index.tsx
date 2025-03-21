@@ -155,9 +155,9 @@ const ListShipmentMode: React.FC = () => {
   });
   return (
     <>
-      <div className="mx-auto max-w-242.5">
-        <div className="mx-1 flex justify-between">
-          <label className="mb-2 block text-title-md font-medium text-black dark:text-white">
+      <div className=" overflow-x-hidden" style={{ maxWidth: "90vw" }}>
+        <div className=" flex-col justify-between  sm:flex ">
+          <label className="mb-2 ml-2 mt-3 block text-title-md font-medium text-black dark:text-white">
             Shipment Mode
           </label>
 
@@ -168,6 +168,8 @@ const ListShipmentMode: React.FC = () => {
               backgroundColor: "#0097B2",
               color: "white",
               marginBottom: "10px",
+              marginLeft: "auto",
+              display: "flex",
             }}
           >
             <IoAddCircleSharp className="mr-3" />
@@ -176,10 +178,10 @@ const ListShipmentMode: React.FC = () => {
         </div>
 
         <div className="flex h-screen w-full bg-white text-black dark:bg-boxdark dark:text-white">
-          <div className="container mx-auto mt-0">
+          <div className="container mx-auto mt-0 px-4">
             <div className="">
-              <div className="p-8">
-                <div className="overflow-x-auto bg-white text-black dark:bg-normalGray">
+              <div className="p-6">
+                <div className=" max-w-230 overflow-x-auto bg-white text-black dark:bg-normalGray">
                   <DataGrid
                     loading={loadingShipmentMode}
                     rows={rows}

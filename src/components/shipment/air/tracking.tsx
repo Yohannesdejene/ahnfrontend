@@ -98,7 +98,10 @@ const TrackingPage = () => {
   ];
 
   return (
-    <div className="container mx-auto mt-10 bg-white p-12 text-black dark:bg-boxdark dark:text-white">
+    <div
+      className="container mx-auto mt-10 bg-white p-12 text-black dark:bg-boxdark dark:text-white"
+      style={{ maxWidth: "90%" }}
+    >
       <h1 className="mb-5 text-2xl font-bold">Shipment Tracking</h1>
 
       {/* Error Message */}

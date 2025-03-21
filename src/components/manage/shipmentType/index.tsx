@@ -164,15 +164,15 @@ const ListShipmentType: React.FC = () => {
   });
   return (
     <>
-      <div className="mx-auto max-w-242.5">
+      <div className=" overflow-x-hidden" style={{ maxWidth: "90vw" }}>
         {/* <PageHeader
           title="Country List"
           url={URL.ADD_COUNTRY}
           // btnLabel="Add Country"
           // showButton={true}
         /> */}
-        <div className="mx-1 flex justify-between">
-          <label className="mb-2 block  text-title-md font-medium text-black dark:text-white">
+        <div className=" flex-col justify-between  sm:flex ">
+          <label className="mb-2 ml-2 mt-3 block text-title-md font-medium text-black dark:text-white">
             Shipment Type
           </label>
 
@@ -183,6 +183,8 @@ const ListShipmentType: React.FC = () => {
               backgroundColor: "#0097B2",
               color: "white",
               marginBottom: "10px",
+              marginLeft: "auto",
+              display: "flex",
             }}
           >
             <IoAddCircleSharp className="mr-3" />
@@ -191,11 +193,11 @@ const ListShipmentType: React.FC = () => {
         </div>
 
         <div className="flex h-screen w-full bg-white text-black dark:bg-boxdark dark:text-white">
-          <div className="container mx-auto mt-0">
+          <div className="container mx-auto mt-0 ">
             <div className="">
-              <div className="p-8">
+              <div className="p-6">
                 {/* Restrict the DataGrid's height and width, and allow horizontal scrolling */}
-                <div className="overflow-x-auto bg-white text-black dark:bg-normalGray">
+                <div className=" max-w-230 overflow-x-auto bg-white text-black dark:bg-normalGray">
                   <DataGrid
                     loading={loadingShipmentType}
                     rows={rows}

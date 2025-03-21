@@ -450,7 +450,7 @@ const ShipmentAllList: React.FC<GradeDetailProps> = ({ id }) => {
   ];
 
   return (
-    <div className="mx-auto max-w-242.5">
+    <div className="mx-auto max-w-230" style={{ maxWidth: "90%" }}>
       <label className="mb-12  block text-title-lg font-medium text-black dark:text-white">
         {id == "air" ? "ALL air shipments" : "All ground shipments"}
       </label>
