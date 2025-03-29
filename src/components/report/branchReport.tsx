@@ -493,135 +493,63 @@ const BranchShipment: React.FC<GradeDetailProps> = ({ id }) => {
       )}
 
       <FormProvider {...methods}>
-        <div className="w-full ">
-          <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-6">
-            <div className="card flex flex-col justify-center">
-              <InputString
-                type="text"
-                name="awb"
-                label="Search by awb "
-                placeholder="ex 48616082"
-              />
-            </div>
-
-            <div className="card flex flex-col justify-center">
-              <InputString
-                type="date"
-                name="startDate"
-                label="Start Date"
-                placeholder="ex "
-              />
-            </div>
-
-            <div className="card flex flex-col justify-center">
-              <InputString
-                type="date"
-                name="endDate"
-                label="End Date"
-                placeholder="ex "
-              />
-            </div>
-
-            <div className="mb-1 flex items-end">
-              <BaseButton
-                onClick={handleSearch}
-                startIcon={<IoSearch />}
-                variant="contained"
-                sx={{
-                  textTransform: "none",
-                  backgroundColor: "#109101",
-                  color: "white",
-                  borderRadius: "8px",
-
-                  "&:hover": {
-                    backgroundColor: "#109101",
-                  },
-                }}
-                style={{
-                  backgroundColor: "#109101",
-                  height: "31px",
-                  width: "100%",
-                }}
-              >
-                Search
-              </BaseButton>
-            </div>
-
-            <div className="mb-1 flex items-end">
-              <BaseButton
-                onClick={handleReset}
-                variant="outlined"
-                startIcon={<GrPowerReset />}
-                sx={{
-                  textTransform: "none",
-                  borderRadius: "8px",
-                  backgroundColor: "#109101",
-                  color: "white",
-                }}
-                style={{
-                  backgroundColor: "#109101",
-                  height: "31px",
-                  width: "100%",
-                }}
-                className="flex items-center gap-2"
-              >
-                Reset Filter
-              </BaseButton>
-            </div>
-
-            <div className="mb-1 flex items-end">
-              <BaseButton
-                onClick={() => {
-                  setFilterMore(!filterMore);
-                }}
-                variant="outlined"
-                startIcon={filterMore ? <IoCloseOutline /> : <FaFilter />}
-                sx={{
-                  textTransform: "none",
-                  borderRadius: "8px",
-                  fontWeight: "500",
-                  color: "white",
-                }}
-                style={{
-                  backgroundColor: "#109101",
-                  height: "31px",
-                  width: "100%",
-                }}
-                className="flex items-center gap-2"
-              >
-                {filterMore ? "Close filter" : "More Filter"}
-              </BaseButton>
-            </div>
-          </div>
-        </div>
-        {/* more filters  */}
-        {filterMore && (
+        <div className="bg-white p-2 md:p-5">
           <div className="w-full ">
-            <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-5">
-              {(id == "ALL_AIR" || id == "ALL_GROUND") && (
-                <>
-                  <div className="card flex flex-col justify-center">
-                    <SelectInput
-                      name="senderBranchId"
-                      label="Sender city  "
-                      placeholder="Select Sender City   "
-                      options={optionsBranch}
-                      loading={loadingBranch} // Default to false if not provided
-                    />
-                  </div>
+            <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-6">
+              <div className="card flex flex-col justify-center">
+                <InputString
+                  type="text"
+                  name="awb"
+                  label="Search by awb "
+                  placeholder="ex 48616082"
+                />
+              </div>
 
-                  <div className="card flex flex-col justify-center">
-                    <SelectInput
-                      name="recipientBranchId"
-                      label="Receiver city  "
-                      placeholder="Select Receiver City   "
-                      options={optionsBranch}
-                      loading={loadingBranch} // Default to false if not provided
-                    />
-                  </div>
-                </>
-              )}
-              {/* 
+              <div className="card flex flex-col justify-center">
+                <InputString
+                  type="date"
+                  name="startDate"
+                  label="Start Date"
+                  placeholder="ex "
+                />
+              </div>
+
+              <div className="card flex flex-col justify-center">
+                <InputString
+                  type="date"
+                  name="endDate"
+                  label="End Date"
+                  placeholder="ex "
+                />
+              </div>
+            </div>
+            {filterMore && (
+              <div className="w-full ">
+                <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-5">
+                  {(id == "ALL_AIR" || id == "ALL_GROUND") && (
+                    <>
+                      <div className="card flex flex-col justify-center">
+                        <SelectInput
+                          name="senderBranchId"
+                          label="Sender city  "
+                          placeholder="Select Sender City   "
+                          options={optionsBranch}
+                          loading={loadingBranch} // Default to false if not provided
+                        />
+                      </div>
+
+                      <div className="card flex flex-col justify-center">
+                        <SelectInput
+                          name="recipientBranchId"
+                          label="Receiver city  "
+                          placeholder="Select Receiver City   "
+                          options={optionsBranch}
+                          loading={loadingBranch} // Default to false if not provided
+                        />
+                      </div>
+                    </>
+                  )}
+                  {/* 
               <div className="card flex flex-col justify-center">
                 <SelectInput
                   name="paymentModeId"
@@ -632,29 +560,105 @@ const BranchShipment: React.FC<GradeDetailProps> = ({ id }) => {
                   // Default to false if not provided
                 />
               </div> */}
-              <div className="card flex flex-col justify-center">
-                <EthiopianNumberInput
-                  type="text"
-                  name="senderPhone"
-                  label="Sender Phone Number"
-                  placeholder="e.g. 912345678"
-                />
+                  <div className="card flex flex-col justify-center">
+                    <EthiopianNumberInput
+                      type="text"
+                      name="senderPhone"
+                      label="Sender Phone Number"
+                      placeholder="e.g. 912345678"
+                    />
+                  </div>
+                  <div className="card flex flex-col justify-center">
+                    <EthiopianNumberInput
+                      type="text"
+                      name="recipientPhone"
+                      label="Recipient Phone Number"
+                      placeholder="e.g. 912345678"
+                    />
+                  </div>
+                </div>
               </div>
+            )}
+            <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-6">
               <div className="card flex flex-col justify-center">
-                <EthiopianNumberInput
-                  type="text"
-                  name="recipientPhone"
-                  label="Recipient Phone Number"
-                  placeholder="e.g. 912345678"
-                />
+                <BaseButton
+                  onClick={handleSearch}
+                  startIcon={<IoSearch />}
+                  variant="contained"
+                  sx={{
+                    textTransform: "none",
+                    backgroundColor: "#109101",
+                    color: "white",
+                    borderRadius: "8px",
+
+                    "&:hover": {
+                      backgroundColor: "#109101",
+                    },
+                  }}
+                  style={{
+                    backgroundColor: "#109101",
+                    height: "31px",
+                    width: "100%",
+                  }}
+                >
+                  Search
+                </BaseButton>
+              </div>
+
+              <div className="card flex flex-col justify-center">
+                <BaseButton
+                  onClick={handleReset}
+                  variant="outlined"
+                  startIcon={<GrPowerReset />}
+                  sx={{
+                    textTransform: "none",
+                    borderRadius: "8px",
+                    backgroundColor: "#109101",
+                    color: "white",
+                  }}
+                  style={{
+                    backgroundColor: "#109101",
+                    height: "31px",
+                    width: "100%",
+                  }}
+                  className="flex items-center gap-2"
+                >
+                  Reset Filter
+                </BaseButton>
+              </div>
+
+              <div className="card flex flex-col justify-center">
+                <BaseButton
+                  onClick={() => {
+                    setFilterMore(!filterMore);
+                  }}
+                  variant="outlined"
+                  startIcon={filterMore ? <IoCloseOutline /> : <FaFilter />}
+                  sx={{
+                    textTransform: "none",
+                    borderRadius: "8px",
+                    fontWeight: "500",
+                    color: "white",
+                  }}
+                  style={{
+                    backgroundColor: "#109101",
+                    height: "31px",
+                    width: "100%",
+                  }}
+                  className="flex items-center gap-2"
+                >
+                  {filterMore ? "Close filter" : "More Filter"}
+                </BaseButton>
               </div>
             </div>
           </div>
-        )}
+        </div>
+
+        {/* more filters  */}
       </FormProvider>
 
-      <div className=" flex justify-between ">
-        <div className="mb-3 flex-col align-middle ">
+      <div className=" mt-4 flex-col ">
+        <div className="mb-3 flex-col bg-white p-5 align-middle ">
           <BaseButton
             style={{ backgroundColor: "#2073de", color: "white" }}
             disabled={loadingExport}
@@ -662,13 +666,14 @@ const BranchShipment: React.FC<GradeDetailProps> = ({ id }) => {
             startIcon={<TiExport />}
             onClick={handleExport}
           >
-            {loadingExport ? <span>exporting.....</span> : <span>Export</span>}
+            {loadingExport ? <span>loading.....</span> : <span>Export</span>}
           </BaseButton>
+          <hr className="mb-4 mt-4 w-full text-lg font-normal text-normalGray" />
           <div
-            className="ml-10 mt-3  text-title-md text-black dark:text-white"
+            className=" mt-8  text-title-md text-black dark:text-white"
             style={{ fontWeight: "bold" }}
           >
-            Total Quantity(weight):{totalQuantity ? totalQuantity : 0} KG
+            Total Quantity(weight):{totalQuantity ? totalQuantity : 0} KG{" "}
           </div>
         </div>
         <div
@@ -692,7 +697,7 @@ const BranchShipment: React.FC<GradeDetailProps> = ({ id }) => {
         <div className="container mx-auto mt-0">
           <div className="">
             <div className="p-4">
-              <div className="overflow-x-auto bg-white text-black dark:bg-normalGray">
+              <div className="max-w-230  overflow-x-auto bg-white text-black dark:bg-normalGray">
                 {loadingShipments && <LinearProgress />}
                 <DataGrid
                   loading={loadingShipments}

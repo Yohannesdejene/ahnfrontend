@@ -1,10 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
-  fetchCompanyList,
+  fetchActiveCompanies,
+  fetchAllCompanies,
   createCompany,
   updateCompany,
   deleteCompany,
   getCompanyById,
+  changeCompanyStatus, // Import the changeCompanyStatus thunk
 } from "./companiesThunk";
 import { toast } from "react-hot-toast";
 import { COMPANIES_STATE, COMPANY } from "./type";
@@ -32,6 +34,8 @@ const initialState: COMPANIES_STATE = {
   deleteCompanyLoading: false,
   deleteCompanyError: null,
   deleteCompanySuccess: false,
+  changeStatusLoading: false, // New state for status change
+  changeStatusError: null, // New state for status change error
 };
 
 const companiesSlice = createSlice({
@@ -52,14 +56,14 @@ const companiesSlice = createSlice({
   extraReducers: (builder) => {
     let toastId: any = null;
 
-    // Fetch company list
+    // Fetch active companies
     builder
-      .addCase(fetchCompanyList.pending, (state) => {
+      .addCase(fetchActiveCompanies.pending, (state) => {
         state.loadingCompany = true;
         state.errorCompany = null;
       })
       .addCase(
-        fetchCompanyList.fulfilled,
+        fetchActiveCompanies.fulfilled,
         (state, action: PayloadAction<any>) => {
           state.loadingCompany = false;
           state.companies = action.payload?.data?.companies || [];
@@ -67,10 +71,31 @@ const companiesSlice = createSlice({
             action.payload?.metadata?.pagination || initialState.pagination;
         },
       )
-      .addCase(fetchCompanyList.rejected, (state, action) => {
+      .addCase(fetchActiveCompanies.rejected, (state, action) => {
         state.loadingCompany = false;
         state.errorCompany =
-          action.error.message || "Failed to fetch companies";
+          action.error.message || "Failed to fetch active companies";
+      });
+
+    // Fetch all companies
+    builder
+      .addCase(fetchAllCompanies.pending, (state) => {
+        state.loadingCompany = true;
+        state.errorCompany = null;
+      })
+      .addCase(
+        fetchAllCompanies.fulfilled,
+        (state, action: PayloadAction<any>) => {
+          state.loadingCompany = false;
+          state.companies = action.payload?.data?.companies || [];
+          state.pagination =
+            action.payload?.metadata?.pagination || initialState.pagination;
+        },
+      )
+      .addCase(fetchAllCompanies.rejected, (state, action) => {
+        state.loadingCompany = false;
+        state.errorCompany =
+          action.error.message || "Failed to fetch all companies";
       });
 
     // Create company
@@ -161,6 +186,37 @@ const companiesSlice = createSlice({
           id: toastId,
         });
       });
+
+    // Change company status
+    builder
+      .addCase(changeCompanyStatus.pending, (state) => {
+        state.changeStatusLoading = true;
+        state.changeStatusError = null;
+        toastId = toast.loading("Changing company status...");
+      })
+      .addCase(
+        changeCompanyStatus.fulfilled,
+        (state, action: PayloadAction<any>) => {
+          state.changeStatusLoading = false;
+
+          const updatedCompany = action.payload.company;
+
+          // Update the company in the list
+          state.companies = state.companies.map((company) =>
+            company.id === updatedCompany.id ? updatedCompany : company,
+          );
+
+          toast.success("Company status updated successfully!", {
+            id: toastId,
+          });
+        },
+      )
+      .addCase(changeCompanyStatus.rejected, (state, action) => {
+        state.changeStatusLoading = false;
+        state.changeStatusError =
+          action.payload || "Failed to change company status";
+        toast.error(state.changeStatusError, { id: toastId });
+      });
   },
 });
 
@@ -171,9 +227,11 @@ export default companiesSlice.reducer;
 
 // Export thunks for use in other files
 export {
-  fetchCompanyList,
+  fetchActiveCompanies,
+  fetchAllCompanies,
   createCompany,
   updateCompany,
   deleteCompany,
   getCompanyById,
+  changeCompanyStatus, // Export the changeCompanyStatus thunk
 };

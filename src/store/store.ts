@@ -9,6 +9,8 @@ import paymentMethod from "./features/paymentMethods/paymentMethodsSlice";
 import rate from "./features/rates/ratesSlice";
 import unit from "./features/unit/unitsSlice";
 import shipment from "./features/shipments/shipmentslice";
+import user from "./features/user/usersSlice";
+import company from "./features/company/companiesSlice";
 // Import the courses slice reducer
 // Configure the Redux store and add the courses reducer
 export const store = configureStore({
@@ -22,6 +24,8 @@ export const store = configureStore({
     unit: unit,
     shipment: shipment,
     branches: branchReducer,
+    user: user,
+    company: company,
   },
 });
 

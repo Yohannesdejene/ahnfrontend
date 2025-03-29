@@ -9,10 +9,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { getShipmentById } from "@/store/features/shipments/shipmentsThunk";
 import { CircularProgress, Button } from "@mui/material";
-
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import UpdateShipment from "./updateShipment";
 import ShipmentDetail from "./shipmentDetail";
+import ShipmentReceipt from "./shipmentReceipt";
 const theme = createTheme({
   components: {
     MuiTabs: {
@@ -109,6 +109,15 @@ const ShipmentDetailIndex: React.FC<GradeDetailProps> = ({ id, type }) => {
                       }}
                     />
                     <Tab
+                      label="Shipment Invoice"
+                      value="receipt"
+                      className="text-black dark:text-white"
+                      sx={{
+                        ...tabStyles,
+                      }}
+                    />
+
+                    <Tab
                       label="Update Shipment"
                       value="updateShipment"
                       className="text-black dark:text-white"
@@ -126,9 +135,12 @@ const ShipmentDetailIndex: React.FC<GradeDetailProps> = ({ id, type }) => {
                     color: "#000000",
                   }}
                 >
-                  <ShipmentDetail id={id} type={type} />
+                  <ShipmentDetail id={id} />
                 </TabPanel>
-
+                <TabPanel value="receipt">
+                  {" "}
+                  <ShipmentReceipt id={id} type={type} />
+                </TabPanel>
                 <TabPanel value="updateShipment">
                   {" "}
                   <UpdateShipment id={id} type={type} />

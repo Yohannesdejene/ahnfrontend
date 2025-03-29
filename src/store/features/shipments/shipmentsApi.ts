@@ -90,6 +90,26 @@ export async function apiChangeShipmentStatus(
   const response = await HttpService.request({ method, data, url });
   return response;
 }
+
+export async function apiBulkChangeShipmentStatus(
+  awbs: string[],
+  statusId: number,
+  shipmentModeId: number,
+  remark?: string | number,
+): Promise<any> {
+  const method = "POST";
+  let url = `/shipments/tracking/bulkChangeShipmentStatus`;
+  const data = {
+    awbs,
+    statusId,
+    shipmentModeId,
+    remark,
+  };
+  const response = await HttpService.request({ method, data, url });
+  return response;
+}
+
+////
 export async function apiGetStatuses(type: string): Promise<any> {
   const method = "GET";
   let url = `/shipments/status/getShipPackDisStatus?type=${type}`;

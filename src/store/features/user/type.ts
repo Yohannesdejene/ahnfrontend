@@ -1,14 +1,33 @@
-export interface USER {
+export type USER = {
   id: string;
-  group_id: number;
-  username?: string;
-  password?: string;
-  is_active: string;
-  last_login: string | null;
-  is_super_user: string;
-  date_joined: string;
-  login_from: string | null;
-  profile_picture: string;
-  created_date: string;
-  updated_date: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  otp: string;
+  otpExpiration: string; // ISO date string
+  firstTime: number; // 0 or 1
+  roleId: number;
+  branchId: number;
+  status: "ACTIVE" | "INACTIVE"; // Enum-like string
+  addedBy: string | null;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  Branch: any;
+  Role: any;
+};
+
+export interface CREATE_USER {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  roleId: number;
+  branchId: number;
+}
+export interface UPDATE_USER {
+  firstName: string;
+  lastName: string;
+  roleId: number;
+  branchId: number;
 }

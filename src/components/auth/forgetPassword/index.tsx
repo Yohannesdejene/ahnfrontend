@@ -47,7 +47,6 @@ const ForgetPassword: React.FC = () => {
       console.log("res", res);
       if (res?.status == 200) {
         toast.success(res?.data?.message);
-        console.log("values?.email", values?.email);
         setEmailInfo(values?.email);
         setTimeout(() => {
           router.push("/auth/verify-otp-code");

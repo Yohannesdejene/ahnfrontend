@@ -96,7 +96,7 @@ export function setUserInfo(user: USER_TYPE): boolean {
   }
 }
 export function deleteUserIfo(): void {
-  localStorage.remove(session_user);
+  localStorage.removeItem(session_user);
 }
 export function setEmailInfo(email: SET_TEMP_EMAIL): boolean {
   try {
@@ -207,9 +207,8 @@ export function getTemporaryToken(): string | null | undefined {
   }
 }
 export function deleteTempSession(): void {
-  localStorage.remove(temp_token_key);
+  localStorage.removeItem(temp_token_key); // Use removeItem instead of remove
 }
-
 export function verifyPermission(permission: string): string[] | null {
   try {
     const perms = JSON.parse(

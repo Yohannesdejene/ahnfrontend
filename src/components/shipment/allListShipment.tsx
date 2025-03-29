@@ -481,84 +481,85 @@ const ShipmentAllList: React.FC<GradeDetailProps> = ({ id }) => {
       {errorShipments && (
         <Alert severity="error">Something went wrong try again </Alert>
       )}
-      <FormProvider {...methods}>
-        <div className="w-full ">
-          <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-6">
-            <div className="card flex flex-col justify-center">
-              <InputString
-                type="text"
-                name="awb"
-                label="Search by awb "
-                placeholder="ex 48616082"
-              />
-            </div>
+      <div className="bg-white p-2 md:p-5">
+        <FormProvider {...methods}>
+          <div className="w-full ">
+            <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-6">
+              <div className="card flex flex-col justify-center">
+                <InputString
+                  type="text"
+                  name="awb"
+                  label="Search by awb "
+                  placeholder="ex 48616082"
+                />
+              </div>
 
-            <div className="card flex flex-col justify-center">
-              <InputString
-                type="date"
-                name="startDate"
-                label="Start Date"
-                placeholder="ex "
-              />
-            </div>
+              <div className="card flex flex-col justify-center">
+                <InputString
+                  type="date"
+                  name="startDate"
+                  label="Start Date"
+                  placeholder="ex "
+                />
+              </div>
 
-            <div className="card flex flex-col justify-center">
-              <InputString
-                type="date"
-                name="endDate"
-                label="End Date"
-                placeholder="ex "
-              />
-            </div>
+              <div className="card flex flex-col justify-center">
+                <InputString
+                  type="date"
+                  name="endDate"
+                  label="End Date"
+                  placeholder="ex "
+                />
+              </div>
 
-            <div className="mb-1 flex items-end">
-              <BaseButton
-                onClick={handleSearch}
-                startIcon={<IoSearch />}
-                variant="contained"
-                sx={{
-                  textTransform: "none",
-                  backgroundColor: "#109101",
-                  color: "white",
-                  borderRadius: "8px",
-
-                  "&:hover": {
+              <div className="mb-1 flex items-end">
+                <BaseButton
+                  onClick={handleSearch}
+                  startIcon={<IoSearch />}
+                  variant="contained"
+                  sx={{
+                    textTransform: "none",
                     backgroundColor: "#109101",
-                  },
-                }}
-                style={{
-                  backgroundColor: "#109101",
-                  height: "31px",
-                  width: "100%",
-                }}
-              >
-                Search
-              </BaseButton>
-            </div>
+                    color: "white",
+                    borderRadius: "8px",
 
-            <div className="mb-1 flex items-end">
-              <BaseButton
-                onClick={handleReset}
-                variant="outlined"
-                startIcon={<GrPowerReset />}
-                sx={{
-                  textTransform: "none",
-                  borderRadius: "8px",
-                  backgroundColor: "#109101",
-                  color: "white",
-                }}
-                style={{
-                  backgroundColor: "#109101",
-                  height: "31px",
-                  width: "100%",
-                }}
-                className="flex items-center gap-2"
-              >
-                Reset Filter
-              </BaseButton>
-            </div>
+                    "&:hover": {
+                      backgroundColor: "#109101",
+                    },
+                  }}
+                  style={{
+                    backgroundColor: "#109101",
+                    height: "31px",
+                    width: "100%",
+                  }}
+                >
+                  Search
+                </BaseButton>
+              </div>
 
-            {/* <div className="mb-1 flex items-end">
+              <div className="mb-1 flex items-end">
+                <BaseButton
+                  onClick={handleReset}
+                  variant="outlined"
+                  startIcon={<GrPowerReset />}
+                  sx={{
+                    textTransform: "none",
+                    borderRadius: "8px",
+                    backgroundColor: "#109101",
+                    color: "white",
+                  }}
+                  style={{
+                    backgroundColor: "#109101",
+                    height: "31px",
+                    width: "100%",
+                  }}
+                  className="flex items-center gap-2"
+                >
+                  Reset Filter
+                </BaseButton>
+              </div>
+
+              {/* <div className="mb-1 flex items-end">
               <BaseButton
                 onClick={() => {
                   setFilterMore(!filterMore);
@@ -581,10 +582,10 @@ const ShipmentAllList: React.FC<GradeDetailProps> = ({ id }) => {
                 {filterMore ? "Close filter" : "More Filter"}
               </BaseButton>
             </div> */}
+            </div>
           </div>
-        </div>
-        {/* more filters  */}
-        {/* {filterMore && (
+          {/* more filters  */}
+          {/* {filterMore && (
           <div className="w-full ">
             <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-5">
               <div className="card flex flex-col justify-center">
@@ -635,7 +636,8 @@ const ShipmentAllList: React.FC<GradeDetailProps> = ({ id }) => {
             </div>
           </div>
         )} */}
-      </FormProvider>
+        </FormProvider>
+      </div>
 
       <div className=" flex justify-between ">
         <div>

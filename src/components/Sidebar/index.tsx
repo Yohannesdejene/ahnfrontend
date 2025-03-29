@@ -48,6 +48,9 @@ import { FiType } from "react-icons/fi";
 import { MdAttachMoney } from "react-icons/md";
 import { FaUnity } from "react-icons/fa";
 import { GrUserAdmin } from "react-icons/gr";
+import { BiSolidInstitution } from "react-icons/bi";
+import { IoMdAdd } from "react-icons/io";
+import { CiViewList } from "react-icons/ci";
 
 import * as URL from "@/route";
 
@@ -117,6 +120,11 @@ const menuGroups = [
             route: "/shipment/air/change-status",
           },
           {
+            icon: <FaExchangeAlt className="text-title-sm text-white" />,
+            label: "Bulk status change",
+            route: "/shipment/air/bulk-status-change",
+          },
+          {
             icon: <FaBarsProgress className="text-title-sm text-white" />,
             label: "Track Shipment",
             route: "/shipment/air/tracking",
@@ -175,8 +183,13 @@ const menuGroups = [
           },
           {
             icon: <FaExchangeAlt className="text-title-sm text-white" />,
-            label: "Change Status",
+            label: "Change Status ",
             route: "/shipment/ground/change-status",
+          },
+          {
+            icon: <FaExchangeAlt className="text-title-sm text-white" />,
+            label: "Bulk Change Status",
+            route: "/shipment/ground/bulk-status-change",
           },
           {
             icon: <FaBarsProgress className="text-title-sm text-white" />,
@@ -297,12 +310,35 @@ const menuGroups = [
     ],
   },
   {
+    name: "USERS",
+    menuItems: [
+      {
+        icon: <BiSolidInstitution className="text-title-sm text-white" />,
+        label: "Companies",
+        route: "",
+        children: [
+          {
+            icon: <CiViewList className="text-title-sm text-white" />,
+            label: "Companies",
+            route: "/companies/list",
+          },
+          {
+            icon: <IoMdAdd className="text-title-sm text-white" />,
+            label: "Add Company ",
+            route: "/companies/add",
+          },
+        ],
+      },
+    ],
+  },
+  {
     name: "Authorization",
     menuItems: [
       {
         icon: <MdOutlineRule className="text-title-sm text-white" />,
         label: "Role",
-        route: "#",
+        route: "/users/list",
+
         // children: [
         //   {
         //     icon: (
@@ -316,16 +352,7 @@ const menuGroups = [
       {
         icon: <FaUser className="text-title-sm text-white" />,
         label: "User ",
-        route: "#",
-        // children: [
-        //   {
-        //     icon: (
-        //       <FaCodeBranch className="text-title-sm text-white" />
-        //     ),
-        //     label: "Branches",
-        //     route: "#",
-        //   },
-        // ],
+        route: "/users/list",
       },
       ,
     ],
@@ -359,7 +386,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             /> */}
             <h1 className=" mb-5 mt-3 flex  items-center justify-center text-title-md font-bold text-white">
               {" "}
-              Ahununu Express
+              {/* Ahununu Express */}
             </h1>
             <hr className="border-gray-100 text- my-2 font-medium " />
           </Link>

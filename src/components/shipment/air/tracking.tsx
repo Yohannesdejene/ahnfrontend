@@ -19,11 +19,12 @@ import { LuPlaneLanding } from "react-icons/lu"; ///ARRIVING
 import { CiDeliveryTruck } from "react-icons/ci"; ///OUT_FOR_DELIVERY
 import { PiBuildingOfficeDuotone } from "react-icons/pi"; //ARRIVED
 import { FcAcceptDatabase } from "react-icons/fc"; ///DELIVERED
+import { CiLocationOn } from "react-icons/ci";
+import { GoLocation } from "react-icons/go";
 
 const statusSchema = z.object({
-  awb: z.string().min(1, { message: "AWB is required" }),
+  awb: z.string().min(1, { message: "GWB is required" }),
 });
-
 interface TrackingForm {
   awb: string;
 }
@@ -36,7 +37,7 @@ const TrackingPage = () => {
     resolver: zodResolver(statusSchema),
   });
   const { handleSubmit } = methods;
-
+  console.log("trackingData-trackingData", trackingData);
   const onSubmit: SubmitHandler<any> = async (data: any) => {
     setError(null);
     setTrackingData(null);
@@ -49,7 +50,7 @@ const TrackingPage = () => {
       if (response?.data?.data) {
         setTrackingData(response.data?.data);
       } else {
-        setError("No tracking data found for the provided AWB.");
+        setError("No tracking data found for the provided GWB.");
       }
     } catch (err: any) {
       setError(
@@ -63,44 +64,50 @@ const TrackingPage = () => {
   const IconList = [
     {
       label: "SHIPMENT_ACCEPTED",
-      value: <FiPackage style={{ height: "50px", width: "50px" }} />,
+      value: (
+        <FiPackage
+          style={{ height: "50px", width: "50px", color: "#4CAF50" }}
+        />
+      ), // Green for accepted
     },
     {
       label: "PENDING_SHIPMENT",
-      value: (
-        <FcProcess
-          style={{
-            height: "50px",
-            width: "50px",
-            color: "#000000",
-          }}
-        />
-      ),
+      value: <FcProcess style={{ height: "50px", width: "50px" }} />, // Process icon
     },
     {
       label: "ARRIVING",
-      value: <LuPlaneLanding style={{ height: "50px", width: "50px" }} />,
+      value: (
+        <CiDeliveryTruck
+          style={{ height: "50px", width: "50px", color: "#FF9800" }}
+        />
+      ), // Truck for arriving
     },
     {
       label: "OUT_FOR_DELIVERY",
-      value: <CiDeliveryTruck style={{ height: "50px", width: "50px" }} />,
+      value: (
+        <CiDeliveryTruck
+          style={{ height: "50px", width: "50px", color: "#2196F3" }}
+        />
+      ), // Blue truck for delivery
     },
     {
       label: "ARRIVED",
       value: (
-        <PiBuildingOfficeDuotone style={{ height: "50px", width: "50px" }} />
-      ),
+        <PiBuildingOfficeDuotone
+          style={{ height: "50px", width: "50px", color: "#9C27B0" }}
+        />
+      ), // Purple for arrived
     },
     {
       label: "DELIVERED",
-      value: <FcAcceptDatabase style={{ height: "50px", width: "50px" }} />,
+      value: <FcAcceptDatabase style={{ height: "50px", width: "50px" }} />, // Delivered icon
     },
   ];
 
   return (
     <div
-      className="container mx-auto mt-10 bg-white p-12 text-black dark:bg-boxdark dark:text-white"
-      style={{ maxWidth: "90%" }}
+      className="container mx-auto mt-10 bg-white p-4 text-black dark:bg-boxdark dark:text-white md:p-12"
+      style={{ maxWidth: "90vw" }}
     >
       <h1 className="mb-5 text-2xl font-bold">Shipment Tracking</h1>
 
@@ -121,8 +128,8 @@ const TrackingPage = () => {
             <InputString
               type="text"
               name="awb"
-              label="AWB"
-              placeholder="Enter  AWB Number"
+              label="GWB"
+              placeholder={`Enter GWB Number`}
             />
           </div>
           <div className="flex justify-end">
@@ -142,7 +149,18 @@ const TrackingPage = () => {
       {trackingData && (
         <div className="mt-10">
           <h2 className="mb-5 text-xl font-semibold">Tracking Details</h2>
-          <Stepper orientation="vertical" activeStep={-1}>
+          <Stepper
+            orientation="vertical"
+            activeStep={-1}
+            sx={{
+              "& .MuiStepLabel-root": {
+                alignItems: "flex-start", // Align icons to the top
+              },
+              "& .MuiStepLabel-iconContainer": {
+                alignSelf: "flex-start", // Align the icon container to the top
+              },
+            }}
+          >
             {trackingData.map((step: any) => {
               const statusIcon = IconList.find(
                 (icon) =>
@@ -159,14 +177,29 @@ const TrackingPage = () => {
                       <span className="text-lg font-bold">
                         {step.ShipmentPackageDispatchStatus.displayText}
                       </span>
-                      <span className="text-gray-500 column mt-1 text-title-xsm">
+                      <div
+                        className=" mb-2 mt-2 flex gap-2 font-bold"
+                        style={{ fontSize: "15px" }}
+                      >
+                        <GoLocation
+                          style={{
+                            fontSize: "20px",
+                            fontWeight: "bold",
+                          }}
+                        />
+                        <span> {step.Branch.location}</span>
+                      </div>
+                      <span
+                        className="text-gray-500 column mt-1  "
+                        style={{ fontSize: "15px" }}
+                      >
                         Handled by: {step.User?.firstName} {step.User?.lastName}
-                        <div className="text-gray-500  text-sm">
+                        <div className="text-gray-500  ">
                           {" "}
-                          ({step.User?.phone},{step.User?.email})
+                          ( {step.User?.phone})
                         </div>
                       </span>
-                      <span className="text-gray-500 ml-auto mt-2 text-sm">
+                      <span className=" text-gray-500 ml-auto  mt-2 flex flex-wrap pe-8 text-sm">
                         {new Date(step.createdAt).toLocaleString()}
                       </span>
                     </div>

@@ -92,6 +92,8 @@ const formatDataForTable = (data: any) => {
       item.manualAwb !== "" && item.manualAwb !== null
         ? item.manualAwb
         : item.awb || "N/A",
+    Company: item?.Company?.name,
+
     "Sender Name": item.senderName || "N/A",
     "Sender Phone": item.senderPhone || "N/A",
     "Sender City": item.senderBranch?.name || "N/A",
@@ -286,6 +288,8 @@ const ShipmentCreditList: React.FC<GradeDetailProps> = ({ id }) => {
       ? shipments?.map((shipment: any, index: number) => ({
           id: shipment.id, // Use shipment ID as the unique identifier
           ...shipment,
+          company: shipment?.Company?.name,
+
           senderBranch: shipment?.senderBranch?.name,
           recipientBranch: shipment?.recipientBranch?.name,
           shipmentMode: shipment?.ShipmentMode?.description,
@@ -300,6 +304,18 @@ const ShipmentCreditList: React.FC<GradeDetailProps> = ({ id }) => {
       field: "awb",
       headerName: "AWB",
       width: 100,
+      align: "left",
+      headerAlign: "left",
+      renderCell: (params) => (
+        <div className="overflow-hidden whitespace-normal break-words">
+          {params.value}
+        </div>
+      ),
+    },
+    {
+      field: "company",
+      headerName: "Company",
+      width: 150,
       align: "left",
       headerAlign: "left",
       renderCell: (params) => (
@@ -332,18 +348,7 @@ const ShipmentCreditList: React.FC<GradeDetailProps> = ({ id }) => {
         </div>
       ),
     },
-    // {
-    //   field: "senderPhone",
-    //   headerName: "Sender Phone",
-    //   width: 120,
-    //   align: "left",
-    //   headerAlign: "left",
-    //   renderCell: (params) => (
-    //     <div className="overflow-hidden whitespace-normal break-words">
-    //       {params.value}
-    //     </div>
-    //   ),
-    // },
+
     {
       field: "recipientName",
       headerName: "Recipient Name",
@@ -394,18 +399,6 @@ const ShipmentCreditList: React.FC<GradeDetailProps> = ({ id }) => {
     //   ),
     // },
 
-    {
-      field: "paymentMode",
-      headerName: "Payment Mode",
-      width: 100,
-      align: "left",
-      headerAlign: "left",
-      renderCell: (params) => (
-        <div className="overflow-hidden whitespace-normal break-words">
-          {params.value}
-        </div>
-      ),
-    },
     // {
     //   field: "paymentMethod",
     //   headerName: "Payment Method",
@@ -485,190 +478,125 @@ const ShipmentCreditList: React.FC<GradeDetailProps> = ({ id }) => {
       {errorShipments && (
         <Alert severity="error">Something went wrong try again </Alert>
       )}
-      <FormProvider {...methods}>
-        <div className="w-full ">
-          <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-6">
-            <div className="card flex flex-col justify-center">
-              <InputString
-                type="text"
-                name="awb"
-                label="Search by awb "
-                placeholder="ex 48616082"
-              />
-            </div>
-
-            <div className="card flex flex-col justify-center">
-              <InputString
-                type="date"
-                name="startDate"
-                label="Start Date"
-                placeholder="ex "
-              />
-            </div>
-
-            <div className="card flex flex-col justify-center">
-              <InputString
-                type="date"
-                name="endDate"
-                label="End Date"
-                placeholder="ex "
-              />
-            </div>
-
-            <div className="mb-1 flex items-end">
-              <BaseButton
-                onClick={handleSearch}
-                startIcon={<IoSearch />}
-                variant="contained"
-                sx={{
-                  textTransform: "none",
-                  backgroundColor: "#109101",
-                  color: "white",
-                  borderRadius: "8px",
-
-                  "&:hover": {
-                    backgroundColor: "#109101",
-                  },
-                }}
-                style={{
-                  backgroundColor: "#109101",
-                  height: "31px",
-                  width: "100%",
-                }}
-              >
-                Search
-              </BaseButton>
-            </div>
-
-            <div className="mb-1 flex items-end">
-              <BaseButton
-                onClick={handleReset}
-                variant="outlined"
-                startIcon={<GrPowerReset />}
-                sx={{
-                  textTransform: "none",
-                  borderRadius: "8px",
-                  backgroundColor: "#109101",
-                  color: "white",
-                }}
-                style={{
-                  backgroundColor: "#109101",
-                  height: "31px",
-                  width: "100%",
-                }}
-                className="flex items-center gap-2"
-              >
-                Reset Filter
-              </BaseButton>
-            </div>
-
-            {/* <div className="mb-1 flex items-end">
-              <BaseButton
-                onClick={() => {
-                  setFilterMore(!filterMore);
-                }}
-                variant="outlined"
-                startIcon={filterMore ? <IoCloseOutline /> : <FaFilter />}
-                sx={{
-                  textTransform: "none",
-                  borderRadius: "8px",
-                  fontWeight: "500",
-                  color: "white",
-                }}
-                style={{
-                  backgroundColor: "#109101",
-                  height: "31px",
-                  width: "100%",
-                }}
-                className="flex items-center gap-2"
-              >
-                {filterMore ? "Close filter" : "More Filter"}
-              </BaseButton>
-            </div> */}
-          </div>
-        </div>
-        {/* more filters  */}
-        {/* {filterMore && (
+      <div className="bg-white p-2 md:p-5">
+        <FormProvider {...methods}>
           <div className="w-full ">
-            <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-5">
+            <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-6">
               <div className="card flex flex-col justify-center">
-                <SelectInput
-                  name="senderBranchId"
-                  label="Sender city  "
-                  placeholder="Select Sender City   "
-                  options={optionsBranch}
-                  loading={loadingBranch} // Default to false if not provided
+                <InputString
+                  type="text"
+                  name="awb"
+                  label="Search by awb "
+                  placeholder="ex 48616082"
                 />
               </div>
 
               <div className="card flex flex-col justify-center">
-                <SelectInput
-                  name="recipientBranchId"
-                  label="Receiver city  "
-                  placeholder="Select Receiver City   "
-                  options={optionsBranch}
-                  loading={loadingBranch} // Default to false if not provided
+                <InputString
+                  type="date"
+                  name="startDate"
+                  label="Start Date"
+                  placeholder="ex "
                 />
               </div>
+
               <div className="card flex flex-col justify-center">
-                <SelectInput
-                  name="paymentModeId"
-                  label="Payment Mode "
-                  placeholder="Select Payment Methods"
-                  options={optionsPaymentMode}
-                  loading={loadingPaymentMode}
-                  // Default to false if not provided
-                />
-              </div>
-              <div className="card flex flex-col justify-center">
-                <EthiopianNumberInput
-                  type="text"
-                  name="senderPhone"
-                  label="Sender Phone Number"
-                  placeholder="e.g. 912345678"
-                />
-              </div>
-              <div className="card flex flex-col justify-center">
-                <EthiopianNumberInput
-                  type="text"
-                  name="recipientPhone"
-                  label="Recipient Phone Number"
-                  placeholder="e.g. 912345678"
+                <InputString
+                  type="date"
+                  name="endDate"
+                  label="End Date"
+                  placeholder="ex "
                 />
               </div>
             </div>
           </div>
-        )} */}
-      </FormProvider>
+          {/* more filters  */}
+          <div className="w-full ">
+            <div className="mb-2 grid  w-full grid-cols-1 gap-3 align-bottom md:grid-cols-3 lg:grid-cols-5">
+              <div className="card flex flex-col justify-center">
+                <SelectInput
+                  name="companyId"
+                  label="Select Company "
+                  placeholder="Select company "
+                  options={optionsCompany}
+                  loading={loadingCompany} // Default to false if not provided
+                />
+              </div>
+              <div className="card flex flex-col justify-end">
+                <BaseButton
+                  onClick={handleSearch}
+                  startIcon={<IoSearch />}
+                  variant="contained"
+                  sx={{
+                    textTransform: "none",
+                    backgroundColor: "#109101",
+                    color: "white",
+                    borderRadius: "8px",
 
-      <div className=" flex justify-between ">
-        <div>
-          <BaseButton
-            style={{ backgroundColor: "#2073de", color: "white" }}
-            disabled={loadingExport}
-            variant="contained"
-            startIcon={<TiExport />}
-            onClick={handleExport}
-          >
-            {loadingExport ? <span>exporting.....</span> : <span>Export</span>}
-          </BaseButton>
-        </div>
-        <div
-          className=" mb-3 ml-auto flex items-center"
-          style={{ width: "140px" }}
+                    "&:hover": {
+                      backgroundColor: "#109101",
+                    },
+                  }}
+                  style={{
+                    backgroundColor: "#109101",
+                    height: "31px",
+                  }}
+                >
+                  Search
+                </BaseButton>
+              </div>
+
+              <div className="card flex flex-col justify-end">
+                {" "}
+                <BaseButton
+                  onClick={handleReset}
+                  variant="outlined"
+                  startIcon={<GrPowerReset />}
+                  sx={{
+                    textTransform: "none",
+                    borderRadius: "8px",
+                    backgroundColor: "#109101",
+                    color: "white",
+                  }}
+                  style={{
+                    backgroundColor: "#109101",
+                    height: "31px",
+                  }}
+                  className="flex items-center gap-2"
+                >
+                  Reset Filter
+                </BaseButton>
+              </div>
+            </div>
+          </div>
+        </FormProvider>
+      </div>
+      <div className="flex-between mb-3 w-full bg-white p-5 align-middle ">
+        <BaseButton
+          style={{ backgroundColor: "#2073de", color: "white" }}
+          disabled={loadingExport}
+          variant="contained"
+          startIcon={<TiExport />}
+          onClick={handleExport}
         >
-          <select
-            className="font-sans focus:shadow-outline-primary dark:focus:shadow-outline-primary w-full rounded-lg border border-solid border-slate-300 bg-white px-3 py-2 text-sm font-normal leading-5 text-slate-900 shadow-md shadow-slate-100 focus:border-primary focus:shadow-lg focus-visible:outline-0 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-300 dark:shadow-slate-900 dark:focus:border-primary"
-            onChange={handlePageSizeChange}
-            defaultValue={10} // Ensure a default value is set
-          >
-            {[5, 10, 20, 30, 50, 100].map((size) => (
-              <option key={size} value={size}>
-                {size} per page
-              </option>
-            ))}
-          </select>
-        </div>
+          {loadingExport ? <span>loading.....</span> : <span>Export</span>}
+        </BaseButton>
+      </div>
+      <div
+        className=" mb-3 ml-auto flex items-center"
+        style={{ width: "140px" }}
+      >
+        <select
+          className="font-sans focus:shadow-outline-primary dark:focus:shadow-outline-primary w-full rounded-lg border border-solid border-slate-300 bg-white px-3 py-2 text-sm font-normal leading-5 text-slate-900 shadow-md shadow-slate-100 focus:border-primary focus:shadow-lg focus-visible:outline-0 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-300 dark:shadow-slate-900 dark:focus:border-primary"
+          onChange={handlePageSizeChange}
+          defaultValue={10} // Ensure a default value is set
+        >
+          {[5, 10, 20, 30, 50, 100].map((size) => (
+            <option key={size} value={size}>
+              {size} per page
+            </option>
+          ))}
+        </select>
       </div>
       <div className="auto flex w-full bg-white text-black dark:bg-boxdark dark:text-white">
         <div className="container mx-auto mt-0">

@@ -319,9 +319,9 @@ const AdminShipmentReport = () => {
       ),
     },
     {
-      field: "senderPhone",
-      headerName: "Sender Phone",
-      width: 120,
+      field: "senderBranch",
+      headerName: "Sender City",
+      width: 150,
       align: "left",
       headerAlign: "left",
       renderCell: (params) => (
@@ -330,6 +330,7 @@ const AdminShipmentReport = () => {
         </div>
       ),
     },
+
     {
       field: "recipientName",
       headerName: "Recipient Name",
@@ -342,18 +343,18 @@ const AdminShipmentReport = () => {
         </div>
       ),
     },
-    {
-      field: "recipientPhone",
-      headerName: "Recipient Phone",
-      width: 150,
-      align: "left",
-      headerAlign: "left",
-      renderCell: (params) => (
-        <div className="overflow-hidden whitespace-normal break-words">
-          {params.value}
-        </div>
-      ),
-    },
+    // {
+    //   field: "recipientPhone",
+    //   headerName: "Recipient Phone",
+    //   width: 150,
+    //   align: "left",
+    //   headerAlign: "left",
+    //   renderCell: (params) => (
+    //     <div className="overflow-hidden whitespace-normal break-words">
+    //       {params.value}
+    //     </div>
+    //   ),
+    // },
     {
       field: "recipientBranch",
       headerName: "Recipient City",
@@ -510,7 +511,67 @@ const AdminShipmentReport = () => {
                 placeholder="ex "
               />
             </div>
+            {filterMore && (
+              <>
+                <div className="mb-1 flex items-end">
+                  <SelectInput
+                    name="senderBranchId"
+                    label="Sender city  "
+                    placeholder="Select Sender City   "
+                    options={optionsBranch}
+                    loading={loadingBranch} // Default to false if not provided
+                  />
+                </div>
 
+                <div className="mb-1 flex items-end">
+                  <SelectInput
+                    name="recipientBranchId"
+                    label="Receiver city  "
+                    placeholder="Select Receiver City   "
+                    options={optionsBranch}
+                    loading={loadingBranch} // Default to false if not provided
+                  />
+                </div>
+
+                <div className="mb-1 flex items-end">
+                  <SelectInput
+                    name="paymentModeId"
+                    label="Payment Mode "
+                    placeholder="Select Payment Methods"
+                    options={optionsPaymentMode}
+                    loading={loadingPaymentMode}
+                    // Default to false if not provided
+                  />
+                </div>
+
+                <div className="mb-1 flex items-end">
+                  <SelectInput
+                    name="shipmentModeId"
+                    label="Shipment Mode "
+                    placeholder="Select Shipment mode"
+                    options={optionsShipmentMode}
+                    loading={loadingShipmentMode}
+                    // Default to false if not provided
+                  />
+                </div>
+                <div className="card flex flex-col justify-center">
+                  <EthiopianNumberInput
+                    type="text"
+                    name="senderPhone"
+                    label="Sender Phone Number"
+                    placeholder="e.g. 912345678"
+                  />
+                </div>
+                <div className="mb-1 flex items-end">
+                  <EthiopianNumberInput
+                    type="text"
+                    name="recipientPhone"
+                    label="Recipient Phone Number"
+                    placeholder="e.g. 912345678"
+                  />
+                </div>
+              </>
+            )}
             <div className="mb-1 flex items-end">
               <BaseButton
                 onClick={handleSearch}
@@ -535,7 +596,6 @@ const AdminShipmentReport = () => {
                 Search
               </BaseButton>
             </div>
-
             <div className="mb-1 flex items-end">
               <BaseButton
                 onClick={handleReset}
@@ -584,73 +644,10 @@ const AdminShipmentReport = () => {
           </div>
         </div>
         {/* more filters  */}
-        {filterMore && (
-          <div className="w-full ">
-            <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-5">
-              <div className="card flex flex-col justify-center">
-                <SelectInput
-                  name="senderBranchId"
-                  label="Sender city  "
-                  placeholder="Select Sender City   "
-                  options={optionsBranch}
-                  loading={loadingBranch} // Default to false if not provided
-                />
-              </div>
-
-              <div className="card flex flex-col justify-center">
-                <SelectInput
-                  name="recipientBranchId"
-                  label="Receiver city  "
-                  placeholder="Select Receiver City   "
-                  options={optionsBranch}
-                  loading={loadingBranch} // Default to false if not provided
-                />
-              </div>
-
-              <div className="card flex flex-col justify-center">
-                <SelectInput
-                  name="paymentModeId"
-                  label="Payment Mode "
-                  placeholder="Select Payment Methods"
-                  options={optionsPaymentMode}
-                  loading={loadingPaymentMode}
-                  // Default to false if not provided
-                />
-              </div>
-
-              <div className="card flex flex-col justify-center">
-                <SelectInput
-                  name="shipmentModeId"
-                  label="Shipment Mode "
-                  placeholder="Select Shipment mode"
-                  options={optionsShipmentMode}
-                  loading={loadingShipmentMode}
-                  // Default to false if not provided
-                />
-              </div>
-              <div className="card flex flex-col justify-center">
-                <EthiopianNumberInput
-                  type="text"
-                  name="senderPhone"
-                  label="Sender Phone Number"
-                  placeholder="e.g. 912345678"
-                />
-              </div>
-              <div className="card flex flex-col justify-center">
-                <EthiopianNumberInput
-                  type="text"
-                  name="recipientPhone"
-                  label="Recipient Phone Number"
-                  placeholder="e.g. 912345678"
-                />
-              </div>
-            </div>
-          </div>
-        )}
       </FormProvider>
 
-      <div className=" flex justify-between ">
-        <div className="mb-3 flex-col align-middle ">
+      <div className=" mt-4 flex-col ">
+        <div className="mb-3 flex-col bg-white p-5 align-middle ">
           <BaseButton
             style={{ backgroundColor: "#2073de", color: "white" }}
             disabled={loadingExport}
@@ -658,10 +655,11 @@ const AdminShipmentReport = () => {
             startIcon={<TiExport />}
             onClick={handleExport}
           >
-            {loadingExport ? <span>exporting.....</span> : <span>Export</span>}
+            {loadingExport ? <span>loading.....</span> : <span>Export</span>}
           </BaseButton>
+          <hr className="mb-4 mt-4 w-full text-lg font-normal text-normalGray" />
           <div
-            className="ml-10 mt-3  text-title-md text-black dark:text-white"
+            className=" mt-8  text-title-md text-black dark:text-white"
             style={{ fontWeight: "bold" }}
           >
             Total Quantity(weight):{totalQuantity ? totalQuantity : 0} KG{" "}
@@ -684,11 +682,12 @@ const AdminShipmentReport = () => {
           </select>
         </div>
       </div>
+
       <div className="auto flex w-full bg-white text-black dark:bg-boxdark dark:text-white">
         <div className="container mx-auto mt-0">
           <div className="">
             <div className="p-4">
-              <div className="overflow-x-auto bg-white text-black dark:bg-normalGray">
+              <div className=" max-w-230 overflow-x-auto bg-white text-black dark:bg-normalGray">
                 {loadingShipments && <LinearProgress />}
                 <DataGrid
                   loading={loadingShipments}

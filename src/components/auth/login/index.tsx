@@ -98,15 +98,16 @@ const Login: React.FC = () => {
       if (res?.status == 200) {
         const { user, token } = res?.data;
         const permission = formatPermissions(user?.Role?.Permissions);
-        if (user?.userType == 1) {
+        if (user?.firstTime == 1) {
+          console.log("yest first time");
           setTemporaryToken(token || "");
           toast.success("Logged in successfully, set  new password");
-          router.push("/set-password");
-
+          router.push("/auth/set-password");
           // setTimeout(() => {
           //   window.location.replace("/set-password");
           // }, 500);
         } else {
+          console.log("not fifrst time actually");
           dispatch(setUser(user));
           dispatch(setToken(token));
           dispatch(setLoggedIn(true));
@@ -115,9 +116,7 @@ const Login: React.FC = () => {
           const res_0 = setSessionKey(token);
           const user_0 = setUserInfo(user);
           const perm_0 = setPermissionInfo(permission);
-
           // console.log("permission-", permission);
-
           if (res_0 && user_0) {
             toast.success("Logged in successfully, redirecting.. ");
             router.push("/");

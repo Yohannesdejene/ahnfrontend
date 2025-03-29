@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store";
 import { COMPANY } from "@/store/features/company/type";
-import { fetchCompanyList } from "@/store/features/company/companiesThunk";
+import { fetchActiveCompanies } from "@/store/features/company/companiesSlice";
 
 type COMPANY_RESPONSE = {
   loadingCompany: boolean;
@@ -28,7 +28,7 @@ export const useGetAllCompanies = (): COMPANY_RESPONSE => {
     setErrorCompany(null);
 
     try {
-      dispatch(fetchCompanyList())
+      dispatch(fetchActiveCompanies())
         .then((data: any) => {
           const transformedOptions = data?.payload?.data?.companies?.map(
             (item: any) => ({

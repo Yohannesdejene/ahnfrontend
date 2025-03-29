@@ -11,7 +11,6 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 export async function apiSignIn(data: SIGN_IN_DATA): Promise<any> {
   const method = "POST";
   const url = `${BASE_URL}auth/login`;
-
   const response = await HttpService.request({ method, data, url });
   return response;
 }

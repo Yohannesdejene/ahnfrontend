@@ -16,6 +16,13 @@ import {
   deleteTempSession,
   setPermissionInfo,
 } from "@/utils/sessionManager";
+import {
+  setUser,
+  setToken,
+  setPermissions,
+  setLoggedIn,
+  setAuthLoading,
+} from "@/store/features/auth/authSlice";
 import { toast } from "react-hot-toast";
 import Alert from "@mui/material/Alert";
 import { useRouter } from "next/navigation";
@@ -27,7 +34,6 @@ function formatPermissions(permissions: any) {
     // permissionType: permission.PermissionType.type,
   }));
 }
-
 // Define the form schema with Zod
 import { z } from "zod";
 
@@ -69,19 +75,26 @@ const SetPassword: React.FC = () => {
       const res = await apiChangePasswordRequest(request_body);
 
       const { token, user } = res?.data;
-      // const permission = formatPermissions(user?.Role?.Permissions);
+      const permission = formatPermissions(user?.Role?.Permissions);
 
       if (res?.status == 200) {
         // dispatch(saveUserInfo(user));
         // dispatch(loginSuccess(token));
+        dispatch(setUser(user));
+        dispatch(setToken(token));
+        dispatch(setLoggedIn(true));
+        dispatch(setPermissions(permission));
+        dispatch(setAuthLoading(false));
         const res_0 = setSessionKey(token);
         const user_0 = setUserInfo(user);
+        const perm_0 = setPermissionInfo(permission);
+
         // const perm_0 = setPermissionInfo(permission);
 
         deleteTempSession();
 
         if (res_0 && user_0) {
-          toast.success("Password setted successfully, redirecting... ");
+          toast.success("Password created  successfully, redirecting... ");
           setTimeout(() => {
             router.push("/");
           }, 200);

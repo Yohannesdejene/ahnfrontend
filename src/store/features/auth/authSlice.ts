@@ -88,6 +88,6 @@ export const {
   setPermissions,
   setLoggedIn,
   setAuthLoading,
-  // logout,
+  logout,
 } = authSlice.actions;
 export default authSlice.reducer;

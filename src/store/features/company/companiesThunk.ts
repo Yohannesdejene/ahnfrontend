@@ -1,93 +1,133 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   apiGetCompanyList,
+  apiGetAllCompanyList,
   apiCreateCompany,
   apiUpdateCompany,
   apiGetCompanyById,
   apiDeleteCompany,
+  apiChangeCompanyStatusCompany,
+  apiChangeCompanyEmailOrPhoneCompany,
 } from "./companiesApi";
-import { CREATE_COMPANY } from "./type";
+import { ADD_COMPANY, UPDATE_COMPANY } from "./type";
 
-// Fetch company list thunk
-export const fetchCompanyList = createAsyncThunk(
-  "companies/fetchCompanyList",
+// Fetch all active companies
+export const fetchActiveCompanies = createAsyncThunk(
+  "companies/fetchActiveCompanies",
   async (_, { rejectWithValue }) => {
     try {
       const response = await apiGetCompanyList();
-      return response;
+      return response; // Return the list of active companies
     } catch (error: any) {
-      return rejectWithValue(
-        error?.response?.data?.message || "Failed to fetch companies",
-      );
+      return rejectWithValue(error?.response?.data?.message);
     }
   },
 );
 
-// Create company thunk
+// Fetch all companies (active and inactive)
+export const fetchAllCompanies = createAsyncThunk(
+  "companies/fetchAllCompanies",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await apiGetAllCompanyList();
+      return response; // Return the list of all companies
+    } catch (error: any) {
+      return rejectWithValue(error?.response?.data?.message);
+    }
+  },
+);
+
+// Create a new company
 export const createCompany = createAsyncThunk(
   "companies/createCompany",
   async (
-    { companyData }: { companyData: CREATE_COMPANY },
+    { companyData }: { companyData: ADD_COMPANY },
     { rejectWithValue },
   ) => {
     try {
       const response = await apiCreateCompany(companyData);
-      return response;
+      return response; // Return the created company
     } catch (error: any) {
-      return rejectWithValue(
-        error?.response?.data?.message || "Failed to create company",
-      );
+      return rejectWithValue(error?.response?.data?.message);
     }
   },
 );
 
-// Update company thunk
+// Update an existing company
 export const updateCompany = createAsyncThunk(
   "companies/updateCompany",
   async (
     {
       id,
       companyData,
-    }: { id: number | string | null; companyData: CREATE_COMPANY },
+    }: { id: number | string | null; companyData: UPDATE_COMPANY },
     { rejectWithValue },
   ) => {
     try {
       const response = await apiUpdateCompany(id, companyData);
-      return response;
+      return response; // Return the updated company
     } catch (error: any) {
-      return rejectWithValue(
-        error?.response?.data?.message || "Failed to update company",
-      );
+      return rejectWithValue(error?.response?.data?.message);
     }
   },
 );
 
-// Get company by ID thunk
+// Get a company by ID
 export const getCompanyById = createAsyncThunk(
   "companies/getCompanyById",
   async (id: number | string | null, { rejectWithValue }) => {
     try {
       const response = await apiGetCompanyById(id);
-      return response;
+      return response; // Return the company details
     } catch (error: any) {
-      return rejectWithValue(
-        error?.response?.data?.message || "Failed to fetch company by ID",
-      );
+      return rejectWithValue(error?.response?.data?.message);
     }
   },
 );
 
-// Delete company thunk
+// Delete a company
 export const deleteCompany = createAsyncThunk(
   "companies/deleteCompany",
   async (id: number | string | null, { rejectWithValue }) => {
     try {
       const response = await apiDeleteCompany(id);
-      return response;
+      return response; // Return the delete confirmation
     } catch (error: any) {
+      return rejectWithValue(error?.response?.data?.message);
+    }
+  },
+);
+
+// Change company status
+// Change company status
+export const changeCompanyStatus = createAsyncThunk(
+  "companies/changeCompanyStatus",
+  async (
+    { id, status }: { id: number | string; status: string },
+    { rejectWithValue },
+  ) => {
+    try {
+      // Call the API to change the company status
+      const response = await apiChangeCompanyStatusCompany(id, { status });
+      return response.data; // Return the updated company data
+    } catch (error: any) {
+      // Handle errors and return a rejected value
       return rejectWithValue(
-        error?.response?.data?.message || "Failed to delete company",
+        error?.response?.data?.message || "Failed to change company status",
       );
+    }
+  },
+);
+
+// Change company email or phone
+export const changeCompanyEmailOrPhone = createAsyncThunk(
+  "companies/changeCompanyEmailOrPhone",
+  async (id: number | string | null, { rejectWithValue }) => {
+    try {
+      const response = await apiChangeCompanyEmailOrPhoneCompany(id);
+      return response; // Return the email/phone change confirmation
+    } catch (error: any) {
+      return rejectWithValue(error?.response?.data?.message);
     }
   },
 );

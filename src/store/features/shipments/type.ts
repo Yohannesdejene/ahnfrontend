@@ -56,6 +56,10 @@ export interface SHIPMENT {
   senderBranch?: any;
   PaymentMode?: any;
   PaymentMethod?: any;
+  ShipmentMode?: any;
+  ShipmentType?: any;
+  DeliveryMode?: any;
+  Company?: any;
   ShipmentPackageDispatchStatus?: any;
   Unit?: any;
 }

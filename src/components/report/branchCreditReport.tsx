@@ -43,7 +43,9 @@ import { useGetAllPaymentModes } from "@/hooks/useGetAllPaymentModes";
 import { useGetAllUnits } from "@/hooks/useGetAllUnits";
 import { useGetAllRates } from "@/hooks/useGetAllRates";
 import { useGetAllCompanies } from "@/hooks/useGetAllCompanies";
+
 import { apiGetShipmentsList } from "@/store/features/shipments/shipmentsApi";
+
 import { writeFile, utils } from "xlsx";
 import { saveAs } from "file-saver";
 import Papa from "papaparse";
@@ -102,7 +104,7 @@ const formatDataForTable = (data: any) => {
     "Payment Mode": item.PaymentMode?.code || "N/A",
     "Shipment Mode": item.ShipmentMode?.code || "N/A",
     "Shipment Type": item.ShipmentType?.code || "N/A",
-
+    Company: item?.Company?.name,
     Rate: item?.rate,
     Quantity: item?.quantity,
     "No of pieces ": item?.noOfPcs,
@@ -185,7 +187,6 @@ const BranchCreditShipment: React.FC<GradeDetailProps> = ({ id }) => {
     pagination,
   } = useSelector((state: RootState) => state.shipment);
 
-  console.log("shipments", shipments);
   const methods = useForm<any>({
     resolver: zodResolver(shipmentSchema),
     defaultValues: {
@@ -200,13 +201,13 @@ const BranchCreditShipment: React.FC<GradeDetailProps> = ({ id }) => {
       endDate: "",
       senderPhone: "",
       recipientPhone: "",
-      companyId: undefined, // Number type, so undefined is better than ""
+      companyId: "", // Number type, so undefined is better than ""
     },
   });
   const { reset } = methods;
   const { errors } = methods.formState; // Get form errors
   const formValues = methods.watch(); // This will give you the current form values
-
+  console.log("formValues-formValues-111111111111", formValues);
   useEffect(() => {
     let filters: any = { ...formValues };
     filters.shipmentModeId = id == "air" ? 1 : 2;
@@ -222,7 +223,6 @@ const BranchCreditShipment: React.FC<GradeDetailProps> = ({ id }) => {
     let filters: any = { ...formValues };
     filters.shipmentModeId = id == "air" ? 1 : 2;
     filters.paymentModeId = 2;
-
     filters.senderBranchId = user?.Branch?.id;
     const data = { page: 1, pageSize: size, filters: filters };
     dispatch(fetchShipmentsList(data));
@@ -257,7 +257,7 @@ const BranchCreditShipment: React.FC<GradeDetailProps> = ({ id }) => {
       endDate: "",
       senderPhone: "",
       recipientPhone: "",
-      companyId: undefined,
+      companyId: "",
     };
     filters.shipmentModeId = id == "air" ? 1 : 2;
     filters.senderBranchId = user?.Branch?.id;
@@ -299,6 +299,7 @@ const BranchCreditShipment: React.FC<GradeDetailProps> = ({ id }) => {
       ? shipments?.map((shipment: any, index: number) => ({
           id: shipment.id, // Use shipment ID as the unique identifier
           ...shipment,
+          company: shipment?.Company?.name,
           senderBranch: shipment?.senderBranch?.name,
           recipientBranch: shipment?.recipientBranch?.name,
           shipmentMode: shipment?.ShipmentMode?.description,
@@ -322,6 +323,18 @@ const BranchCreditShipment: React.FC<GradeDetailProps> = ({ id }) => {
       ),
     },
     {
+      field: "company",
+      headerName: "Company",
+      width: 150,
+      align: "left",
+      headerAlign: "left",
+      renderCell: (params) => (
+        <div className="overflow-hidden whitespace-normal break-words">
+          {params.value}
+        </div>
+      ),
+    },
+    {
       field: "senderName",
       headerName: "Sender Name",
       width: 120,
@@ -334,9 +347,9 @@ const BranchCreditShipment: React.FC<GradeDetailProps> = ({ id }) => {
       ),
     },
     {
-      field: "senderPhone",
-      headerName: "Sender Phone",
-      width: 120,
+      field: "senderBranch",
+      headerName: "Sender City",
+      width: 100,
       align: "left",
       headerAlign: "left",
       renderCell: (params) => (
@@ -348,18 +361,6 @@ const BranchCreditShipment: React.FC<GradeDetailProps> = ({ id }) => {
     {
       field: "recipientName",
       headerName: "Recipient Name",
-      width: 140,
-      align: "left",
-      headerAlign: "left",
-      renderCell: (params) => (
-        <div className="overflow-hidden whitespace-normal break-words">
-          {params.value}
-        </div>
-      ),
-    },
-    {
-      field: "recipientPhone",
-      headerName: "Recipient Phone",
       width: 150,
       align: "left",
       headerAlign: "left",
@@ -369,10 +370,11 @@ const BranchCreditShipment: React.FC<GradeDetailProps> = ({ id }) => {
         </div>
       ),
     },
+
     {
       field: "recipientBranch",
       headerName: "Recipient City",
-      width: 100,
+      width: 150,
       align: "left",
       headerAlign: "left",
       renderCell: (params) => (
@@ -381,6 +383,7 @@ const BranchCreditShipment: React.FC<GradeDetailProps> = ({ id }) => {
         </div>
       ),
     },
+
     // {
     //   field: "shipmentType",
     //   headerName: "Shipment Type",
@@ -497,35 +500,47 @@ const BranchCreditShipment: React.FC<GradeDetailProps> = ({ id }) => {
       )}
 
       <FormProvider {...methods}>
-        <div className="w-full ">
-          <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-6">
-            <div className="card flex flex-col justify-center">
-              <InputString
-                type="text"
-                name="awb"
-                label="Search by awb "
-                placeholder="ex 48616082"
-              />
-            </div>
+        <div className="bg-white p-2 md:p-5">
+          <div className="w-full ">
+            <div className="mb- grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-6">
+              <div className="card flex flex-col justify-center">
+                <InputString
+                  type="text"
+                  name="awb"
+                  label="Search by awb "
+                  placeholder="ex 48616082"
+                />
+              </div>
 
-            <div className="card flex flex-col justify-center">
-              <InputString
-                type="date"
-                name="startDate"
-                label="Start Date"
-                placeholder="ex "
-              />
-            </div>
+              <div className="card flex flex-col justify-center">
+                <InputString
+                  type="date"
+                  name="startDate"
+                  label="Start Date"
+                  placeholder="ex "
+                />
+              </div>
 
-            <div className="card flex flex-col justify-center">
-              <InputString
-                type="date"
-                name="endDate"
-                label="End Date"
-                placeholder="ex "
-              />
+              <div className="card flex flex-col justify-center">
+                <InputString
+                  type="date"
+                  name="endDate"
+                  label="End Date"
+                  placeholder="ex "
+                />
+              </div>
+              <div className="card flex flex-col justify-center">
+                <SelectInput
+                  name="companyId"
+                  label="Select Company "
+                  placeholder="Select company "
+                  options={optionsCompany}
+                  loading={loadingCompany} // Default to false if not provided
+                />
+              </div>
             </div>
-
+          </div>
+          <div className="justify-left flex gap-4  align-middle">
             <div className="mb-1 flex items-end">
               <BaseButton
                 onClick={handleSearch}
@@ -544,7 +559,6 @@ const BranchCreditShipment: React.FC<GradeDetailProps> = ({ id }) => {
                 style={{
                   backgroundColor: "#109101",
                   height: "31px",
-                  width: "100%",
                 }}
               >
                 Search
@@ -565,100 +579,18 @@ const BranchCreditShipment: React.FC<GradeDetailProps> = ({ id }) => {
                 style={{
                   backgroundColor: "#109101",
                   height: "31px",
-                  width: "100%",
                 }}
                 className="flex items-center gap-2"
               >
                 Reset Filter
               </BaseButton>
             </div>
-
-            <div className="mb-1 flex items-end">
-              <BaseButton
-                onClick={() => {
-                  setFilterMore(!filterMore);
-                }}
-                variant="outlined"
-                startIcon={filterMore ? <IoCloseOutline /> : <FaFilter />}
-                sx={{
-                  textTransform: "none",
-                  borderRadius: "8px",
-                  fontWeight: "500",
-                  color: "white",
-                }}
-                style={{
-                  backgroundColor: "#109101",
-                  height: "31px",
-                  width: "100%",
-                }}
-                className="flex items-center gap-2"
-              >
-                {filterMore ? "Close filter" : "More Filter"}
-              </BaseButton>
-            </div>
           </div>
         </div>
-        {/* more filters  */}
-        {filterMore && (
-          <div className="w-full ">
-            <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-5">
-              {(id == "ALL_AIR" || id == "ALL_GROUND") && (
-                <>
-                  <div className="card flex flex-col justify-center">
-                    <SelectInput
-                      name="senderBranchId"
-                      label="Sender city  "
-                      placeholder="Select Sender City   "
-                      options={optionsBranch}
-                      loading={loadingBranch} // Default to false if not provided
-                    />
-                  </div>
-
-                  <div className="card flex flex-col justify-center">
-                    <SelectInput
-                      name="recipientBranchId"
-                      label="Receiver city  "
-                      placeholder="Select Receiver City   "
-                      options={optionsBranch}
-                      loading={loadingBranch} // Default to false if not provided
-                    />
-                  </div>
-                </>
-              )}
-
-              <div className="card flex flex-col justify-center">
-                <SelectInput
-                  name="paymentModeId"
-                  label="Payment Mode "
-                  placeholder="Select Payment Methods"
-                  options={optionsPaymentMode}
-                  loading={loadingPaymentMode}
-                  // Default to false if not provided
-                />
-              </div>
-              <div className="card flex flex-col justify-center">
-                <EthiopianNumberInput
-                  type="text"
-                  name="senderPhone"
-                  label="Sender Phone Number"
-                  placeholder="e.g. 912345678"
-                />
-              </div>
-              <div className="card flex flex-col justify-center">
-                <EthiopianNumberInput
-                  type="text"
-                  name="recipientPhone"
-                  label="Recipient Phone Number"
-                  placeholder="e.g. 912345678"
-                />
-              </div>
-            </div>
-          </div>
-        )}
       </FormProvider>
 
-      <div className=" flex justify-between ">
-        <div className="mb-3 flex-col align-middle ">
+      <div className=" mt-4 flex-col ">
+        <div className="mb-3 flex-col bg-white p-5 align-middle ">
           <BaseButton
             style={{ backgroundColor: "#2073de", color: "white" }}
             disabled={loadingExport}
@@ -668,8 +600,9 @@ const BranchCreditShipment: React.FC<GradeDetailProps> = ({ id }) => {
           >
             {loadingExport ? <span>exporting.....</span> : <span>Export</span>}
           </BaseButton>
+          <hr className="mb-4 mt-4 w-full text-lg font-normal text-normalGray" />
           <div
-            className="ml-10 mt-3  text-title-md text-black dark:text-white"
+            className=" mt-8  text-title-md text-black dark:text-white"
             style={{ fontWeight: "bold" }}
           >
             Total Quantity(weight):{totalQuantity ? totalQuantity : 0} KG{" "}
@@ -692,11 +625,14 @@ const BranchCreditShipment: React.FC<GradeDetailProps> = ({ id }) => {
           </select>
         </div>
       </div>
-      <div className="auto flex w-full bg-white text-black dark:bg-boxdark dark:text-white">
+      <div className="auto flex bg-white text-black dark:bg-boxdark dark:text-white">
         <div className="container mx-auto mt-0">
           <div className="">
-            <div className="p-4">
-              <div className="overflow-x-auto bg-white text-black dark:bg-normalGray">
+            <div
+              className="p-4"
+              //  style={{ maxWidth: "90vw" }}
+            >
+              <div className="max-w-230  overflow-x-auto bg-white text-black dark:bg-normalGray">
                 {loadingShipments && <LinearProgress />}
                 <DataGrid
                   loading={loadingShipments}
