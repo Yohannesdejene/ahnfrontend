@@ -111,11 +111,10 @@ const companiesSlice = createSlice({
         state.createCompanySuccess = true;
         toast.success("Company created successfully!", { id: toastId });
       })
-      .addCase(createCompany.rejected, (state, action) => {
+      .addCase(createCompany.rejected, (state, action: any) => {
         state.createCompanyLoading = false;
         state.createCompanySuccess = false;
-        state.createCompanyError =
-          action.error.message || "Failed to create company";
+        state.createCompanyError = action.payload || "Failed to create company";
         toast.error(state.createCompanyError, { id: toastId });
       });
 

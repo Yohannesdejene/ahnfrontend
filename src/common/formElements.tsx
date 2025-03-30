@@ -22,6 +22,7 @@ interface InputProps {
 interface ButtonProps {
   label: string;
   loading: boolean;
+  disabled?: boolean;
 }
 interface NumberInputProps {
   label: string;
@@ -216,6 +217,7 @@ interface SelectInputProps {
   options: { value: string | number; label: string }[];
   placeholder?: string;
   loading?: boolean; // New loading prop
+  disabled?: boolean;
 }
 
 export const SelectInput: React.FC<SelectInputProps> = ({
@@ -224,6 +226,7 @@ export const SelectInput: React.FC<SelectInputProps> = ({
   options,
   placeholder,
   loading = false, // Default to false if not provided
+  disabled,
 }) => {
   const {
     register,
@@ -236,6 +239,7 @@ export const SelectInput: React.FC<SelectInputProps> = ({
         {label}
       </label>
       <select
+        disabled={disabled ? disabled : false}
         className="font-sans focus:shadow-outline-primary dark:focus:shadow-outline-primary w-full rounded-lg border border-solid border-slate-300 bg-white px-3 py-2 text-sm font-normal leading-5 text-slate-900 shadow-md shadow-slate-100 focus:border-primary focus:shadow-lg focus-visible:outline-0 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-300 dark:shadow-slate-900 dark:focus:border-primary"
         aria-label={label}
         {...register(name)}
@@ -255,7 +259,11 @@ export const SelectInput: React.FC<SelectInputProps> = ({
         {!loading &&
           options &&
           options.map((option) => (
-            <option key={option.value} value={option.value}>
+            <option
+              disabled={disabled ? disabled : false}
+              key={option.value}
+              value={option.value}
+            >
               {option.label}
             </option>
           ))}
@@ -365,6 +373,7 @@ export const EthiopianNumberInput: React.FC<InputProps> = ({
   label,
   type = "text",
   placeholder,
+  disabled,
 }) => {
   const {
     register,
@@ -387,6 +396,7 @@ export const EthiopianNumberInput: React.FC<InputProps> = ({
           +251
         </span>
         <input
+          disabled={disabled ? disabled : false}
           style={{
             borderBottomRightRadius: "10px",
             borderTopRightRadius: "10px",
@@ -450,7 +460,11 @@ export const InputString: React.FC<InputProps> = ({
   );
 };
 
-export const CommonButton: React.FC<ButtonProps> = ({ label, loading }) => {
+export const CommonButton: React.FC<ButtonProps> = ({
+  label,
+  loading,
+  disabled,
+}) => {
   return (
     <div className="card justify-content-center flex flex-col ">
       <BaseButton
@@ -458,7 +472,7 @@ export const CommonButton: React.FC<ButtonProps> = ({ label, loading }) => {
         // className="w-full cursor-pointer rounded-lg border border-solid border-primary bg-primary px-4 py-2 text-sm  leading-normal text-white"
         // onClick={handleClick}
 
-        disabled={loading} // Disable button when loading
+        disabled={loading || disabled} // Disable button when loading
         style={{
           textTransform: "none",
           backgroundColor: "#0f6f03",

@@ -22,11 +22,6 @@ import {
   Select,
 } from "@mui/material";
 import { IoMdEye } from "react-icons/io";
-
-import CommonDrawer from "@/common/Drawer";
-import CommonDialog from "@/common/CommonDialogBox";
-import AddCompany from "./add";
-import EditCompany from "./edit";
 import { Chip } from "@mui/material";
 import DeleteConfirmationDialog from "@/common/DeleteConfirmationDialog";
 import { RootState, AppDispatch } from "@/store/store";
@@ -122,7 +117,9 @@ const ListCompany: React.FC = () => {
         return (
           <div>
             <Chip
-              label={value}
+              label={
+                value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()
+              } // Capitalize the first letter
               color={
                 value === "ACTIVE"
                   ? "success"
@@ -213,24 +210,26 @@ const ListCompany: React.FC = () => {
   return (
     <>
       <div className=" overflow-x-hidden" style={{ maxWidth: "90vw" }}>
-        <div className=" flex-col justify-between  sm:flex ">
-          <label className="mb-2 ml-2 mt-3 block text-title-md font-medium text-black dark:text-white">
+        <div className="mb-5 mt-5  flex  justify-between px-5  align-middle  ">
+          <h5 className="text-title-md font-semibold   text-black  dark:text-white  ">
             Companies
-          </label>
-
+          </h5>
           <BaseButton
-            onClick={handleAddDrawer}
             style={{
               textTransform: "none",
               backgroundColor: "#0f6f03",
               color: "white",
               marginBottom: "10px",
-              marginLeft: "auto",
+              paddingLeft: "10px",
+              paddingRight: "10px",
+
+              // marginLeft: "auto",
               display: "flex",
             }}
+            onClick={() => router.push(`/companies/add/`)}
           >
-            <IoAddCircleSharp className="mr-3" />
-            Add Company
+            <IoAddCircleSharp className="mr-3 " style={{ fontSize: "16px" }} />
+            Add company
           </BaseButton>
         </div>
 
@@ -280,6 +279,7 @@ const ListCompany: React.FC = () => {
               <MenuItem value="ACTIVE">Active</MenuItem>
               <MenuItem value="PENDING">Pending</MenuItem>
               <MenuItem value="INACTIVE">Inactive</MenuItem>
+              <MenuItem value="SUSPENDED">Suspended</MenuItem>
             </Select>
           </DialogContent>
           <DialogActions>

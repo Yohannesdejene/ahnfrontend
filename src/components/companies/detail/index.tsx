@@ -10,7 +10,7 @@ import { AppDispatch, RootState } from "@/store/store";
 import { getCompanyById } from "@/store/features/company/companiesThunk";
 import { CircularProgress } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-// import CompanyDetailTab from "./CompanyDetailTab";
+import Detail from "./companyDetail";
 // import CompanyInvoiceTab from "./CompanyInvoiceTab";
 // import UpdateCompanyTab from "./UpdateCompanyTab";
 
@@ -43,18 +43,18 @@ const tabStyles = {
     xs: "column",
     sm: "row",
   },
-  alignItems: "center",
+  // alignItems: "center",
   fontSize: "15px",
   textDecoration: "none",
   textTransform: "none",
   "& .MuiTab-wrapper": {
     flexDirection: "row",
-    alignItems: "center",
+    // alignItems: "center",
   },
 };
 
 interface CompanyDetailProps {
-  id: string | number | null;
+  id: string | number;
 }
 
 const CompanyDetail: React.FC<CompanyDetailProps> = ({ id }) => {
@@ -62,7 +62,6 @@ const CompanyDetail: React.FC<CompanyDetailProps> = ({ id }) => {
   const { selectedCompany, getCompanyByIdLoading, getCompanyByIdError } =
     useSelector((state: RootState) => state.company);
   const [value, setValue] = useState("companyDetail");
-
   const handleChange = (event: any, newValue: any) => {
     setValue(newValue);
   };
@@ -79,13 +78,20 @@ const CompanyDetail: React.FC<CompanyDetailProps> = ({ id }) => {
   }, [id, dispatch]);
 
   return (
-    <div className="container mx-auto p-4" style={{ maxWidth: "90%" }}>
+    <div
+      className="container mx-auto p-0 md:p-4"
+      style={
+        {
+          // backgroundColor: "green",
+        }
+      }
+    >
       {loading ? (
         <div className="flex h-96 items-center justify-center">
           <CircularProgress />
         </div>
       ) : (
-        <div className="space-y-0 md:col-span-2">
+        <div className="m-0 space-y-0 p-0 ">
           <Box
             sx={{
               width: "100%",
@@ -115,22 +121,15 @@ const CompanyDetail: React.FC<CompanyDetailProps> = ({ id }) => {
                         ...tabStyles,
                       }}
                     />
-                    <Tab
-                      label="Company Invoice"
-                      value="invoice"
-                      className="text-black dark:text-white"
-                      sx={{
-                        ...tabStyles,
-                      }}
-                    />
-                    <Tab
+
+                    {/* <Tab
                       label="Update Company"
                       value="updateCompany"
                       className="text-black dark:text-white"
                       sx={{
                         ...tabStyles,
                       }}
-                    />
+                    /> */}
                   </TabList>
                 </Box>
                 <TabPanel
@@ -139,13 +138,13 @@ const CompanyDetail: React.FC<CompanyDetailProps> = ({ id }) => {
                     textTransform: "none",
                     textDecoration: "none",
                     color: "#000000",
+                    margin: "0px",
+                    padding: "0px",
                   }}
                 >
-                  {/* <CompanyDetailTab company={selectedCompany} /> */}
+                  <Detail id={id} />
                 </TabPanel>
-                <TabPanel value="invoice">
-                  {/* <CompanyInvoiceTab companyId={id} /> */}
-                </TabPanel>
+
                 <TabPanel value="updateCompany">
                   {/* <UpdateCompanyTab company={selectedCompany} /> */}
                 </TabPanel>

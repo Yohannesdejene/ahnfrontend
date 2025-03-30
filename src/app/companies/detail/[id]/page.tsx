@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 interface PageProps {
   params: {
-    id: string | number | null;
+    id: string | number;
   };
 }
 

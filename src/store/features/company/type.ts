@@ -3,6 +3,15 @@ import { any, z } from "zod";
 // Add Company Schema
 export const addCompanySchema = z.object({
   name: z.string().max(255, "Name must not exceed 255 characters."),
+  tin: z.any().optional(),
+  licenseLink: z.any().optional(),
+  otherDocumentsLink: z.any().optional(),
+  branchId: z.number(),
+});
+
+// Update Company Schema
+export const updateCompanySchema = z.object({
+  name: z.string().max(255, "Name must not exceed 255 characters."),
   phone: z
     .string()
     .regex(/^\d{9,12}$/, "Phone number must be between 9 and 12 digits."),
@@ -14,24 +23,6 @@ export const addCompanySchema = z.object({
   licenseLink: z.any().optional(),
   otherDocumentsLink: z.any().optional(),
   branchId: z.number(),
-});
-
-// Update Company Schema
-export const updateCompanySchema = z.object({
-  name: z.string().optional(),
-  tin: z.string().max(255, "TIN must not exceed 255 characters.").optional(),
-  licenseLink: z
-    .string()
-    .url("License link must be a valid URL.")
-    .max(255, "License link must not exceed 255 characters.")
-    .optional(),
-  otherDocumentsLink: z
-    .string()
-    .url("Other documents link must be a valid URL.")
-    .max(255, "Other documents link must not exceed 255 characters.")
-    .optional(),
-  branchId: z.string().optional(),
-  status: z.string().optional(),
 });
 
 // Company Interface

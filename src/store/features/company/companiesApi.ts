@@ -22,7 +22,7 @@ export async function apiGetAllCompanyList(): Promise<any> {
   return response;
 }
 // Create a new company
-export async function apiCreateCompany(data: ADD_COMPANY): Promise<any> {
+export async function apiCreateCompany(data: any): Promise<any> {
   const method = "POST";
   const url = `adminManageUsers/addCompany`; // Endpoint for adding a company
 
@@ -31,8 +31,8 @@ export async function apiCreateCompany(data: ADD_COMPANY): Promise<any> {
 }
 // Update an existing company
 export async function apiUpdateCompany(
-  id: number | string | null,
-  data: UPDATE_COMPANY,
+  id: number | string,
+  data: any,
 ): Promise<any> {
   const method = "PUT";
   const url = `adminManageUsers/updateCompany/${id}`; // Endpoint for updating a company

@@ -40,10 +40,7 @@ export const fetchAllCompanies = createAsyncThunk(
 // Create a new company
 export const createCompany = createAsyncThunk(
   "companies/createCompany",
-  async (
-    { companyData }: { companyData: ADD_COMPANY },
-    { rejectWithValue },
-  ) => {
+  async ({ companyData }: { companyData: any }, { rejectWithValue }) => {
     try {
       const response = await apiCreateCompany(companyData);
       return response; // Return the created company
@@ -57,10 +54,7 @@ export const createCompany = createAsyncThunk(
 export const updateCompany = createAsyncThunk(
   "companies/updateCompany",
   async (
-    {
-      id,
-      companyData,
-    }: { id: number | string | null; companyData: UPDATE_COMPANY },
+    { id, companyData }: { id: number | string; companyData: any },
     { rejectWithValue },
   ) => {
     try {
