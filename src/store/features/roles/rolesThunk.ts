@@ -20,7 +20,6 @@ export const fetchRoles = createAsyncThunk(
     }
   },
 );
-
 // Create role thunk
 export const createRole = createAsyncThunk(
   "roles/createRole",
@@ -33,7 +32,6 @@ export const createRole = createAsyncThunk(
     }
   },
 );
-
 // Update role thunk
 export const updateRole = createAsyncThunk(
   "roles/updateRole",
@@ -49,7 +47,6 @@ export const updateRole = createAsyncThunk(
     }
   },
 );
-
 // Get role by ID thunk
 export const getRoleById = createAsyncThunk(
   "roles/getRoleById",

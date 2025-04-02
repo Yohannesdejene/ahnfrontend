@@ -18,6 +18,8 @@ import DeleteConfirmationDialog from "@/common/DeleteConfirmationDialog";
 import { RootState, AppDispatch } from "@/store/store";
 import { fetchUserList, deleteUser } from "@/store/features/user/usersThunk";
 import { useDispatch, useSelector } from "react-redux";
+import { MdOutlineAdd } from "react-icons/md";
+import { Plus } from "lucide-react";
 
 function convertISOToNormalDate(isoDate: string | null): string {
   if (!isoDate) return "N/A";
@@ -86,16 +88,16 @@ const ListUser: React.FC = () => {
     { field: "phone", headerName: "Phone", width: 150 },
     { field: "branch", headerName: "Branch", width: 150 },
     { field: "role", headerName: "Role", width: 150 },
-    { field: "status", headerName: "Status", width: 120 },
-    {
-      field: "createdAt",
-      headerName: "Created At",
-      width: 150,
-      renderCell: (params) => {
-        const value = params.value;
-        return <h6>{convertISOToNormalDate(value)}</h6>;
-      },
-    },
+    // { field: "status", headerName: "Status", width: 120 },
+    // {
+    //   field: "createdAt",
+    //   headerName: "Created At",
+    //   width: 150,
+    //   renderCell: (params) => {
+    //     const value = params.value;
+    //     return <h6>{convertISOToNormalDate(value)}</h6>;
+    //   },
+    // },
     {
       field: "id",
       headerName: "Action",
@@ -151,27 +153,31 @@ const ListUser: React.FC = () => {
   return (
     <>
       <div className=" overflow-x-hidden" style={{ maxWidth: "90vw" }}>
-        <div className=" flex-col justify-between  sm:flex ">
-          <label className="mb-2 ml-2 mt-3 block text-title-md font-medium text-black dark:text-white">
+        <div className="mb-5 mt-5  flex  justify-between px-5  align-middle  ">
+          <h5 className="text-title-md font-semibold   text-black  dark:text-white  ">
             System Users
-          </label>
-
+          </h5>
           <BaseButton
-            onClick={handleAddDrawer}
             style={{
               textTransform: "none",
               backgroundColor: "#0f6f03",
               color: "white",
               marginBottom: "10px",
-              marginLeft: "auto",
+              paddingLeft: "10px",
+              paddingRight: "10px",
+
+              // marginLeft: "auto",
               display: "flex",
             }}
+            onClick={handleAddDrawer}
           >
-            <IoAddCircleSharp className="mr-3" />
+            <Plus
+              className="mr-3 text-white "
+              style={{ fontSize: "6px", fontWeight: "bold", color: "#ffffff" }}
+            />
             Add User
           </BaseButton>
         </div>
-
         <div className="flex h-screen w-full bg-white text-black dark:bg-boxdark dark:text-white">
           <div className="container mx-auto mt-0">
             <div className="">
@@ -185,15 +191,17 @@ const ListUser: React.FC = () => {
                     slots={{ toolbar: GridToolbar }}
                     slotProps={{
                       toolbar: {
+                        showQuickFilter: true,
+                        quickFilterProps: { debounceMs: 500 },
                         csvOptions: {
-                          allRows: true,
-                          fileName: "users",
+                          allRows: true, // Exports all rows, not just the visible ones
+                          fileName: "User", // Set your desired file name here (without extension)
                         },
                       },
                     }}
-                    sx={{
-                      minHeight: "200px", // Set your desired minimum height
-                    }}
+                    // sx={{
+                    //   minHeight: "200px", // Set your desired minimum height
+                    // }}
                   />
                 </div>
               </div>

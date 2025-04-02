@@ -7,6 +7,7 @@ import Image from "next/image";
 import LanguageSwitcher from "@/context/LanguageSwitcher";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store";
+import { CiLocationOn } from "react-icons/ci";
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
@@ -71,9 +72,9 @@ const Header = (props: {
 
         <div className="hidden sm:block">
           <form action="https://formbold.com/s/unique_form_id" method="POST">
-            <div className="relative">
+            <div className="relative flex flex-row justify-start align-middle">
               <h5
-                className="text-title-sm2    font-normal"
+                className="text-title-xsm    font-normal"
                 // style={{ color: "black" }}
               >
                 Branch: {user?.Branch?.name}

@@ -11,6 +11,7 @@ import unit from "./features/unit/unitsSlice";
 import shipment from "./features/shipments/shipmentslice";
 import user from "./features/user/usersSlice";
 import company from "./features/company/companiesSlice";
+import role from "./features/roles/rolesSlice";
 // Import the courses slice reducer
 // Configure the Redux store and add the courses reducer
 export const store = configureStore({
@@ -26,6 +27,7 @@ export const store = configureStore({
     branches: branchReducer,
     user: user,
     company: company,
+    role: role,
   },
 });
 

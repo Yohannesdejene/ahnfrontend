@@ -157,27 +157,28 @@ const ListRate: React.FC = () => {
   return (
     <>
       <div className=" overflow-x-hidden" style={{ maxWidth: "90vw" }}>
-        <div className=" flex-col justify-between  sm:flex ">
-          <label className="mb-2 ml-2 mt-3 block text-title-md font-medium text-black dark:text-white">
-            Rates
-          </label>
-
+        <div className="mb-5 mt-5  flex  justify-between px-5  align-middle  ">
+          <h5 className="text-title-md font-semibold   text-black  dark:text-white  ">
+            Rates{" "}
+          </h5>
           <BaseButton
-            onClick={handleAddDrawer}
             style={{
               textTransform: "none",
-              backgroundColor: "#0097B2",
+              backgroundColor: "#0f6f03",
               color: "white",
-              display: "flex",
               marginBottom: "10px",
-              marginLeft: "auto",
+              paddingLeft: "10px",
+              paddingRight: "10px",
+
+              // marginLeft: "auto",
+              display: "flex",
             }}
+            onClick={handleAddDrawer}
           >
-            <IoAddCircleSharp className="mr-3" />
-            Add Rate
+            <IoAddCircleSharp className="mr-3 " style={{ fontSize: "16px" }} />
+            Add Rate{" "}
           </BaseButton>
         </div>
-
         <div className="flex h-screen w-full bg-white text-black dark:bg-boxdark dark:text-white">
           <div className="F container mx-auto mt-0 px-4">
             <div className="">

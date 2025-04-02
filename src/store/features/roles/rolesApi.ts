@@ -65,3 +65,14 @@ export async function apiDeleteRole(id: number): Promise<any> {
   });
   return response;
 }
+
+export async function apiDeleteRoleByCode(code: string): Promise<any> {
+  const method = "DELETE";
+  const url = `roleAndPermission/deleteRoleById/${code}`; // Endpoint for deleting a role
+
+  const response = await HttpService.request({
+    method,
+    url,
+  });
+  return response;
+}

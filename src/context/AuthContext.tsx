@@ -53,8 +53,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         // const res_0 = setSessionKey(token);
         const user_0 = setUserInfo(user);
         const perm_0 = setPermissionInfo(permission);
+      } else {
+        router.replace("/auth/login");
       }
     } catch (error: any) {
+      router.replace("/auth/login");
+
       // Optionally log out if the token is invalid (e.g., 401)
     }
   };

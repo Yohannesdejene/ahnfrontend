@@ -86,7 +86,7 @@ const menuGroups = [
           },
           {
             icon: <FaPlaneArrival className="text-title-sm text-white" />,
-            label: "Arriving Shipment",
+            label: "Incoming Shipment",
             route: "/shipment/air/arriving",
           },
           {
@@ -337,7 +337,7 @@ const menuGroups = [
       {
         icon: <MdOutlineRule className="text-title-sm text-white" />,
         label: "Role",
-        route: "/users/list",
+        route: "/role/list",
 
         // children: [
         //   {

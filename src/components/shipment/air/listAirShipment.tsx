@@ -807,7 +807,7 @@ const ShipmentAirList: React.FC<GradeDetailProps> = ({ id }) => {
           <div className="">
             <div className="p-4">
               <div className=" max-w-230 overflow-x-auto bg-white text-black dark:bg-normalGray">
-                {loadingShipments && <LinearProgress />}
+                {loadingShipments && <LinearProgress sx={{ mv: "5px" }} />}
                 <DataGrid
                   loading={loadingShipments}
                   rows={rows}

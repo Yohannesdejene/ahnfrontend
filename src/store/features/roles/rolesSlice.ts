@@ -79,7 +79,7 @@ const rolesSlice = createSlice({
       })
       .addCase(fetchRoles.fulfilled, (state, action: PayloadAction<any>) => {
         state.loadingRole = false;
-        state.roles = action.payload.data?.roles;
+        state.roles = action.payload?.roles;
         state.pagination = action.payload?.metadata?.pagination;
       })
       .addCase(fetchRoles.rejected, (state, action) => {

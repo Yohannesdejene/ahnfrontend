@@ -246,16 +246,17 @@ const ListCompany: React.FC = () => {
                     slots={{ toolbar: GridToolbar }}
                     slotProps={{
                       toolbar: {
+                        showQuickFilter: true,
+                        quickFilterProps: { debounceMs: 500 },
                         csvOptions: {
-                          allRows: true,
-                          fileName: "companies",
+                          allRows: true, // Exports all rows, not just the visible ones
+                          fileName: "rate", // Set your desired file name here (without extension)
                         },
                       },
                     }}
-
-                    // sx={{
-                    //   minHeight: "200px", // Set your desired minimum height
-                    // }}
+                    sx={{
+                      minHeight: "250px", // Set your desired minimum height
+                    }}
                   />
                 </div>
               </div>
