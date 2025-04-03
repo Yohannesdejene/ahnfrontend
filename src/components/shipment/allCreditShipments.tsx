@@ -47,6 +47,7 @@ import { apiGetShipmentsList } from "@/store/features/shipments/shipmentsApi";
 import { writeFile, utils } from "xlsx";
 import { saveAs } from "file-saver";
 import Papa from "papaparse";
+import NowAllowedPage from "@/components/common/allowedPage";
 
 const shipmentSchema = z.object({
   awb: z.string().optional(),
@@ -177,6 +178,19 @@ const ShipmentCreditList: React.FC<GradeDetailProps> = ({ id }) => {
   ////filter states all
   const [filterMore, setFilterMore] = useState(false);
   ////pagination
+
+  const auth = useSelector((state: any) => state?.auth?.permissions);
+
+  const hasCreditAirAirShipmentPermission = auth.some(
+    (permission: any) => permission.code === "CREDIT_AIR_SHIPMENT",
+  );
+  const hasCreditGroundShipmentPermission = auth.some(
+    (permission: any) => permission.code === "CREDIT_GROUND_SHIPMENT",
+  );
+  const hasPermission =
+    (id === "air" && hasCreditAirAirShipmentPermission) ||
+    (id === "ground" && hasCreditGroundShipmentPermission);
+
   const { shipments, errorShipments, loadingShipments, pagination } =
     useSelector((state: RootState) => state.shipment);
   const methods = useForm<any>({
@@ -471,166 +485,172 @@ const ShipmentCreditList: React.FC<GradeDetailProps> = ({ id }) => {
   ];
 
   return (
-    <div className="mx-auto max-w-230" style={{ maxWidth: "90vw" }}>
-      <label className="mb-12  block text-title-lg font-medium text-black dark:text-white">
-        {id == "air" ? "Air Credit shipments" : "Ground credit shipments"}
-      </label>
-      {errorShipments && (
-        <Alert severity="error">Something went wrong try again </Alert>
-      )}
-      <div className="bg-white p-2 md:p-5">
-        <FormProvider {...methods}>
-          <div className="w-full ">
-            <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-6">
-              <div className="card flex flex-col justify-center">
-                <InputString
-                  type="text"
-                  name="awb"
-                  label="Search by awb "
-                  placeholder="ex 48616082"
-                />
-              </div>
+    <>
+      {hasPermission ? (
+        <div className="mx-auto max-w-230" style={{ maxWidth: "90vw" }}>
+          <label className="mb-12  block text-title-lg font-medium text-black dark:text-white">
+            {id == "air" ? "Air Credit shipments" : "Ground credit shipments"}
+          </label>
+          {errorShipments && (
+            <Alert severity="error">Something went wrong try again </Alert>
+          )}
+          <div className="bg-white p-2 md:p-5">
+            <FormProvider {...methods}>
+              <div className="w-full ">
+                <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-6">
+                  <div className="card flex flex-col justify-center">
+                    <InputString
+                      type="text"
+                      name="awb"
+                      label="Search by awb "
+                      placeholder="ex 48616082"
+                    />
+                  </div>
 
-              <div className="card flex flex-col justify-center">
-                <InputString
-                  type="date"
-                  name="startDate"
-                  label="Start Date"
-                  placeholder="ex "
-                />
-              </div>
+                  <div className="card flex flex-col justify-center">
+                    <InputString
+                      type="date"
+                      name="startDate"
+                      label="Start Date"
+                      placeholder="ex "
+                    />
+                  </div>
 
-              <div className="card flex flex-col justify-center">
-                <InputString
-                  type="date"
-                  name="endDate"
-                  label="End Date"
-                  placeholder="ex "
-                />
+                  <div className="card flex flex-col justify-center">
+                    <InputString
+                      type="date"
+                      name="endDate"
+                      label="End Date"
+                      placeholder="ex "
+                    />
+                  </div>
+                </div>
+              </div>
+              {/* more filters  */}
+              <div className="w-full ">
+                <div className="mb-2 grid  w-full grid-cols-1 gap-3 align-bottom md:grid-cols-3 lg:grid-cols-5">
+                  <div className="card flex flex-col justify-center">
+                    <SelectInput
+                      name="companyId"
+                      label="Select Company "
+                      placeholder="Select company "
+                      options={optionsCompany}
+                      loading={loadingCompany} // Default to false if not provided
+                    />
+                  </div>
+                  <div className="card flex flex-col justify-end">
+                    <BaseButton
+                      onClick={handleSearch}
+                      startIcon={<IoSearch />}
+                      variant="contained"
+                      sx={{
+                        textTransform: "none",
+                        backgroundColor: "#109101",
+                        color: "white",
+                        borderRadius: "8px",
+
+                        "&:hover": {
+                          backgroundColor: "#109101",
+                        },
+                      }}
+                      style={{
+                        backgroundColor: "#109101",
+                        height: "31px",
+                      }}
+                    >
+                      Search
+                    </BaseButton>
+                  </div>
+
+                  <div className="card flex flex-col justify-end">
+                    {" "}
+                    <BaseButton
+                      onClick={handleReset}
+                      variant="outlined"
+                      startIcon={<GrPowerReset />}
+                      sx={{
+                        textTransform: "none",
+                        borderRadius: "8px",
+                        backgroundColor: "#109101",
+                        color: "white",
+                      }}
+                      style={{
+                        backgroundColor: "#109101",
+                        height: "31px",
+                      }}
+                      className="flex items-center gap-2"
+                    >
+                      Reset Filter
+                    </BaseButton>
+                  </div>
+                </div>
+              </div>
+            </FormProvider>
+          </div>
+          <div className="flex-between mb-3 w-full bg-white p-5 align-middle ">
+            <BaseButton
+              style={{ backgroundColor: "#2073de", color: "white" }}
+              disabled={loadingExport}
+              variant="contained"
+              startIcon={<TiExport />}
+              onClick={handleExport}
+            >
+              {loadingExport ? <span>loading.....</span> : <span>Export</span>}
+            </BaseButton>
+          </div>
+          <div
+            className=" mb-3 ml-auto flex items-center"
+            style={{ width: "140px" }}
+          >
+            <select
+              className="font-sans focus:shadow-outline-primary dark:focus:shadow-outline-primary w-full rounded-lg border border-solid border-slate-300 bg-white px-3 py-2 text-sm font-normal leading-5 text-slate-900 shadow-md shadow-slate-100 focus:border-primary focus:shadow-lg focus-visible:outline-0 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-300 dark:shadow-slate-900 dark:focus:border-primary"
+              onChange={handlePageSizeChange}
+              defaultValue={10} // Ensure a default value is set
+            >
+              {[5, 10, 20, 30, 50, 100].map((size) => (
+                <option key={size} value={size}>
+                  {size} per page
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="auto flex w-full bg-white text-black dark:bg-boxdark dark:text-white">
+            <div className="container mx-auto mt-0">
+              <div className="">
+                <div className="p-4">
+                  <div className=" max-w-230 overflow-x-auto bg-white text-black dark:bg-normalGray">
+                    {loadingShipments && <LinearProgress />}
+                    <DataGrid
+                      loading={loadingShipments}
+                      rows={rows}
+                      columns={columns}
+                      autoHeight
+                      disableColumnFilter
+                      disableColumnSelector
+                      disableDensitySelector
+                      disableColumnMenu
+                      hideFooter
+                      paginationMode="server"
+                      sx={{ minHeight: "200px" }}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          {/* more filters  */}
-          <div className="w-full ">
-            <div className="mb-2 grid  w-full grid-cols-1 gap-3 align-bottom md:grid-cols-3 lg:grid-cols-5">
-              <div className="card flex flex-col justify-center">
-                <SelectInput
-                  name="companyId"
-                  label="Select Company "
-                  placeholder="Select company "
-                  options={optionsCompany}
-                  loading={loadingCompany} // Default to false if not provided
-                />
-              </div>
-              <div className="card flex flex-col justify-end">
-                <BaseButton
-                  onClick={handleSearch}
-                  startIcon={<IoSearch />}
-                  variant="contained"
-                  sx={{
-                    textTransform: "none",
-                    backgroundColor: "#109101",
-                    color: "white",
-                    borderRadius: "8px",
-
-                    "&:hover": {
-                      backgroundColor: "#109101",
-                    },
-                  }}
-                  style={{
-                    backgroundColor: "#109101",
-                    height: "31px",
-                  }}
-                >
-                  Search
-                </BaseButton>
-              </div>
-
-              <div className="card flex flex-col justify-end">
-                {" "}
-                <BaseButton
-                  onClick={handleReset}
-                  variant="outlined"
-                  startIcon={<GrPowerReset />}
-                  sx={{
-                    textTransform: "none",
-                    borderRadius: "8px",
-                    backgroundColor: "#109101",
-                    color: "white",
-                  }}
-                  style={{
-                    backgroundColor: "#109101",
-                    height: "31px",
-                  }}
-                  className="flex items-center gap-2"
-                >
-                  Reset Filter
-                </BaseButton>
-              </div>
-            </div>
-          </div>
-        </FormProvider>
-      </div>
-      <div className="flex-between mb-3 w-full bg-white p-5 align-middle ">
-        <BaseButton
-          style={{ backgroundColor: "#2073de", color: "white" }}
-          disabled={loadingExport}
-          variant="contained"
-          startIcon={<TiExport />}
-          onClick={handleExport}
-        >
-          {loadingExport ? <span>loading.....</span> : <span>Export</span>}
-        </BaseButton>
-      </div>
-      <div
-        className=" mb-3 ml-auto flex items-center"
-        style={{ width: "140px" }}
-      >
-        <select
-          className="font-sans focus:shadow-outline-primary dark:focus:shadow-outline-primary w-full rounded-lg border border-solid border-slate-300 bg-white px-3 py-2 text-sm font-normal leading-5 text-slate-900 shadow-md shadow-slate-100 focus:border-primary focus:shadow-lg focus-visible:outline-0 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-300 dark:shadow-slate-900 dark:focus:border-primary"
-          onChange={handlePageSizeChange}
-          defaultValue={10} // Ensure a default value is set
-        >
-          {[5, 10, 20, 30, 50, 100].map((size) => (
-            <option key={size} value={size}>
-              {size} per page
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="auto flex w-full bg-white text-black dark:bg-boxdark dark:text-white">
-        <div className="container mx-auto mt-0">
-          <div className="">
-            <div className="p-4">
-              <div className=" max-w-230 overflow-x-auto bg-white text-black dark:bg-normalGray">
-                {loadingShipments && <LinearProgress />}
-                <DataGrid
-                  loading={loadingShipments}
-                  rows={rows}
-                  columns={columns}
-                  autoHeight
-                  disableColumnFilter
-                  disableColumnSelector
-                  disableDensitySelector
-                  disableColumnMenu
-                  hideFooter
-                  paginationMode="server"
-                  sx={{ minHeight: "200px" }}
-                />
-              </div>
-            </div>
+          <div className="mb-5 mt-5 flex justify-center">
+            <Pagination
+              count={pagination?.totalPages}
+              page={page}
+              onChange={handlePageChange}
+              color="primary"
+            />
           </div>
         </div>
-      </div>
-      <div className="mb-5 mt-5 flex justify-center">
-        <Pagination
-          count={pagination?.totalPages}
-          page={page}
-          onChange={handlePageChange}
-          color="primary"
-        />
-      </div>
-    </div>
+      ) : (
+        <NowAllowedPage />
+      )}
+    </>
   );
 };
 

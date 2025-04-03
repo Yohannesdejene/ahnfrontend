@@ -6,7 +6,7 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { AuthProvider } from "@/context/AuthContext"; // Adjust the path as necessary
 
 export const metadata: Metadata = {
-  title: "Arriving air shipment",
+  title: "Incoming air shipment",
   description: "Ahununu Express",
 };
 

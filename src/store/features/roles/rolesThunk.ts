@@ -36,7 +36,7 @@ export const createRole = createAsyncThunk(
 export const updateRole = createAsyncThunk(
   "roles/updateRole",
   async (
-    { id, roleData }: { id: number; roleData: UPDATE_ROLE },
+    { id, roleData }: { id: number | string | null; roleData: UPDATE_ROLE },
     { rejectWithValue },
   ) => {
     try {
@@ -50,7 +50,7 @@ export const updateRole = createAsyncThunk(
 // Get role by ID thunk
 export const getRoleById = createAsyncThunk(
   "roles/getRoleById",
-  async (id: number, { rejectWithValue }) => {
+  async (id: number | string, { rejectWithValue }) => {
     try {
       const response = await apiGetRoleById(id);
       return response; // Return the role details

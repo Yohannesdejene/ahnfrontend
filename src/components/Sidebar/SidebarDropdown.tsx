@@ -2,13 +2,15 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSelector } from "react-redux";
+import { RootState, AppDispatch } from "@/store/store";
 
 const SidebarDropdown = ({ item }: any) => {
   const pathname = usePathname();
   const auth = useSelector((state: any) => state?.auth?.permissions);
-  // const hasCreateUserPermission = auth.some(
-  //   (permission: any) => permission.code === "CREATE_USER",
-  // );
+  const { permissions, loading } = useSelector(
+    (state: RootState) => state.auth,
+  );
+
   return (
     <>
       <ul className="mb-5.5 mt-2 flex list-disc flex-col gap-2.5 pl-6">

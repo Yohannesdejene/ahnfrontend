@@ -14,7 +14,7 @@ export async function apiGetAllRoles(): Promise<ROLE[]> {
 }
 
 // Fetch a role by ID
-export async function apiGetRoleById(id: number): Promise<ROLE> {
+export async function apiGetRoleById(id: number | string): Promise<ROLE> {
   const method = "GET";
   const url = `roleAndPermission/getRoleById/${id}`; // Endpoint for fetching a role by ID
 
@@ -40,7 +40,7 @@ export async function apiCreateRole(data: CREATE_ROLE): Promise<any> {
 
 // Update an existing role
 export async function apiUpdateRole(
-  id: number,
+  id: number | string | null,
   data: UPDATE_ROLE,
 ): Promise<any> {
   const method = "PUT";

@@ -42,7 +42,6 @@ import { MdSummarize } from "react-icons/md";
 import { FaListUl } from "react-icons/fa";
 import { MdFormatListBulleted } from "react-icons/md";
 import { FaMapMarkedAlt } from "react-icons/fa";
-import { useSelector } from "react-redux";
 import { GiAirplaneDeparture } from "react-icons/gi";
 import { FiType } from "react-icons/fi";
 import { MdAttachMoney } from "react-icons/md";
@@ -51,6 +50,8 @@ import { GrUserAdmin } from "react-icons/gr";
 import { BiSolidInstitution } from "react-icons/bi";
 import { IoMdAdd } from "react-icons/io";
 import { CiViewList } from "react-icons/ci";
+import { RootState, AppDispatch } from "@/store/store";
+import { useDispatch, useSelector } from "react-redux";
 
 import * as URL from "@/route";
 
@@ -59,310 +60,356 @@ interface SidebarProps {
   setSidebarOpen: (arg: boolean) => void;
 }
 
-const menuGroups = [
-  {
-    name: "Shipments",
-    menuItems: [
-      {
-        icon: <MdDashboard className="text-title-sm text-white" />,
-        label: "Dashboard",
-        route: "/",
-        // children: [{ label: "eCommerce", route: "/" }],
-      },
-      {
-        icon: <GiAirplaneDeparture className="text-title-sm text-white" />,
-        label: "Air Shipment",
-        route: "#",
-        children: [
-          {
-            icon: <IoIosAddCircle className="text-title-md text-white" />,
-            label: "Add Shipment",
-            route: "/shipment/air/add-shipment",
-          },
-          {
-            icon: <GiPackedPlanks className="text-title-sm text-white" />,
-            label: "Ready to Pick",
-            route: "/shipment/air/ready-for-pickup",
-          },
-          {
-            icon: <FaPlaneArrival className="text-title-sm text-white" />,
-            label: "Incoming Shipment",
-            route: "/shipment/air/arriving",
-          },
-          {
-            icon: (
-              <TbHomeCheck className="text-bold text-title-sm text-white" />
-            ),
-            label: "Arrived Shipment",
-            route: "/shipment/air/arrived",
-          },
-          {
-            icon: (
-              <IoCheckmarkDoneCircleSharp className="text-title-sm text-white" />
-            ),
-            label: "Delivered Shipments",
-            route: "/shipment/air/delivered",
-          },
-          {
-            icon: <MdCreditCard className="text-title-sm text-white" />,
-            label: " Credit shipments",
-            route: "/shipment/air/credit-shipments",
-          },
-          {
-            icon: <SiVirustotal className="text-title-sm text-white" />,
-            label: "All Air Shipments",
-            route: "/shipment/air/all-air-shipments",
-          },
-
-          {
-            icon: <FaExchangeAlt className="text-title-sm text-white" />,
-            label: "Change Status",
-            route: "/shipment/air/change-status",
-          },
-          {
-            icon: <FaExchangeAlt className="text-title-sm text-white" />,
-            label: "Bulk status change",
-            route: "/shipment/air/bulk-status-change",
-          },
-          {
-            icon: <FaBarsProgress className="text-title-sm text-white" />,
-            label: "Track Shipment",
-            route: "/shipment/air/tracking",
-          },
-          {
-            icon: <FaFileInvoiceDollar className="text-title-sm text-white" />,
-            label: "Shipment Invoice",
-            route: "/#",
-          },
-        ],
-      },
-      {
-        icon: <FaShippingFast className="text-title-sm text-white" />,
-        label: "Ground Shipment",
-        route: "#",
-        children: [
-          {
-            icon: <IoIosAddCircle className="text-title-md text-white" />,
-            label: "Add Shipment",
-            route: "/shipment/ground/add-shipment",
-          },
-          {
-            icon: <GiPackedPlanks className="text-title-sm text-white" />,
-            label: "Ready to Pick",
-            route: "/shipment/ground/ready-for-pickup",
-          },
-          {
-            icon: <FaPlaneArrival className="text-title-sm text-white" />,
-            label: "Arriving Shipment",
-            route: "/shipment/ground/arriving",
-          },
-
-          {
-            icon: (
-              <TbHomeCheck className="text-bold text-title-sm text-white" />
-            ),
-            label: "Arrived Shipment",
-            route: "/shipment/ground/arrived",
-          },
-          {
-            icon: (
-              <IoCheckmarkDoneCircleSharp className="text-title-sm text-white" />
-            ),
-            label: "Delivered Shipments",
-            route: "/shipment/ground/delivered",
-          },
-          {
-            icon: <SiVirustotal className="text-title-sm text-white" />,
-            label: "All ground Shipments",
-            route: "/shipment/ground/all-ground-shipments",
-          },
-          {
-            icon: <MdCreditCard className="text-title-sm text-white" />,
-            label: "Ground  Credit shipments",
-            route: "/shipment/ground/credit-shipments",
-          },
-          {
-            icon: <FaExchangeAlt className="text-title-sm text-white" />,
-            label: "Change Status ",
-            route: "/shipment/ground/change-status",
-          },
-          {
-            icon: <FaExchangeAlt className="text-title-sm text-white" />,
-            label: "Bulk Change Status",
-            route: "/shipment/ground/bulk-status-change",
-          },
-          {
-            icon: <FaBarsProgress className="text-title-sm text-white" />,
-            label: "Track Shipment",
-            route: "/shipment/ground/tracking",
-          },
-          {
-            icon: <FaFileInvoiceDollar className="text-title-sm text-white" />,
-            label: "Shipment Invoice",
-            route: "/#",
-          },
-        ],
-      },
-
-      // {
-      //   icon: <FaMoneyCheckDollar className="text-title-sm text-white" />,
-      //   label: "Expenses",
-      //   route: "#",
-      //   children: [
-      //     {
-      //       icon: <IoIosAddCircle className="text-title-md text-white" />,
-      //       label: "Add Expenses",
-      //       route: "#",
-      //     },
-      //   ],
-      // },
-    ],
-  },
-
-  {
-    name: "Reports",
-    menuItems: [
-      {
-        icon: <GiAirplaneDeparture className="text-title-sm text-white" />,
-        label: "Air Reports",
-        route: "#",
-        children: [
-          {
-            icon: <BsFillCreditCardFill className="text-title-sm text-white" />,
-            label: "Branch Credit Shipments",
-            route: "/report/air/branch-credit-shipment",
-          },
-          {
-            icon: <FaCodeBranch className="text-title-sm text-white" />,
-            label: "Branch Shipment",
-            route: "/report/air/branch-shipment",
-          },
-          {
-            icon: <SiVirustotal className="text-title-sm text-white" />,
-            label: "All Branch  Shipment",
-            route: "/report/air/all-branch-shipment",
-          },
-        ],
-      },
-      {
-        icon: <FaShippingFast className="text-title-sm text-white" />,
-        label: "Ground Reports",
-        route: "#",
-        children: [
-          {
-            icon: <BsFillCreditCardFill className="text-title-sm text-white" />,
-            label: "Branch Credit Shipments",
-            route: "/report/ground/branch-credit-shipment",
-          },
-          {
-            icon: <FaCodeBranch className="text-title-sm text-white" />,
-            label: "Branch Shipment",
-            route: "/report/ground/branch-shipment",
-          },
-          {
-            icon: <SiVirustotal className="text-title-sm text-white" />,
-            label: "All Branch Shipment",
-            route: "/report/ground/all-branch-shipment",
-          },
-        ],
-      },
-      {
-        icon: <GrUserAdmin className="text-title-sm text-white" />,
-        label: "Admin Shipment Report",
-        route: "/report/admin-shipment-report",
-      },
-    ],
-  },
-
-  {
-    name: "Basic Set up",
-    menuItems: [
-      {
-        icon: <FaCodeBranch className="text-title-sm text-white" />,
-        label: " Branches",
-        route: "/manage/branch",
-      },
-      {
-        icon: <FaPercent className="text-title-sm text-white" />,
-        label: "Shipment Rates",
-        route: "/manage/shipment-rate",
-      },
-      {
-        icon: <FiType className="text-title-sm text-white" />,
-        label: "Shipment Type",
-        route: "/manage/shipment-type",
-      },
-      {
-        icon: <div>M</div>,
-        label: "Shipment Mode",
-        route: "/manage/shipment-mode",
-      },
-      {
-        icon: <MdAttachMoney />,
-        label: "Payment Methods",
-        route: "/manage/payment-method",
-      },
-      // {
-      //   icon: <FaUnity />,
-      //   label: "Unit ",
-      //   route: "/manage/unit",
-      // },
-    ],
-  },
-  {
-    name: "USERS",
-    menuItems: [
-      {
-        icon: <BiSolidInstitution className="text-title-sm text-white" />,
-        label: "Companies",
-        route: "",
-        children: [
-          {
-            icon: <CiViewList className="text-title-sm text-white" />,
-            label: "Companies",
-            route: "/companies/list",
-          },
-          {
-            icon: <IoMdAdd className="text-title-sm text-white" />,
-            label: "Add Company ",
-            route: "/companies/add",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    name: "Authorization",
-    menuItems: [
-      {
-        icon: <MdOutlineRule className="text-title-sm text-white" />,
-        label: "Role",
-        route: "/role/list",
-
-        // children: [
-        //   {
-        //     icon: (
-        //       <FaCodeBranch className="text-title-sm text-white" />
-        //     ),
-        //     label: "Branches",
-        //     route: "#",
-        //   },
-        // ],
-      },
-      {
-        icon: <FaUser className="text-title-sm text-white" />,
-        label: "User ",
-        route: "/users/list",
-      },
-      ,
-    ],
-  },
-];
-
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
+  const dispatch: AppDispatch = useDispatch();
+
   const pathname = usePathname();
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
+  const { permissions, loading } = useSelector(
+    (state: RootState) => state.auth,
+  );
 
+  const menuGroups = [
+    {
+      name: "Shipments",
+      menuItems: [
+        {
+          icon: <MdDashboard className="text-title-sm text-white" />,
+          label: "Dashboard",
+          route: "/",
+          permissionCode: "VIEW_DASHBOARD", // Assuming a permission for dashboard; add if needed
+        },
+        {
+          icon: <GiAirplaneDeparture className="text-title-sm text-white" />,
+          label: "Air Shipment",
+          route: "#",
+          children: [
+            {
+              icon: <IoIosAddCircle className="text-title-md text-white" />,
+              label: "Add Shipment",
+              route: "/shipment/air/add-shipment",
+              permissionCode: "ADD_AIR_SHIPMENT",
+            },
+            {
+              icon: <GiPackedPlanks className="text-title-sm text-white" />,
+              label: "Accepted Shipments",
+              route: "/shipment/air/accepted-shipments",
+              permissionCode: "ACCEPTED_AIR_SHIPMENTS", // Note: Typo in your permissions ("SHIPMNENTS")
+            },
+            {
+              icon: <FaPlaneArrival className="text-title-sm text-white" />,
+              label: "Incoming Shipment",
+              route: "/shipment/air/arriving",
+              permissionCode: "ARRIVING_AIR_SHIPMENT",
+            },
+            {
+              icon: (
+                <TbHomeCheck className="text-bold text-title-sm text-white" />
+              ),
+              label: "Arrived Shipment",
+              route: "/shipment/air/arrived",
+              permissionCode: "ACCEPTED_AIR_SHIPMENTS",
+            },
+            {
+              icon: (
+                <IoCheckmarkDoneCircleSharp className="text-title-sm text-white" />
+              ),
+              label: "Delivered Shipments",
+              route: "/shipment/air/delivered",
+              permissionCode: "DELIVERED_AIR_SHIPMENT",
+            },
+            {
+              icon: <MdCreditCard className="text-title-sm text-white" />,
+              label: "Credit shipments",
+              route: "/shipment/air/credit-shipments",
+              permissionCode: "CREDIT_AIR_SHIPMENT",
+            },
+            {
+              icon: <SiVirustotal className="text-title-sm text-white" />,
+              label: "All Air Shipments",
+              route: "/shipment/air/all-air-shipments",
+              permissionCode: "ALL_AIR_SHIPMENTS",
+            },
+            {
+              icon: <FaExchangeAlt className="text-title-sm text-white" />,
+              label: "Change Status",
+              route: "/shipment/air/change-status",
+              permissionCode: "CHANGE_AIR_SHIPMENT_STATUS",
+            },
+            {
+              icon: <FaExchangeAlt className="text-title-sm text-white" />,
+              label: "Bulk status change",
+              route: "/shipment/air/bulk-status-change",
+              permissionCode: "BULK_CHANGE_BULK_AIR_SHIPMENT_STATUS",
+            },
+            {
+              icon: <FaBarsProgress className="text-title-sm text-white" />,
+              label: "Track Shipment",
+              route: "/shipment/air/tracking",
+              permissionCode: "TRACK_AIR_AHIPMENT", // Note: Typo in your permissions ("AHIPMENT")
+            },
+            {
+              icon: (
+                <FaFileInvoiceDollar className="text-title-sm text-white" />
+              ),
+              label: "Shipment Invoice",
+              route: "/#",
+              permissionCode: "Generate invoice air shipment",
+            },
+          ],
+        },
+        {
+          icon: <FaShippingFast className="text-title-sm text-white" />,
+          label: "Ground Shipment",
+          route: "#",
+          children: [
+            {
+              icon: <IoIosAddCircle className="text-title-md text-white" />,
+              label: "Add Shipment",
+              route: "/shipment/ground/add-shipment",
+              permissionCode: "ADD_GROUND_SHIPMENT", // Note: Should be "ADD_GROUND_SHIPMENT" (possible error in your permissions)
+            },
+            {
+              icon: <GiPackedPlanks className="text-title-sm text-white" />,
+              label: "Accepted Shipment",
+              route: "/shipment/ground/accepted-shipments",
+              permissionCode: "ACCEPTED_GROUND_SHIPMENTS", // Note: Typo in your permissions ("SHIPMNENTS")
+            },
+            {
+              icon: <FaPlaneArrival className="text-title-sm text-white" />,
+              label: "Incoming Shipment",
+              route: "/shipment/ground/arriving",
+              permissionCode: "ARRIVING_GROUND_SHIPMENT",
+            },
+            {
+              icon: (
+                <TbHomeCheck className="text-bold text-title-sm text-white" />
+              ),
+              label: "Arrived Shipment",
+              route: "/shipment/ground/arrived",
+              permissionCode: "ARRIVED_GROUND_SHIPMENTS",
+            },
+            {
+              icon: (
+                <IoCheckmarkDoneCircleSharp className="text-title-sm text-white" />
+              ),
+              label: "Delivered Shipments",
+              route: "/shipment/ground/delivered",
+              permissionCode: "DELIVERED_GROUND_SHIPMENT",
+            },
+            {
+              icon: <SiVirustotal className="text-title-sm text-white" />,
+              label: "All ground Shipments",
+              route: "/shipment/ground/all-ground-shipments",
+              permissionCode: "ALL_GROUND_SHIPMENTS",
+            },
+            {
+              icon: <MdCreditCard className="text-title-sm text-white" />,
+              label: "Ground Credit shipments",
+              route: "/shipment/ground/credit-shipments",
+              permissionCode: "CREDIT_GROUND_SHIPMENT",
+            },
+            {
+              icon: <FaExchangeAlt className="text-title-sm text-white" />,
+              label: "Change Status",
+              route: "/shipment/ground/change-status",
+              permissionCode: "CHANGE_GROUND_SHIPMENT_STATUS",
+            },
+            {
+              icon: <FaExchangeAlt className="text-title-sm text-white" />,
+              label: "Bulk Change Status",
+              route: "/shipment/ground/bulk-status-change",
+              permissionCode: "BULK_CHANGE_BULK_GROUND_SHIPMENT_STATUS",
+            },
+            {
+              icon: <FaBarsProgress className="text-title-sm text-white" />,
+              label: "Track Shipment",
+              route: "/shipment/ground/tracking",
+              permissionCode: "TRACK_ground_SHIPMENT",
+            },
+            {
+              icon: (
+                <FaFileInvoiceDollar className="text-title-sm text-white" />
+              ),
+              label: "Shipment Invoice",
+              route: "/#",
+              permissionCode: "Generate invoice ground shipment",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "Reports",
+      menuItems: [
+        {
+          icon: <GiAirplaneDeparture className="text-title-sm text-white" />,
+          label: "Air Reports",
+          route: "#",
+          children: [
+            {
+              icon: (
+                <BsFillCreditCardFill className="text-title-sm text-white" />
+              ),
+              label: "Branch Credit Shipments",
+              route: "/report/air/branch-credit-shipment",
+              permissionCode: "BRANCH_CREDIT_AIR_REPORT",
+            },
+            {
+              icon: <FaCodeBranch className="text-title-sm text-white" />,
+              label: "Branch Shipment",
+              route: "/report/air/branch-shipment",
+              permissionCode: "BRANCH_SHIPMENT_AIR_REPORT",
+            },
+            {
+              icon: <SiVirustotal className="text-title-sm text-white" />,
+              label: "All Branch Shipment",
+              route: "/report/air/all-branch-shipment",
+              permissionCode: "ALL_BRANCH_AIR_REPORT",
+            },
+          ],
+        },
+        {
+          icon: <FaShippingFast className="text-title-sm text-white" />,
+          label: "Ground Reports",
+          route: "#",
+          children: [
+            {
+              icon: (
+                <BsFillCreditCardFill className="text-title-sm text-white" />
+              ),
+              label: "Branch Credit Shipments",
+              route: "/report/ground/branch-credit-shipment",
+              permissionCode: "BRANCH_CREDIT_GROUND_REPORT",
+            },
+            {
+              icon: <FaCodeBranch className="text-title-sm text-white" />,
+              label: "Branch Shipment",
+              route: "/report/ground/branch-shipment",
+              permissionCode: "BRANCH_SHIPMENT_GROUND_REPORT",
+            },
+            {
+              icon: <SiVirustotal className="text-title-sm text-white" />,
+              label: "All Branch Shipment",
+              route: "/report/ground/all-branch-shipment",
+              permissionCode: "ALL_BRANCH_GROUND_REPORT",
+            },
+          ],
+        },
+        {
+          icon: <GrUserAdmin className="text-title-sm text-white" />,
+          label: "Admin Shipment Report",
+          route: "/report/admin-shipment-report",
+          permissionCode: "ADMIN_SHIPNENT_REPORT", // Note: Typo in your permissions ("SHIPNENT")
+        },
+      ],
+    },
+    {
+      name: "Basic Set up",
+      menuItems: [
+        {
+          icon: <FaCodeBranch className="text-title-sm text-white" />,
+          label: "Branches",
+          route: "/manage/branch",
+          permissionCode: "VIEW_BRANCHES",
+        },
+        {
+          icon: <FaPercent className="text-title-sm text-white" />,
+          label: "Shipment Rates",
+          route: "/manage/shipment-rate",
+          permissionCode: "VIEW_SHIPMENT_RATE",
+        },
+        {
+          icon: <FiType className="text-title-sm text-white" />,
+          label: "Shipment Type",
+          route: "/manage/shipment-type",
+          permissionCode: "VIEW_SHIPMENT_TYPE",
+        },
+        {
+          icon: <div>M</div>,
+          label: "Shipment Mode",
+          route: "/manage/shipment-mode",
+          permissionCode: "VIEW_SHIPMENT_MODE", // Assuming a permission; add if needed
+        },
+        {
+          icon: <MdAttachMoney />,
+          label: "Payment Methods",
+          route: "/manage/payment-method",
+          permissionCode: "VIEW_PAYMENT_METHODS",
+        },
+      ],
+    },
+    {
+      name: "USERS",
+      menuItems: [
+        {
+          icon: <BiSolidInstitution className="text-title-sm text-white" />,
+          label: "Companies",
+          route: "",
+          children: [
+            {
+              icon: <CiViewList className="text-title-sm text-white" />,
+              label: "Companies",
+              route: "/companies/list",
+              permissionCode: "VIEW_COMPANIES",
+            },
+            {
+              icon: <IoMdAdd className="text-title-sm text-white" />,
+              label: "Add Company",
+              route: "/companies/add",
+              permissionCode: "ADD_COMPAny", // Note: Typo in your permissions ("COMPAny")
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "Authorization",
+      menuItems: [
+        {
+          icon: <MdOutlineRule className="text-title-sm text-white" />,
+          label: "Role",
+          route: "/role/list",
+          permissionCode: "VIEW_ROLES",
+        },
+        {
+          icon: <FaUser className="text-title-sm text-white" />,
+          label: "User",
+          route: "/users/list",
+          permissionCode: "VIEW_USERS",
+        },
+      ],
+    },
+  ];
+  // Filter menu based on permissions
+  // Function to check if user has permission
+  // Function to check if user has permission
+  // Function to check if user has permission
+  const hasPermission = (code: string | null) => {
+    if (!code) return true; // No permission required
+    return permissions.some((perm: any) => perm.code === code);
+  };
+
+  // Filter menu groups based on permissions
+  const filteredMenuGroups = menuGroups
+    .map((group) => ({
+      ...group,
+      menuItems: group.menuItems
+        .map((item) => {
+          if (item.children) {
+            const filteredChildren = item.children.filter((child) =>
+              hasPermission(child.permissionCode),
+            );
+            if (filteredChildren.length > 0) {
+              return { ...item, children: filteredChildren };
+            }
+            return null;
+          }
+          return hasPermission(item.permissionCode) ? item : null;
+        })
+        .filter(Boolean),
+    }))
+    .filter((group) => group.menuItems.length > 0);
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>
       <aside
@@ -416,7 +463,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
           {/* <!-- Sidebar Menu --> */}
           <nav className="mt-1 px-4 py-1 lg:mt-1 lg:px-6">
-            {menuGroups.map((group, groupIndex) => (
+            {filteredMenuGroups.map((group: any, groupIndex: any) => (
               <div key={groupIndex}>
                 <h3
                   className="mb-4 ml-4"
@@ -429,7 +476,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   {group.name}
                 </h3>
                 <ul className="mb-5 flex flex-col gap-1.5">
-                  {group.menuItems.map((menuItem, menuIndex) => (
+                  {group.menuItems.map((menuItem: any, menuIndex: any) => (
                     <SidebarItem
                       key={menuIndex}
                       item={menuItem}

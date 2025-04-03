@@ -26,6 +26,7 @@ import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
+import NowAllowedPage from "@/components/common/allowedPage";
 
 import {
   InputString,
@@ -200,7 +201,27 @@ const ShipmentAirList: React.FC<GradeDetailProps> = ({ id }) => {
   const { reset } = methods;
   const { errors } = methods.formState; // Get form errors
   const formValues = methods.watch(); // This will give you the current form values
+  const auth = useSelector((state: any) => state?.auth?.permissions);
 
+  const hasAcceptedAirShipmentPermission = auth.some(
+    (permission: any) => permission.code === "ACCEPTED_AIR_SHIPMENTS",
+  );
+  const hasArrivingAirShipmentPermission = auth.some(
+    (permission: any) => permission.code === "ARRIVING_AIR_SHIPMENT",
+  );
+
+  const hasArrivedAirShipmentPermission = auth.some(
+    (permission: any) => permission.code === "ARRIVED_AIR_SHIPMENT",
+  );
+  const hasDeliveredAirShipmentPermission = auth.some(
+    (permission: any) => permission.code === "DELIVERED_AIR_SHIPMENT",
+  );
+
+  const hasPermission =
+    (id === "READY_FOR_PICK_UP" && hasAcceptedAirShipmentPermission) ||
+    (id === "ARRIVING" && hasArrivingAirShipmentPermission) ||
+    (id === "ARRIVED" && hasArrivedAirShipmentPermission) ||
+    (id === "DELIVERED" && hasDeliveredAirShipmentPermission);
   useEffect(() => {
     let filters: any = { ...formValues };
     filters.shipmentModeId = 1;
@@ -597,98 +618,100 @@ const ShipmentAirList: React.FC<GradeDetailProps> = ({ id }) => {
   ];
 
   return (
-    <div className="mx-auto max-w-230" style={{ maxWidth: "90vw" }}>
-      <label className="mb-12  block text-title-lg font-medium text-black dark:text-white">
-        {id == "READY_FOR_PICK_UP"
-          ? "Ready for pick up shipments"
-          : id == "ARRIVING"
-            ? "Incoming shipments"
-            : id == "ARRIVED"
-              ? "Arrived shipments"
-              : id == "DELIVERED"
-                ? "Delivered shipments"
-                : ""}
-      </label>
-      {errorShipments && (
-        <Alert severity="error">Something went wrong try again </Alert>
-      )}
-      <FormProvider {...methods}>
-        <div className="w-full ">
-          <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-6">
-            <div className="card flex flex-col justify-center">
-              <InputString
-                type="text"
-                name="awb"
-                label="Search by awb "
-                placeholder="ex 48616082"
-              />
-            </div>
+    <>
+      {hasPermission ? (
+        <div className="mx-auto max-w-230" style={{ maxWidth: "90vw" }}>
+          <label className="mb-12  block text-title-lg font-medium text-black dark:text-white">
+            {id == "READY_FOR_PICK_UP"
+              ? "Ready for pick up shipments"
+              : id == "ARRIVING"
+                ? "Incoming shipments"
+                : id == "ARRIVED"
+                  ? "Arrived shipments"
+                  : id == "DELIVERED"
+                    ? "Delivered shipments"
+                    : ""}
+          </label>
+          {errorShipments && (
+            <Alert severity="error">Something went wrong try again </Alert>
+          )}
+          <FormProvider {...methods}>
+            <div className="w-full ">
+              <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-6">
+                <div className="card flex flex-col justify-center">
+                  <InputString
+                    type="text"
+                    name="awb"
+                    label="Search by awb "
+                    placeholder="ex 48616082"
+                  />
+                </div>
 
-            <div className="card flex flex-col justify-center">
-              <InputString
-                type="date"
-                name="startDate"
-                label="Start Date"
-                placeholder="ex "
-              />
-            </div>
+                <div className="card flex flex-col justify-center">
+                  <InputString
+                    type="date"
+                    name="startDate"
+                    label="Start Date"
+                    placeholder="ex "
+                  />
+                </div>
 
-            <div className="card flex flex-col justify-center">
-              <InputString
-                type="date"
-                name="endDate"
-                label="End Date"
-                placeholder="ex "
-              />
-            </div>
+                <div className="card flex flex-col justify-center">
+                  <InputString
+                    type="date"
+                    name="endDate"
+                    label="End Date"
+                    placeholder="ex "
+                  />
+                </div>
 
-            <div className="mb-1 flex items-end">
-              <BaseButton
-                onClick={handleSearch}
-                startIcon={<IoSearch />}
-                variant="contained"
-                sx={{
-                  textTransform: "none",
-                  backgroundColor: "#109101",
-                  color: "white",
-                  borderRadius: "8px",
+                <div className="mb-1 flex items-end">
+                  <BaseButton
+                    onClick={handleSearch}
+                    startIcon={<IoSearch />}
+                    variant="contained"
+                    sx={{
+                      textTransform: "none",
+                      backgroundColor: "#109101",
+                      color: "white",
+                      borderRadius: "8px",
 
-                  "&:hover": {
-                    backgroundColor: "#109101",
-                  },
-                }}
-                style={{
-                  backgroundColor: "#109101",
-                  height: "31px",
-                  width: "100%",
-                }}
-              >
-                Search
-              </BaseButton>
-            </div>
+                      "&:hover": {
+                        backgroundColor: "#109101",
+                      },
+                    }}
+                    style={{
+                      backgroundColor: "#109101",
+                      height: "31px",
+                      width: "100%",
+                    }}
+                  >
+                    Search
+                  </BaseButton>
+                </div>
 
-            <div className="mb-1 flex items-end">
-              <BaseButton
-                onClick={handleReset}
-                variant="outlined"
-                startIcon={<GrPowerReset />}
-                sx={{
-                  textTransform: "none",
-                  borderRadius: "8px",
-                  backgroundColor: "#109101",
-                  color: "white",
-                }}
-                style={{
-                  backgroundColor: "#109101",
-                  height: "31px",
-                  width: "100%",
-                }}
-                className="flex items-center gap-2"
-              >
-                Reset Filter
-              </BaseButton>
-            </div>
-            {/* 
+                <div className="mb-1 flex items-end">
+                  <BaseButton
+                    onClick={handleReset}
+                    variant="outlined"
+                    startIcon={<GrPowerReset />}
+                    sx={{
+                      textTransform: "none",
+                      borderRadius: "8px",
+                      backgroundColor: "#109101",
+                      color: "white",
+                    }}
+                    style={{
+                      backgroundColor: "#109101",
+                      height: "31px",
+                      width: "100%",
+                    }}
+                    className="flex items-center gap-2"
+                  >
+                    Reset Filter
+                  </BaseButton>
+                </div>
+                {/* 
             <div className="mb-1 flex items-end">
               <BaseButton
                 onClick={() => {
@@ -712,10 +735,10 @@ const ShipmentAirList: React.FC<GradeDetailProps> = ({ id }) => {
                 {filterMore ? "Close filter" : "More Filter"}
               </BaseButton>
             </div> */}
-          </div>
-        </div>
-        {/* more filters  */}
-        {/* {filterMore && (
+              </div>
+            </div>
+            {/* more filters  */}
+            {/* {filterMore && (
           <div className="w-full ">
             <div className="mb-8 grid w-full grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-5">
               {(id == "ALL_AIR" || id == "ALL_GROUND") && (
@@ -771,70 +794,78 @@ const ShipmentAirList: React.FC<GradeDetailProps> = ({ id }) => {
             </div>
           </div>
         )} */}
-      </FormProvider>
+          </FormProvider>
 
-      <div className=" flex justify-between ">
-        <div>
-          <BaseButton
-            style={{ backgroundColor: "#2073de", color: "white" }}
-            disabled={loadingExport}
-            variant="contained"
-            startIcon={<TiExport />}
-            onClick={handleExport}
-          >
-            {loadingExport ? <span>exporting.....</span> : <span>Export</span>}
-          </BaseButton>
-        </div>
-        <div
-          className=" mb-3 ml-auto flex items-center"
-          style={{ width: "140px" }}
-        >
-          <select
-            className="font-sans focus:shadow-outline-primary dark:focus:shadow-outline-primary w-full rounded-lg border border-solid border-slate-300 bg-white px-3 py-2 text-sm font-normal leading-5 text-slate-900 shadow-md shadow-slate-100 focus:border-primary focus:shadow-lg focus-visible:outline-0 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-300 dark:shadow-slate-900 dark:focus:border-primary"
-            onChange={handlePageSizeChange}
-            defaultValue={10} // Ensure a default value is set
-          >
-            {[5, 10, 20, 30, 50, 100].map((size) => (
-              <option key={size} value={size}>
-                {size} per page
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-      <div className="auto flex w-full bg-white text-black dark:bg-boxdark dark:text-white">
-        <div className="container mx-auto mt-0">
-          <div className="">
-            <div className="p-4">
-              <div className=" max-w-230 overflow-x-auto bg-white text-black dark:bg-normalGray">
-                {loadingShipments && <LinearProgress sx={{ mv: "5px" }} />}
-                <DataGrid
-                  loading={loadingShipments}
-                  rows={rows}
-                  columns={columns}
-                  autoHeight
-                  disableColumnFilter
-                  disableColumnSelector
-                  disableDensitySelector
-                  disableColumnMenu
-                  hideFooter
-                  paginationMode="server"
-                  sx={{ minHeight: "200px" }}
-                />
+          <div className=" flex justify-between ">
+            <div>
+              <BaseButton
+                style={{ backgroundColor: "#2073de", color: "white" }}
+                disabled={loadingExport}
+                variant="contained"
+                startIcon={<TiExport />}
+                onClick={handleExport}
+              >
+                {loadingExport ? (
+                  <span>exporting.....</span>
+                ) : (
+                  <span>Export</span>
+                )}
+              </BaseButton>
+            </div>
+            <div
+              className=" mb-3 ml-auto flex items-center"
+              style={{ width: "140px" }}
+            >
+              <select
+                className="font-sans focus:shadow-outline-primary dark:focus:shadow-outline-primary w-full rounded-lg border border-solid border-slate-300 bg-white px-3 py-2 text-sm font-normal leading-5 text-slate-900 shadow-md shadow-slate-100 focus:border-primary focus:shadow-lg focus-visible:outline-0 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-300 dark:shadow-slate-900 dark:focus:border-primary"
+                onChange={handlePageSizeChange}
+                defaultValue={10} // Ensure a default value is set
+              >
+                {[5, 10, 20, 30, 50, 100].map((size) => (
+                  <option key={size} value={size}>
+                    {size} per page
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className="auto flex w-full bg-white text-black dark:bg-boxdark dark:text-white">
+            <div className="container mx-auto mt-0">
+              <div className="">
+                <div className="p-4">
+                  <div className=" max-w-230 overflow-x-auto bg-white text-black dark:bg-normalGray">
+                    {loadingShipments && <LinearProgress sx={{ mv: "5px" }} />}
+                    <DataGrid
+                      loading={loadingShipments}
+                      rows={rows}
+                      columns={columns}
+                      autoHeight
+                      disableColumnFilter
+                      disableColumnSelector
+                      disableDensitySelector
+                      disableColumnMenu
+                      hideFooter
+                      paginationMode="server"
+                      sx={{ minHeight: "200px" }}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+          <div className="mb-5 mt-5 flex justify-center">
+            <Pagination
+              count={pagination?.totalPages}
+              page={page}
+              onChange={handlePageChange}
+              color="primary"
+            />
+          </div>
         </div>
-      </div>
-      <div className="mb-5 mt-5 flex justify-center">
-        <Pagination
-          count={pagination?.totalPages}
-          page={page}
-          onChange={handlePageChange}
-          color="primary"
-        />
-      </div>
-    </div>
+      ) : (
+        <NowAllowedPage />
+      )}
+    </>
   );
 };
 

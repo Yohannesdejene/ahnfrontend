@@ -13,6 +13,8 @@ import { apiBulkChangeShipmentStatus } from "@/store/features/shipments/shipment
 import Table from "@mui/material/Table";
 import ResultsTable from "./resultTable";
 import { Box, TableCell } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import NowAllowedPage from "@/components/common/allowedPage";
 
 const statusSchema = z.object({
   statusId: z.string().min(1, { message: "Status is required" }),
@@ -43,7 +45,19 @@ const BulkChangeStatus: React.FC<GradeDetailProps> = ({ id }) => {
   const methods = useForm<FormData>({
     resolver: zodResolver(statusSchema),
   });
+  const auth = useSelector((state: any) => state?.auth?.permissions);
 
+  const hasAirChangeShipmentPermission = auth.some(
+    (permission: any) =>
+      permission.code === "BULK_CHANGE_BULK_AIR_SHIPMENT_STATUS",
+  );
+  const hasBulkChangeGroundShipmentPermission = auth.some(
+    (permission: any) =>
+      permission.code === "BULK_CHANGE_BULK_GROUND_SHIPMENT_STATUS",
+  );
+  const hasPermission =
+    (id === "air" && hasAirChangeShipmentPermission) ||
+    (id === "ground" && hasBulkChangeGroundShipmentPermission);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -110,62 +124,72 @@ const BulkChangeStatus: React.FC<GradeDetailProps> = ({ id }) => {
   };
 
   return (
-    <div className="container mx-auto mt-10 bg-white p-4 text-black dark:bg-boxdark dark:text-white md:p-12">
-      <h1 className="mb-5 text-2xl font-bold">Bulk Change Shipment Status</h1>
+    <>
+      {hasPermission ? (
+        <div className="container mx-auto mt-10 bg-white p-4 text-black dark:bg-boxdark dark:text-white md:p-12">
+          <h1 className="mb-5 text-2xl font-bold">
+            Bulk Change Shipment Status
+          </h1>
 
-      {error && <p className="text-red-500">{error}</p>}
-      {message && <p className="text-green-500">{message}</p>}
+          {error && <p className="text-red-500">{error}</p>}
+          {message && <p className="text-green-500">{message}</p>}
 
-      {/* Barcode Scanner */}
+          {/* Barcode Scanner */}
 
-      <FormProvider {...methods}>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="grid max-w-lg grid-cols-1 gap-6"
-        >
-          <div>
-            <label className="mb-2 block text-sm font-medium">
-              Enter {id === "air" ? "AWB" : "GWB"} ( Separate them with comma )
-            </label>
+          <FormProvider {...methods}>
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="grid max-w-lg grid-cols-1 gap-6"
+            >
+              <div>
+                <label className="mb-2 block text-sm font-medium">
+                  Enter {id === "air" ? "AWB" : "GWB"} ( Separate them with
+                  comma )
+                </label>
 
-            <TextareaAutosize
-              minRows={4}
-              value={awbs}
-              onChange={handleAWBChange}
-              aria-label="maximum height"
-              placeholder={`Enter the 8 characters  ${id === "air" ? "AWB" : "GWB"} `}
-              style={{
-                width: "100%",
-                border: "1px solid black",
-                padding: "10px",
-              }}
-            />
-            {validateAWB(awbs) || awbs === "" ? null : (
-              <div className="mt-2 text-sm text-danger">
-                Invalid AWB/GWB format. Use 8 characters separated by commas.
+                <TextareaAutosize
+                  minRows={4}
+                  value={awbs}
+                  onChange={handleAWBChange}
+                  aria-label="maximum height"
+                  placeholder={`Enter the 8 characters  ${id === "air" ? "AWB" : "GWB"} `}
+                  style={{
+                    width: "100%",
+                    border: "1px solid black",
+                    padding: "10px",
+                  }}
+                />
+                {validateAWB(awbs) || awbs === "" ? null : (
+                  <div className="mt-2 text-sm text-danger">
+                    Invalid AWB/GWB format. Use 8 characters separated by
+                    commas.
+                  </div>
+                )}
               </div>
-            )}
-          </div>
 
-          <SelectInput
-            name="statusId"
-            label="Select Status"
-            placeholder="Choose a Status"
-            options={optionsStatus}
-          />
+              <SelectInput
+                name="statusId"
+                label="Select Status"
+                placeholder="Choose a Status"
+                options={optionsStatus}
+              />
 
-          <div className="flex justify-end">
-            <CommonButton
-              loading={loading}
-              label={`Update ${awbCount} shipments `}
-            />
-          </div>
-        </form>
-      </FormProvider>
-      {arrayMessage && arrayMessage?.length > 0 && (
-        <ResultsTable results={arrayMessage} />
+              <div className="flex justify-end">
+                <CommonButton
+                  loading={loading}
+                  label={`Update ${awbCount} shipments `}
+                />
+              </div>
+            </form>
+          </FormProvider>
+          {arrayMessage && arrayMessage?.length > 0 && (
+            <ResultsTable results={arrayMessage} />
+          )}
+        </div>
+      ) : (
+        <NowAllowedPage />
       )}
-    </div>
+    </>
   );
 };
 

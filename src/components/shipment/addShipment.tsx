@@ -36,6 +36,8 @@ import {
   createShipment,
   fetchShipmentsList,
 } from "@/store/features/shipments/shipmentslice"; // Correct import for shipment actions
+import NowAllowedPage from "@/components/common/allowedPage";
+
 const shipmentSchema = z
   .object({
     manualAwb: z.string().optional(),
@@ -148,6 +150,18 @@ const AddShipment: React.FC<GradeDetailProps> = ({ id }) => {
     dataCompany,
     reloadCompanies,
   } = useGetAllCompanies();
+  const auth = useSelector((state: any) => state?.auth?.permissions);
+
+  const hasAddAirShipmentPermission = auth.some(
+    (permission: any) => permission.code === "ADD_AIR_SHIPMENT",
+  );
+  const hasAddGroundShipmentPermission = auth.some(
+    (permission: any) => permission.code === "ADD_GROUND_SHIPMENT",
+  );
+  const hasPermission =
+    (id === "air" && hasAddAirShipmentPermission) ||
+    (id === "ground" && hasAddGroundShipmentPermission);
+
   const [rate, setRate] = useState<number | null>(null); // State to store the rate
   const [rateId, setRateId] = useState<number | null>(null); // State to store the rate ID
   const [loadingRateSearch, setLoadingRateSearch] = useState<boolean>(false); // Loading state for rate search
@@ -283,100 +297,101 @@ const AddShipment: React.FC<GradeDetailProps> = ({ id }) => {
   };
   return (
     <>
-      <div className="flex  w-full bg-white text-black dark:bg-boxdark dark:text-white">
-        <FormProvider {...methods}>
-          <div className="container mx-auto mt-0">
-            <div className="w-full">
-              <div className="p-0">
-                <h6 className=" text-gray-700 w-full  pl-5 pr-3 pt-4 text-title-xl2  font-normal ">
-                  Add {id == "air" ? "Air" : "Ground"} Shipment
-                </h6>
+      {hasPermission ? (
+        <div className="flex  w-full bg-white text-black dark:bg-boxdark dark:text-white">
+          <FormProvider {...methods}>
+            <div className="container mx-auto mt-0">
+              <div className="w-full">
+                <div className="p-0">
+                  <h6 className=" text-gray-700 w-full  pl-5 pr-3 pt-4 text-title-xl2  font-normal ">
+                    Add {id == "air" ? "Air" : "Ground"} Shipment
+                  </h6>
 
-                <hr className="mb-4 mt-4 w-full text-lg font-normal text-normalGray " />
-                <div className="w-full p-5 ">
-                  <form
-                    onSubmit={methods.handleSubmit(onSubmit)}
-                    className="p-fluid"
-                  >
-                    <div className="  grid  max-w-6xl grid-cols-1 gap-10  md:grid-cols-2">
-                      <div className=" ">
-                        <h4 className=" mb-5 flex  text-title-md ">
-                          Sender Information
-                        </h4>
+                  <hr className="mb-4 mt-4 w-full text-lg font-normal text-normalGray " />
+                  <div className="w-full p-5 ">
+                    <form
+                      onSubmit={methods.handleSubmit(onSubmit)}
+                      className="p-fluid"
+                    >
+                      <div className="  grid  max-w-6xl grid-cols-1 gap-10  md:grid-cols-2">
+                        <div className=" ">
+                          <h4 className=" mb-5 flex  text-title-md ">
+                            Sender Information
+                          </h4>
 
-                        <div className="mb-2">
-                          <InputString
-                            type="text"
-                            name="senderName"
-                            label="Sender full name"
-                            placeholder="ex Abebe kebede "
-                          />
+                          <div className="mb-2">
+                            <InputString
+                              type="text"
+                              name="senderName"
+                              label="Sender full name"
+                              placeholder="ex Abebe kebede "
+                            />
+                          </div>
+                          <div className="mb-2">
+                            <EthiopianNumberInput
+                              type="text"
+                              name="senderPhone"
+                              label="Sender Phone Nunber"
+                              placeholder="e.g. 912345678"
+                            />
+                          </div>
                         </div>
-                        <div className="mb-2">
-                          <EthiopianNumberInput
-                            type="text"
-                            name="senderPhone"
-                            label="Sender Phone Nunber"
-                            placeholder="e.g. 912345678"
-                          />
+                        <div className="">
+                          <h4 className=" mb-5 flex  text-title-md ">
+                            Receiver Information
+                          </h4>
+                          {/* ,recipientPhone, */}
+                          <div className="mb-2">
+                            <InputString
+                              type="text"
+                              name="recipientName"
+                              label="Receiver full name"
+                              placeholder="ex Abebe kebede "
+                            />
+                          </div>
+                          <div className="mb-2">
+                            <EthiopianNumberInput
+                              type="text"
+                              name="recipientPhone"
+                              label="Recipient Phone Number"
+                              placeholder="e.g. 912345678"
+                            />
+                          </div>
+
+                          <div className="mb-3 w-full">
+                            <SelectInput
+                              name="recipientBranchId"
+                              label="Receiver city  "
+                              placeholder="Select Receiver City   "
+                              options={optionsBranch}
+                              loading={loadingBranch} // Default to false if not provided
+                            />
+                          </div>
                         </div>
                       </div>
-                      <div className="">
-                        <h4 className=" mb-5 flex  text-title-md ">
-                          Receiver Information
-                        </h4>
-                        {/* ,recipientPhone, */}
-                        <div className="mb-2">
-                          <InputString
-                            type="text"
-                            name="recipientName"
-                            label="Receiver full name"
-                            placeholder="ex Abebe kebede "
-                          />
-                        </div>
-                        <div className="mb-2">
-                          <EthiopianNumberInput
-                            type="text"
-                            name="recipientPhone"
-                            label="Recipient Phone Number"
-                            placeholder="e.g. 912345678"
-                          />
-                        </div>
-
-                        <div className="mb-3 w-full">
-                          <SelectInput
-                            name="recipientBranchId"
-                            label="Receiver city  "
-                            placeholder="Select Receiver City   "
-                            options={optionsBranch}
-                            loading={loadingBranch} // Default to false if not provided
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <hr className="mb-5 mt-5 w-full text-lg font-normal text-normalGray " />
-                    <div className="  grid  max-w-6xl grid-cols-1 gap-10  md:grid-cols-2">
-                      <div className=" ">
-                        <h4 className=" mb-5 flex  text-title-md ">
-                          Shipment Information
-                        </h4>
-                        <div className="mb-2">
-                          <InputString
-                            type="text"
-                            name="manualAwb"
-                            label="Manual Awb/GWB (Optional)"
-                            placeholder="ex. 122020202 "
-                          />
-                        </div>
-                        <div className="mb-2">
-                          <InputString
-                            type="text"
-                            name="shipmentDescription"
-                            label="Shipment Description"
-                            placeholder="ex Cloths , laptop.. "
-                          />
-                        </div>
-                        {/* <div className="mb-3 w-full">
+                      <hr className="mb-5 mt-5 w-full text-lg font-normal text-normalGray " />
+                      <div className="  grid  max-w-6xl grid-cols-1 gap-10  md:grid-cols-2">
+                        <div className=" ">
+                          <h4 className=" mb-5 flex  text-title-md ">
+                            Shipment Information
+                          </h4>
+                          <div className="mb-2">
+                            <InputString
+                              type="text"
+                              name="manualAwb"
+                              label="Manual Awb/GWB (Optional)"
+                              placeholder="ex. 122020202 "
+                            />
+                          </div>
+                          <div className="mb-2">
+                            <InputString
+                              type="text"
+                              name="shipmentDescription"
+                              label="Shipment Description"
+                              placeholder="ex Cloths , laptop.. "
+                            />
+                          </div>
+                          {/* <div className="mb-3 w-full">
                           <SelectInput
                             name="shipmentModeId"
                             label="Shipment Mode "
@@ -386,25 +401,25 @@ const AddShipment: React.FC<GradeDetailProps> = ({ id }) => {
                           />
                         </div> */}
 
-                        <div className="mb-3 w-full">
-                          <SelectInput
-                            name="shipmentTypeId"
-                            label="Shipment Type "
-                            placeholder="Select shipment type"
-                            options={optionsShipmentType}
-                            loading={loadingShipmentType} // Default to false if not provided
-                          />
+                          <div className="mb-3 w-full">
+                            <SelectInput
+                              name="shipmentTypeId"
+                              label="Shipment Type "
+                              placeholder="Select shipment type"
+                              options={optionsShipmentType}
+                              loading={loadingShipmentType} // Default to false if not provided
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <div className=" ">
-                        <h4
-                          className=" mb-5 flex  text-title-md "
-                          style={{ height: "25px" }}
-                        >
-                          Measures
-                        </h4>
-                        {/* ,recipientPhone, */}
-                        {/* <div className="mb-3 w-full">
+                        <div className=" ">
+                          <h4
+                            className=" mb-5 flex  text-title-md "
+                            style={{ height: "25px" }}
+                          >
+                            Measures
+                          </h4>
+                          {/* ,recipientPhone, */}
+                          {/* <div className="mb-3 w-full">
                           <SelectInput
                             name="unitId"
                             label="Unit "
@@ -414,114 +429,117 @@ const AddShipment: React.FC<GradeDetailProps> = ({ id }) => {
                           />
                         </div> */}
 
-                        <div className="mb-3 w-full">
-                          <InputNumber
-                            name="quantity"
-                            label="Quantity(Weight) in kg"
-                            placeholder="e.g. 10"
-                          />
-                        </div>
-                        <div className="mb-3 w-full">
-                          <InputNumber
-                            name="noOfPcs"
-                            label="No of pieces "
-                            placeholder="e.g. 10"
-                          />
+                          <div className="mb-3 w-full">
+                            <InputNumber
+                              name="quantity"
+                              label="Quantity(Weight) in kg"
+                              placeholder="e.g. 10"
+                            />
+                          </div>
+                          <div className="mb-3 w-full">
+                            <InputNumber
+                              name="noOfPcs"
+                              label="No of pieces "
+                              placeholder="e.g. 10"
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <hr className="mb-5 mt-5 w-full text-lg font-normal text-normalGray " />
-                    <div className="  grid  max-w-6xl grid-cols-1 gap-10  md:grid-cols-2">
-                      <div className=" ">
-                        <h4 className=" mb-5 flex  text-title-md ">
-                          Payment Information
-                        </h4>
-                        <div className="mb-3 w-full">
-                          <SelectInput
-                            name="paymentModeId"
-                            label="Payment Mode "
-                            placeholder="Select Payment Methods"
-                            options={optionsPaymentMode}
-                            loading={loadingPaymentMode}
-                            // Default to false if not provided
-                          />
-                        </div>
-                        {formValues && formValues?.paymentModeId == "1" && (
+                      <hr className="mb-5 mt-5 w-full text-lg font-normal text-normalGray " />
+                      <div className="  grid  max-w-6xl grid-cols-1 gap-10  md:grid-cols-2">
+                        <div className=" ">
+                          <h4 className=" mb-5 flex  text-title-md ">
+                            Payment Information
+                          </h4>
                           <div className="mb-3 w-full">
                             <SelectInput
-                              name="paymentMethodId"
-                              label="Payment Method "
+                              name="paymentModeId"
+                              label="Payment Mode "
                               placeholder="Select Payment Methods"
-                              options={optionsPaymentMethod}
-                              loading={loadingPaymentMethod}
+                              options={optionsPaymentMode}
+                              loading={loadingPaymentMode}
                               // Default to false if not provided
                             />
-                            <h4 style={{ fontSize: "13px", color: "red" }}>
-                              {errors?.paymentModeId?.message}
-                            </h4>
                           </div>
-                        )}
-                        {formValues && formValues?.paymentModeId == "2" && (
+                          {formValues && formValues?.paymentModeId == "1" && (
+                            <div className="mb-3 w-full">
+                              <SelectInput
+                                name="paymentMethodId"
+                                label="Payment Method "
+                                placeholder="Select Payment Methods"
+                                options={optionsPaymentMethod}
+                                loading={loadingPaymentMethod}
+                                // Default to false if not provided
+                              />
+                              <h4 style={{ fontSize: "13px", color: "red" }}>
+                                {errors?.paymentModeId?.message}
+                              </h4>
+                            </div>
+                          )}
+                          {formValues && formValues?.paymentModeId == "2" && (
+                            <div className="mb-3 w-full">
+                              <SelectInput
+                                name="companyId"
+                                label="Company "
+                                placeholder="Select The Company"
+                                options={optionsCompany}
+                                loading={loadingCompany}
+                                // Default to false if not provided
+                              />
+                              <h4 style={{ fontSize: "13px", color: "red" }}>
+                                {errors?.companyId?.message}
+                              </h4>
+                            </div>
+                          )}
                           <div className="mb-3 w-full">
                             <SelectInput
-                              name="companyId"
-                              label="Company "
-                              placeholder="Select The Company"
-                              options={optionsCompany}
-                              loading={loadingCompany}
-                              // Default to false if not provided
+                              name="deliveryModeId"
+                              label="Delivery Mode"
+                              placeholder="Select delivery mode "
+                              options={[
+                                { label: "Home Delivery", value: 1 },
+                                { label: "Office Delivery", value: 2 },
+                              ]}
+                              loading={false} // Default to false if not provided
                             />
-                            <h4 style={{ fontSize: "13px", color: "red" }}>
-                              {errors?.companyId?.message}
-                            </h4>
                           </div>
-                        )}
-                        <div className="mb-3 w-full">
-                          <SelectInput
-                            name="deliveryModeId"
-                            label="Delivery Mode"
-                            placeholder="Select delivery mode "
-                            options={[
-                              { label: "Home Delivery", value: 1 },
-                              { label: "Office Delivery", value: 2 },
-                            ]}
-                            loading={false} // Default to false if not provided
-                          />
                         </div>
-                      </div>
-                      <div className="flex items-center justify-center rounded-lg  border p-5 shadow-md md:m-7 ">
-                        <div className="border-gray-300 flex flex-col items-center justify-center space-y-3 md:space-y-5">
-                          <span className="text-title-xl2 font-semibold ">
-                            Total Fee:
-                          </span>
-                          {loadingRateSearch ? (
-                            <div className="flex items-center gap-2">
-                              <span className="text-gray-700 text-sm">
-                                Calculating total cost...
-                              </span>
-                              <CircularProgress
-                                size={20}
-                                className="animate-spin "
-                              />
-                            </div>
-                          ) : (
-                            <span className="text-title-xl2 font-bold text-danger">
-                              {rate ? `${rate} Birr` : "--"}
+                        <div className="flex items-center justify-center rounded-lg  border p-5 shadow-md md:m-7 ">
+                          <div className="border-gray-300 flex flex-col items-center justify-center space-y-3 md:space-y-5">
+                            <span className="text-title-xl2 font-semibold ">
+                              Total Fee:
                             </span>
-                          )}
+                            {loadingRateSearch ? (
+                              <div className="flex items-center gap-2">
+                                <span className="text-gray-700 text-sm">
+                                  Calculating total cost...
+                                </span>
+                                <CircularProgress
+                                  size={20}
+                                  className="animate-spin "
+                                />
+                              </div>
+                            ) : (
+                              <span className="text-title-xl2 font-bold text-danger">
+                                {rate ? `${rate} Birr` : "--"}
+                              </span>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="mb-4 mt-5">
-                      <CommonButton loading={loading} label="Submit" />
-                    </div>
-                  </form>
+                      <div className="mb-4 mt-5">
+                        <CommonButton loading={loading} label="Submit" />
+                      </div>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </FormProvider>
-      </div>
+          </FormProvider>
+        </div>
+      ) : (
+        <NowAllowedPage />
+      )}
     </>
   );
 };

@@ -21,6 +21,8 @@ import { PiBuildingOfficeDuotone } from "react-icons/pi"; //ARRIVED
 import { FcAcceptDatabase } from "react-icons/fc"; ///DELIVERED
 import { CiLocationOn } from "react-icons/ci";
 import { GoLocation } from "react-icons/go";
+import { useDispatch, useSelector } from "react-redux";
+import NowAllowedPage from "@/components/common/allowedPage";
 
 const statusSchema = z.object({
   awb: z.string().min(1, { message: "GWB is required" }),
@@ -37,7 +39,13 @@ const TrackingPage = () => {
     resolver: zodResolver(statusSchema),
   });
   const { handleSubmit } = methods;
-  console.log("trackingData-trackingData", trackingData);
+
+  const auth = useSelector((state: any) => state?.auth?.permissions);
+
+  const hasTrackAirShipmentPermission = auth.some(
+    (permission: any) => permission.code === "TRACK_AIR_SHIPMENT",
+  );
+
   const onSubmit: SubmitHandler<any> = async (data: any) => {
     setError(null);
     setTrackingData(null);
@@ -105,125 +113,132 @@ const TrackingPage = () => {
   ];
 
   return (
-    <div
-      className="container mx-auto mt-10 bg-white p-4 text-black dark:bg-boxdark dark:text-white md:p-12"
-      style={{ maxWidth: "90vw" }}
-    >
-      <h1 className="mb-5 text-2xl font-bold">Shipment Tracking</h1>
-
-      {/* Error Message */}
-      {error && (
-        <div className="mb-5">
-          <Alert severity="error">{error}</Alert>
-        </div>
-      )}
-
-      {/* Tracking Form */}
-      <FormProvider {...methods}>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="grid max-w-lg grid-cols-1 gap-6"
+    <>
+      {hasTrackAirShipmentPermission ? (
+        <div
+          className="container mx-auto mt-10 bg-white p-4 text-black dark:bg-boxdark dark:text-white md:p-12"
+          style={{ maxWidth: "90vw" }}
         >
-          <div className="flex flex-col">
-            <InputString
-              type="text"
-              name="awb"
-              label="GWB"
-              placeholder={`Enter GWB Number`}
-            />
-          </div>
-          <div className="flex justify-end">
-            <CommonButton loading={loading} label="Track Shipment" />
-          </div>
-        </form>
-      </FormProvider>
+          <h1 className="mb-5 text-2xl font-bold">Shipment Tracking</h1>
 
-      {/* Loading Indicator */}
-      {loading && (
-        <div className="mt-10 flex justify-center">
-          <CircularProgress />
-        </div>
-      )}
+          {/* Error Message */}
+          {error && (
+            <div className="mb-5">
+              <Alert severity="error">{error}</Alert>
+            </div>
+          )}
 
-      {/* Tracking Data */}
-      {trackingData && (
-        <div className="mt-10">
-          <h2 className="mb-5 text-xl font-semibold">Tracking Details</h2>
-          <Stepper
-            orientation="vertical"
-            activeStep={-1}
-            sx={{
-              "& .MuiStepLabel-root": {
-                alignItems: "flex-start", // Align icons to the top
-              },
-              "& .MuiStepLabel-iconContainer": {
-                alignSelf: "flex-start", // Align the icon container to the top
-              },
-            }}
-          >
-            {trackingData.map((step: any) => {
-              const statusIcon = IconList.find(
-                (icon) =>
-                  icon.label === step.ShipmentPackageDispatchStatus.code,
-              )?.value;
+          {/* Tracking Form */}
+          <FormProvider {...methods}>
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="grid max-w-lg grid-cols-1 gap-6"
+            >
+              <div className="flex flex-col">
+                <InputString
+                  type="text"
+                  name="awb"
+                  label="GWB"
+                  placeholder={`Enter GWB Number`}
+                />
+              </div>
+              <div className="flex justify-end">
+                <CommonButton loading={loading} label="Track Shipment" />
+              </div>
+            </form>
+          </FormProvider>
 
-              return (
-                <Step key={step.id}>
-                  <StepLabel icon={statusIcon}>
-                    <div
-                      className="flex flex-col items-start"
-                      style={{ width: "300px" }}
-                    >
-                      <span className="text-lg font-bold">
-                        {step.ShipmentPackageDispatchStatus.displayText}
-                      </span>
-                      <div
-                        className=" mb-2 mt-2 flex gap-2 font-bold"
-                        style={{ fontSize: "15px" }}
-                      >
-                        <GoLocation
-                          style={{
-                            fontSize: "20px",
-                            fontWeight: "bold",
-                          }}
-                        />
-                        <span> {step.Branch.location}</span>
-                      </div>
-                      <span
-                        className="text-gray-500 column mt-1  "
-                        style={{ fontSize: "15px" }}
-                      >
-                        Handled by: {step.User?.firstName} {step.User?.lastName}
-                        <div className="text-gray-500  ">
-                          {" "}
-                          ( {step.User?.phone})
+          {/* Loading Indicator */}
+          {loading && (
+            <div className="mt-10 flex justify-center">
+              <CircularProgress />
+            </div>
+          )}
+
+          {/* Tracking Data */}
+          {trackingData && (
+            <div className="mt-10">
+              <h2 className="mb-5 text-xl font-semibold">Tracking Details</h2>
+              <Stepper
+                orientation="vertical"
+                activeStep={-1}
+                sx={{
+                  "& .MuiStepLabel-root": {
+                    alignItems: "flex-start", // Align icons to the top
+                  },
+                  "& .MuiStepLabel-iconContainer": {
+                    alignSelf: "flex-start", // Align the icon container to the top
+                  },
+                }}
+              >
+                {trackingData.map((step: any) => {
+                  const statusIcon = IconList.find(
+                    (icon) =>
+                      icon.label === step.ShipmentPackageDispatchStatus.code,
+                  )?.value;
+
+                  return (
+                    <Step key={step.id}>
+                      <StepLabel icon={statusIcon}>
+                        <div
+                          className="flex flex-col items-start"
+                          style={{ width: "300px" }}
+                        >
+                          <span className="text-lg font-bold">
+                            {step.ShipmentPackageDispatchStatus.displayText}
+                          </span>
+                          <div
+                            className=" mb-2 mt-2 flex gap-2 font-bold"
+                            style={{ fontSize: "15px" }}
+                          >
+                            <GoLocation
+                              style={{
+                                fontSize: "20px",
+                                fontWeight: "bold",
+                              }}
+                            />
+                            <span> {step.Branch.location}</span>
+                          </div>
+                          <span
+                            className="text-gray-500 column mt-1  "
+                            style={{ fontSize: "15px" }}
+                          >
+                            Handled by: {step.User?.firstName}{" "}
+                            {step.User?.lastName}
+                            <div className="text-gray-500  ">
+                              {" "}
+                              ( {step.User?.phone})
+                            </div>
+                          </span>
+                          <span className=" text-gray-500 ml-auto  mt-2 flex flex-wrap pe-8 text-sm">
+                            {new Date(step.createdAt).toLocaleString()}
+                          </span>
                         </div>
-                      </span>
-                      <span className=" text-gray-500 ml-auto  mt-2 flex flex-wrap pe-8 text-sm">
-                        {new Date(step.createdAt).toLocaleString()}
-                      </span>
-                    </div>
-                  </StepLabel>
-                  <StepContent>
-                    <p className="text-gray-700">
-                      {step.ShipmentPackageDispatchStatus.description}
-                    </p>
-                    <p className="text-gray-500 text-sm">
-                      Branch: {step.Branch.name} ({step.Branch.location})
-                    </p>
-                    {step.remark && (
-                      <p className="text-gray-500 text-sm">
-                        Remark: {step.remark}
-                      </p>
-                    )}
-                  </StepContent>
-                </Step>
-              );
-            })}
-          </Stepper>
+                      </StepLabel>
+                      <StepContent>
+                        <p className="text-gray-700">
+                          {step.ShipmentPackageDispatchStatus.description}
+                        </p>
+                        <p className="text-gray-500 text-sm">
+                          Branch: {step.Branch.name} ({step.Branch.location})
+                        </p>
+                        {step.remark && (
+                          <p className="text-gray-500 text-sm">
+                            Remark: {step.remark}
+                          </p>
+                        )}
+                      </StepContent>
+                    </Step>
+                  );
+                })}
+              </Stepper>
+            </div>
+          )}
         </div>
+      ) : (
+        <NowAllowedPage />
       )}
-    </div>
+    </>
   );
 };
 

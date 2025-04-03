@@ -20,7 +20,8 @@ import { fetchUserList, deleteUser } from "@/store/features/user/usersThunk";
 import { useDispatch, useSelector } from "react-redux";
 import { MdOutlineAdd } from "react-icons/md";
 import { Plus } from "lucide-react";
-
+import NowAllowedPage from "@/components/common/allowedPage";
+import Tooltip from "@/common/tooltip";
 function convertISOToNormalDate(isoDate: string | null): string {
   if (!isoDate) return "N/A";
   const date = new Date(isoDate);
@@ -43,7 +44,19 @@ const ListUser: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [id, setId] = useState<number | string | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
+  const auth = useSelector((state: any) => state?.auth?.permissions);
+  const hasViewUsersPermission = auth.some(
+    (permission: any) => permission.code === "VIEW_USERS",
+  );
+  const hasAddUserPermission = auth.some(
+    (permission: any) => permission.code === "CREATE_USER",
+  );
+  const hasUpdateUserPermission = auth.some(
+    (permission: any) => permission.code === "UPDATE_USER",
+  );
+  const hasDeleteUserPermission = auth.some(
+    (permission: any) => permission.code === "DELETE_USER",
+  );
   const toggleDrawer = (open: boolean) => {
     setIsDrawerOpen(open);
   };
@@ -108,26 +121,33 @@ const ListUser: React.FC = () => {
 
         return (
           <div className="my-2 flex gap-2">
-            <BaseButton
-              onClick={() => handleEditDrawer(value)}
-              className="t w-full cursor-pointer rounded-lg border  border-solid py-2  text-sm leading-normal"
-              style={{ textTransform: "none" }}
-            >
-              <FaEdit className="mr-3" />
-              Edit
-            </BaseButton>
-            <BaseButton
-              type="submit"
-              className="w-full cursor-pointer rounded-lg border border-solid  py-2 text-sm leading-normal"
-              style={{
-                textTransform: "none",
-                color: "red",
-              }}
-              onClick={() => handleDeleteDialog(value)}
-            >
-              <MdDeleteForever className="mr-3" style={{ color: "red" }} />
-              Delete
-            </BaseButton>
+            <div className="flex flex-col">
+              <BaseButton
+                onClick={() => handleEditDrawer(value)}
+                className={`t w-full cursor-pointer rounded-lg border  border-solid py-2  text-sm leading-normal ${!hasUpdateUserPermission ? "cursor-not-allowed opacity-50" : ""}`}
+                style={{ textTransform: "none" }}
+                disabled={!hasUpdateUserPermission}
+              >
+                <FaEdit className="mr-3" />
+                Edit
+              </BaseButton>
+              {<Tooltip text="Not Allowed" />}
+            </div>
+            <div className="flex flex-col">
+              <BaseButton
+                type="submit"
+                className={`t w-full cursor-pointer rounded-lg border  border-solid py-2  text-sm leading-normal ${!hasDeleteUserPermission ? "cursor-not-allowed opacity-50" : ""}`}
+                disabled={!hasDeleteUserPermission}
+                style={{
+                  textTransform: "none",
+                  color: "red",
+                }}
+                onClick={() => handleDeleteDialog(value)}
+              >
+                <MdDeleteForever className="mr-3" style={{ color: "red" }} />
+                Delete
+              </BaseButton>
+            </div>
           </div>
         );
       },
@@ -152,90 +172,107 @@ const ListUser: React.FC = () => {
 
   return (
     <>
-      <div className=" overflow-x-hidden" style={{ maxWidth: "90vw" }}>
-        <div className="mb-5 mt-5  flex  justify-between px-5  align-middle  ">
-          <h5 className="text-title-md font-semibold   text-black  dark:text-white  ">
-            System Users
-          </h5>
-          <BaseButton
-            style={{
-              textTransform: "none",
-              backgroundColor: "#0f6f03",
-              color: "white",
-              marginBottom: "10px",
-              paddingLeft: "10px",
-              paddingRight: "10px",
+      {hasViewUsersPermission ? (
+        <div className=" overflow-x-hidden" style={{ maxWidth: "90vw" }}>
+          <div className="mb-5 mt-5  flex   justify-between px-5  align-middle  ">
+            <h5 className="text-title-md font-semibold   text-black  dark:text-white  ">
+              System Users
+            </h5>
+            <div className="flex flex-col">
+              <BaseButton
+                style={{
+                  textTransform: "none",
+                  backgroundColor: "#0f6f03",
+                  color: "white",
+                  marginBottom: "10px",
+                  paddingLeft: "10px",
+                  paddingRight: "10px",
 
-              // marginLeft: "auto",
-              display: "flex",
-            }}
-            onClick={handleAddDrawer}
-          >
-            <Plus
-              className="mr-3 text-white "
-              style={{ fontSize: "6px", fontWeight: "bold", color: "#ffffff" }}
-            />
-            Add User
-          </BaseButton>
-        </div>
-        <div className="flex h-screen w-full bg-white text-black dark:bg-boxdark dark:text-white">
-          <div className="container mx-auto mt-0">
-            <div className="">
-              <div className="p-4">
-                <div className=" max-w-230 overflow-x-auto bg-white text-black dark:bg-normalGray">
-                  <DataGrid
-                    loading={loadingUser}
-                    rows={rows}
-                    columns={columns}
-                    autoHeight
-                    slots={{ toolbar: GridToolbar }}
-                    slotProps={{
-                      toolbar: {
-                        showQuickFilter: true,
-                        quickFilterProps: { debounceMs: 500 },
-                        csvOptions: {
-                          allRows: true, // Exports all rows, not just the visible ones
-                          fileName: "User", // Set your desired file name here (without extension)
+                  // marginLeft: "auto",
+                  display: "flex",
+                }}
+                onClick={handleAddDrawer}
+                disabled={!hasAddUserPermission}
+                className={`${!hasAddUserPermission ? "cursor-not-allowed opacity-50" : ""}`}
+              >
+                <Plus
+                  className="mr-3 text-white "
+                  style={{
+                    fontSize: "6px",
+                    fontWeight: "bold",
+                    color: "#ffffff",
+                  }}
+                />
+                Add User
+              </BaseButton>
+              {!hasAddUserPermission && (
+                <div className="bg-gray-900  rounded-lg text-xs   ">
+                  You do not have permission
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="flex h-screen w-full bg-white text-black dark:bg-boxdark dark:text-white">
+            <div className="container mx-auto mt-0">
+              <div className="">
+                <div className="p-4">
+                  <div className=" max-w-230 overflow-x-auto bg-white text-black dark:bg-normalGray">
+                    <DataGrid
+                      loading={loadingUser}
+                      rows={rows}
+                      columns={columns}
+                      autoHeight
+                      slots={{ toolbar: GridToolbar }}
+                      slotProps={{
+                        toolbar: {
+                          showQuickFilter: true,
+                          quickFilterProps: { debounceMs: 500 },
+                          csvOptions: {
+                            allRows: true, // Exports all rows, not just the visible ones
+                            fileName: "User", // Set your desired file name here (without extension)
+                          },
                         },
-                      },
-                    }}
-                    // sx={{
-                    //   minHeight: "200px", // Set your desired minimum height
-                    // }}
-                  />
+                      }}
+                      // sx={{
+                      //   minHeight: "200px", // Set your desired minimum height
+                      // }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+
+          <CommonDrawer
+            isOpen={isDrawerOpen}
+            toggleDrawer={toggleDrawer}
+            content={
+              <div>
+                {drawerDisplay === "add" && (
+                  <AddUser toggleDrawer={toggleDrawer} />
+                )}
+                {id !== null && drawerDisplay === "edit" && (
+                  <EditUser toggleDrawer={toggleDrawer} id={id} setId={setId} />
+                )}
+              </div>
+            }
+            direction="right"
+            width={400}
+          />
+
+          <DeleteConfirmationDialog
+            isOpen={isDialogOpen}
+            toggleDialog={handleDialog}
+            onDelete={() => {
+              handleDelete(id);
+            }}
+            elementName={`User with id = ${id}`}
+            elementId={id}
+          />
         </div>
-
-        <CommonDrawer
-          isOpen={isDrawerOpen}
-          toggleDrawer={toggleDrawer}
-          content={
-            <div>
-              {drawerDisplay === "add" && (
-                <AddUser toggleDrawer={toggleDrawer} />
-              )}
-              {id !== null && drawerDisplay === "edit" && (
-                <EditUser toggleDrawer={toggleDrawer} id={id} setId={setId} />
-              )}
-            </div>
-          }
-          direction="right"
-          width={400}
-        />
-
-        <DeleteConfirmationDialog
-          isOpen={isDialogOpen}
-          toggleDialog={handleDialog}
-          onDelete={() => {
-            handleDelete(id);
-          }}
-          elementName={`User with id = ${id}`}
-          elementId={id}
-        />
-      </div>
+      ) : (
+        <NowAllowedPage />
+      )}
     </>
   );
 };

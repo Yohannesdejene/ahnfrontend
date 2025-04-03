@@ -13,6 +13,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import UpdateShipment from "./updateShipment";
 import ShipmentDetail from "./shipmentDetail";
 import ShipmentReceipt from "./shipmentReceipt";
+import NowAllowedPage from "@/components/common/allowedPage";
+
 const theme = createTheme({
   components: {
     MuiTabs: {
@@ -66,6 +68,38 @@ const ShipmentDetailIndex: React.FC<GradeDetailProps> = ({ id, type }) => {
     setValue(newValue);
   };
 
+  const auth = useSelector((state: any) => state?.auth?.permissions);
+
+  const hasDetailPermission =
+    type === "air"
+      ? auth.some(
+          (permission: any) => permission.code === "VIEW_DETAIL_AIR_SHIPMENT",
+        )
+      : auth.some(
+          (permission: any) =>
+            permission.code === "VIEW_DETAIL_GROUND_SHIPMENT",
+        );
+
+  const hasGenerateInvoicePermission =
+    type === "air"
+      ? auth.some(
+          (permission: any) =>
+            permission.code === "GENERATE_INVOICE_AIR_SHIPMENT",
+        )
+      : auth.some(
+          (permission: any) =>
+            permission.code === "GENERATE_INVOICE_GROUND_SHIPMENT",
+        );
+
+  const hasUpdatePermission =
+    type === "air"
+      ? auth.some(
+          (permission: any) => permission.code === "UPDATE_AIR_SHIPMENT",
+        )
+      : auth.some(
+          (permission: any) => permission.code === "UPDATE_GROUND_SHIPMENT",
+        );
+
   const [loading, setLoading] = useState<boolean>(true);
   // Fetch shipment details by ID
   useEffect(() => {
@@ -76,82 +110,95 @@ const ShipmentDetailIndex: React.FC<GradeDetailProps> = ({ id, type }) => {
     }
   }, [id, dispatch]);
   return (
-    <div className="container mx-auto p-4" style={{ maxWidth: "90%" }}>
-      <div className="space-y-0 md:col-span-2">
-        <div>
-          <Box
-            sx={{
-              width: "100%",
-              typography: "body1",
-            }}
-          >
-            <ThemeProvider theme={theme}>
-              <TabContext value={value}>
-                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                  <TabList
-                    onChange={handleChange}
-                    aria-label="lab API tabs example"
-                    variant="scrollable"
-                    scrollButtons="auto"
-                    allowScrollButtonsMobile
-                    sx={{
-                      [`& .MuiTabs-scrollButtons`]: {
-                        "&.Mui-disabled": { opacity: 0.3 },
-                      },
+    <>
+      <div className="container mx-auto p-4" style={{ maxWidth: "90%" }}>
+        <div className="space-y-0 md:col-span-2">
+          <div>
+            <Box
+              sx={{
+                width: "100%",
+                typography: "body1",
+              }}
+            >
+              <ThemeProvider theme={theme}>
+                <TabContext value={value}>
+                  <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                    <TabList
+                      onChange={handleChange}
+                      aria-label="lab API tabs example"
+                      variant="scrollable"
+                      scrollButtons="auto"
+                      allowScrollButtonsMobile
+                      sx={{
+                        [`& .MuiTabs-scrollButtons`]: {
+                          "&.Mui-disabled": { opacity: 0.3 },
+                        },
+                      }}
+                    >
+                      <Tab
+                        label="Shipment Detail"
+                        value="shipmentDetail"
+                        className="text-black dark:text-white"
+                        sx={{
+                          ...tabStyles,
+                        }}
+                      />
+                      <Tab
+                        label="Shipment Invoice"
+                        value="receipt"
+                        className="text-black dark:text-white"
+                        sx={{
+                          ...tabStyles,
+                        }}
+                      />
+
+                      <Tab
+                        label="Update Shipment"
+                        value="updateShipment"
+                        className="text-black dark:text-white"
+                        sx={{
+                          ...tabStyles,
+                        }}
+                      />
+                    </TabList>
+                  </Box>
+                  <TabPanel
+                    value="shipmentDetail"
+                    style={{
+                      textTransform: "none",
+                      textDecoration: "none",
+                      color: "#000000",
                     }}
                   >
-                    <Tab
-                      label="Shipment Detail"
-                      value="shipmentDetail"
-                      className="text-black dark:text-white"
-                      sx={{
-                        ...tabStyles,
-                      }}
-                    />
-                    <Tab
-                      label="Shipment Invoice"
-                      value="receipt"
-                      className="text-black dark:text-white"
-                      sx={{
-                        ...tabStyles,
-                      }}
-                    />
-
-                    <Tab
-                      label="Update Shipment"
-                      value="updateShipment"
-                      className="text-black dark:text-white"
-                      sx={{
-                        ...tabStyles,
-                      }}
-                    />
-                  </TabList>
-                </Box>
-                <TabPanel
-                  value="shipmentDetail"
-                  style={{
-                    textTransform: "none",
-                    textDecoration: "none",
-                    color: "#000000",
-                  }}
-                >
-                  <ShipmentDetail id={id} />
-                </TabPanel>
-                <TabPanel value="receipt">
-                  {" "}
-                  <ShipmentReceipt id={id} type={type} />
-                </TabPanel>
-                <TabPanel value="updateShipment">
-                  {" "}
-                  <UpdateShipment id={id} type={type} />
-                </TabPanel>
-              </TabContext>
-            </ThemeProvider>
-          </Box>
+                    {hasDetailPermission ? (
+                      <ShipmentDetail id={id} />
+                    ) : (
+                      <NowAllowedPage />
+                    )}
+                  </TabPanel>
+                  <TabPanel value="receipt">
+                    {hasGenerateInvoicePermission ? (
+                      <ShipmentReceipt id={id} type={type} />
+                    ) : (
+                      <NowAllowedPage />
+                    )}{" "}
+                  </TabPanel>
+                  <TabPanel value="updateShipment">
+                    {" "}
+                    {hasUpdatePermission ? (
+                      <UpdateShipment id={id} type={type} />
+                    ) : (
+                      <NowAllowedPage />
+                    )}
+                  </TabPanel>
+                </TabContext>
+              </ThemeProvider>
+            </Box>
+          </div>
         </div>
+        {/* )} */}
       </div>
-      {/* )} */}
-    </div>
+    </>
   );
 };
 

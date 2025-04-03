@@ -21,6 +21,8 @@ import {
   deleteBranch,
 } from "@/store/features/branches/branchesSlice";
 import { useDispatch, useSelector } from "react-redux";
+import NowAllowedPage from "@/components/common/allowedPage";
+import { Plus } from "lucide-react";
 
 function convertISOToNormalDate(isoDate: string): string {
   const date = new Date(isoDate);
@@ -43,7 +45,19 @@ const ListBranch: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [id, setId] = useState<number | string | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
+  const auth = useSelector((state: any) => state?.auth?.permissions);
+  const hasViewUsersPermission = auth.some(
+    (permission: any) => permission.code === "VIEW_BRANCHES",
+  );
+  const hasAddBranchPermission = auth.some(
+    (permission: any) => permission.code === "Add_BRANCH",
+  );
+  const hasUpdateBranchPermission = auth.some(
+    (permission: any) => permission.code === "UPDATE_BRANCH",
+  );
+  const hasDeleteBranchPermission = auth.some(
+    (permission: any) => permission.code === "DELETE_BRANCH",
+  );
   const toggleDrawer = (open: boolean) => {
     setIsDrawerOpen(open);
   };
@@ -108,15 +122,17 @@ const ListBranch: React.FC = () => {
           <div className="my-2 flex gap-2">
             <BaseButton
               onClick={() => handleEditDrawer(value)}
-              className="w-full cursor-pointer rounded-lg border border-solid border-primary bg-primary py-2 text-sm leading-normal text-white"
+              className={`w-full cursor-pointer rounded-lg border border-solid border-primary bg-primary py-2 text-sm leading-normal text-white  ${!hasUpdateBranchPermission ? "cursor-not-allowed opacity-50" : ""}`}
               style={{ textTransform: "none" }}
+              disabled={!hasUpdateBranchPermission}
             >
               <FaEdit className="mr-3" />
               Edit
             </BaseButton>
             <BaseButton
+              disabled={!hasDeleteBranchPermission}
               type="submit"
-              className="w-full cursor-pointer rounded-lg border border-solid border-danger bg-danger py-2 text-sm leading-normal"
+              className={`w-full cursor-pointer rounded-lg border border-solid border-danger bg-danger py-2 text-sm leading-normal ${!hasDeleteBranchPermission ? "cursor-not-allowed opacity-50" : ""}`}
               style={{
                 textTransform: "none",
                 color: "red",
@@ -150,86 +166,115 @@ const ListBranch: React.FC = () => {
 
   return (
     <>
-      <div className=" overflow-x-hidden" style={{ maxWidth: "90vw" }}>
-        <div className=" flex-col justify-between  sm:flex ">
-          <label className="mb-2 ml-2 mt-3 block text-title-md font-medium text-black dark:text-white">
-            Branches
-          </label>
+      {hasViewUsersPermission ? (
+        <div className=" overflow-x-hidden" style={{ maxWidth: "90vw" }}>
+          <div className=" mb-5 mt-5  flex   justify-between px-5  align-middle  ">
+            <label className="mb-2 ml-2 mt-3 block text-title-md font-medium text-black dark:text-white">
+              Branches
+            </label>
 
-          <BaseButton
-            onClick={handleAddDrawer}
-            style={{
-              textTransform: "none",
-              backgroundColor: "#0097B2",
-              color: "white",
-              marginBottom: "10px",
-              marginLeft: "auto",
-              display: "flex",
-            }}
-          >
-            <IoAddCircleSharp className="mr-3" />
-            Add Branch
-          </BaseButton>
-        </div>
+            <div className="flex flex-col">
+              <BaseButton
+                style={{
+                  textTransform: "none",
+                  backgroundColor: "#0f6f03",
+                  color: "white",
+                  marginBottom: "10px",
+                  paddingLeft: "10px",
+                  paddingRight: "10px",
 
-        <div className="flex h-screen w-full bg-white text-black dark:bg-boxdark dark:text-white">
-          <div className="container mx-auto mt-0">
-            <div className="">
-              <div className="p-4">
-                <div className=" max-w-230 overflow-x-auto bg-white text-black dark:bg-normalGray">
-                  <DataGrid
-                    loading={loadingBranch}
-                    rows={rows}
-                    columns={columns}
-                    autoHeight
-                    slots={{ toolbar: GridToolbar }}
-                    slotProps={{
-                      toolbar: {
-                        showQuickFilter: true,
-                        quickFilterProps: { debounceMs: 500 },
-                        csvOptions: {
-                          allRows: true,
-                          fileName: "branches", // Set your desired file name here
+                  // marginLeft: "auto",
+                  display: "flex",
+                }}
+                onClick={handleAddDrawer}
+                disabled={!hasAddBranchPermission}
+                className={`${!hasAddBranchPermission ? "cursor-not-allowed opacity-50" : ""}`}
+              >
+                <Plus
+                  className="mr-3 text-white "
+                  style={{
+                    fontSize: "6px",
+                    fontWeight: "bold",
+                    color: "#ffffff",
+                  }}
+                />
+                Add Branch
+              </BaseButton>
+              {!hasAddBranchPermission && (
+                <div className="bg-gray-900  rounded-lg text-xs   ">
+                  You do not have permission
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="flex h-screen w-full bg-white text-black dark:bg-boxdark dark:text-white">
+            <div className="container mx-auto mt-0">
+              <div className="">
+                <div className="p-4">
+                  <div className=" max-w-230 overflow-x-auto bg-white text-black dark:bg-normalGray">
+                    <DataGrid
+                      loading={loadingBranch}
+                      rows={rows}
+                      columns={columns}
+                      autoHeight
+                      slots={{ toolbar: GridToolbar }}
+                      slotProps={{
+                        toolbar: {
+                          showQuickFilter: true,
+                          quickFilterProps: { debounceMs: 500 },
+                          csvOptions: {
+                            allRows: true,
+                            fileName: "branches", // Set your desired file name here
+                          },
                         },
-                      },
-                    }}
-                    sx={{
-                      minHeight: "200px", // Set your desired minimum height
-                    }}
-                  />
+                      }}
+                      sx={{
+                        minHeight: "200px", // Set your desired minimum height
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+
+          <CommonDrawer
+            isOpen={isDrawerOpen}
+            toggleDrawer={toggleDrawer}
+            content={
+              <div>
+                {drawerDisplay === "add" && (
+                  <AddBranch toggleDrawer={toggleDrawer} />
+                )}
+                {id !== null && drawerDisplay === "edit" && (
+                  <EditBranch
+                    toggleDrawer={toggleDrawer}
+                    id={id}
+                    setId={setId}
+                  />
+                )}
+              </div>
+            }
+            direction="right"
+            width={400}
+          />
+
+          <DeleteConfirmationDialog
+            isOpen={isDialogOpen}
+            toggleDialog={handleDialog}
+            onDelete={() => {
+              handleDelete(id);
+            }}
+            elementName={`Branch with id = ${id}`}
+            elementId={id}
+          />
         </div>
-
-        <CommonDrawer
-          isOpen={isDrawerOpen}
-          toggleDrawer={toggleDrawer}
-          content={
-            <div>
-              {drawerDisplay === "add" && (
-                <AddBranch toggleDrawer={toggleDrawer} />
-              )}
-              {id !== null && drawerDisplay === "edit" && (
-                <EditBranch toggleDrawer={toggleDrawer} id={id} setId={setId} />
-              )}
-            </div>
-          }
-          direction="right"
-          width={400}
-        />
-
-        <DeleteConfirmationDialog
-          isOpen={isDialogOpen}
-          toggleDialog={handleDialog}
-          onDelete={() => {
-            handleDelete(id);
-          }}
-          elementName={`Branch with id = ${id}`}
-          elementId={id}
-        />
-      </div>
+      ) : (
+        <>
+          <NowAllowedPage />
+        </>
+      )}
     </>
   );
 };
